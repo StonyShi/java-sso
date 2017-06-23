@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:datasource.properties</value>
+                <value>classpath:redis.properties</value>
+                <value>classpath:shiro.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.stony.sso.service.service"/>
+
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+    <import resource="classpath:spring/spring-redis-cluster.xml"/>
+    <import resource="classpath:spring/spring-shiro.xml"/>
+    <import resource="classpath:spring/spring-ctx-repository.xml" />
+    <import resource="classpath:spring/spring-ctx-mybatis.xml" />
+    <!--<import resource="classpath:spring/spring-dubbo-provider.xml" />-->
+    <!--<import resource="classpath:spring/spring-dubbo-reference.xml"/>-->
+
+
+    <!-- 注解缓存 -->
+    <bean id="cachez" class="com.stony.sso.cache.support.jedis.CachezJedis" >
+        <property name="jedisTemplate" ref="jedisTemplate" />
+    </bean>
+    <bean id="cachezMapManager" class="com.stony.sso.cache.support.DefaulteCachezManager">
+        <property name="cachez" ref="cachez"/>
+    </bean>
+    <bean id="cacheManagerAspect" class="com.stony.sso.cache.aspect.CacheManagerAspect">
+        <property name="cachezManager" ref="cachezMapManager"/>
+    </bean>
+
+</beans>

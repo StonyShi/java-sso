@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:redis.properties</value>
+                <value>classpath:client/shiro-client-default.properties</value>
+                <value>classpath:client/shiro-client.properties</value>
+                <value>classpath:statics.properties</value>
+            </list>
+        </property>
+        <property name="localOverride" value="true" />
+    </bean>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.stony.sso.admin.monitor">
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+            <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <bean id="webContextListener" class="com.stony.sso.web.event.WebContextListener"/>
+    <import resource="classpath:spring/spring-redis-cluster.xml"/>
+    <!--<import resource="spring-dubbo-customer.xml"/>-->
+    <import resource="classpath:client/spring-oauth-shiro.xml"/>
+
+</beans>

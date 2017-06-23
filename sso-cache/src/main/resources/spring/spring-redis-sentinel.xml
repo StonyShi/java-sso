@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- redis pool config 统一的线程池配置 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大活跃连接数 -->
+        <property name="maxTotal" value="${redis.pool.maxActive}" />
+        <!-- 最大闲置数量 -->
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
+        <!-- 最大等待时间 -->
+        <property name="maxWaitMillis" value="${redis.pool.maxWait}" />
+        <!-- 调用borrow时是否检查其有效性 -->
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+        <!-- 调用return时是否检查其有效性 -->
+        <property name="testOnReturn" value="${redis.pool.testOnReturn}" />
+        <!-- 空闲时是否检查对象有效性 -->
+        <property name="testWhileIdle" value="${redis.pool.testWhileIdle}" />
+    </bean>
+
+
+    <!-- jedis pool -->
+    <bean id="sentinelJedisPool" class="redis.clients.jedis.JedisSentinelPool">
+
+        <constructor-arg index="0" value="${gredis1.master.name}" />
+        <!-- sentinels -->
+        <constructor-arg index="1">
+            <set>
+                <value>${redis1.host}</value>
+                <value>${redis2.host}</value>
+                <value>${redis3.host}</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2" ref="jedisPoolConfig" />
+        <constructor-arg index="3" type="int" value="${redis.pool.maxWait}" />
+    </bean>
+    <bean id="sentinelJedisPool2" class="redis.clients.jedis.JedisSentinelPool">
+
+        <constructor-arg index="0" value="${gredis1.master.name}" />
+        <!-- sentinels -->
+        <constructor-arg index="1">
+            <set>
+                <value>${redis4.host}</value>
+                <value>${redis5.host}</value>
+                <value>${redis6.host}</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2" ref="jedisPoolConfig" />
+        <constructor-arg index="3" type="int" value="${redis.pool.maxWait}" />
+    </bean>
+
+    <!-- jedisTemplate 通用 redis 保存锁，计数等对象 -->
+    <bean id="jedisTemplate" class="com.stony.sso.cache.redis.JedisSentinelTemplate" >
+        <!--<property name="firstPool" ref="sentinelJedisPool"/>-->
+        <property name="shards">
+            <map>
+                <entry key="1" value-ref="sentinelJedisPool"/>
+                <entry key="2" value-ref="sentinelJedisPool2"/>
+            </map>
+        </property>
+    </bean>
+</beans>		        

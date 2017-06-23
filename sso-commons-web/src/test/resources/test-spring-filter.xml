@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="jedisSentinelTemplate" class="com.zhuanche.car.cache.redis.JedisSentinelTemplate" >
+
+    </bean>
+    <bean id="ticketFilter" class="com.stony.sso.web.fliter.TicketDelegatingFilter">
+        <property name="excludes">
+            <list>
+                <value>/driver/login</value>
+                <value>/driver/logout</value>
+            </list>
+        </property>
+        <property name="jedisSentinelTemplate" ref="jedisSentinelTemplate"/>
+    </bean>
+    <bean id="verificationSignFilter" class="com.stony.sso.web.fliter.VerificationSignFilter">
+        <property name="excludes">
+            <list>
+                <value>/driver/login</value>
+                <value>/driver/logout</value>
+            </list>
+        </property>
+        <property name="jedisSentinelTemplate" ref="jedisSentinelTemplate"/>
+    </bean>
+
+
+    <bean id="securityFilter" class="com.stony.sso.web.fliter.SecurityDelegatingFilter">
+        <property name="filters">
+            <list>
+                <ref bean="ticketFilter" />
+                <ref bean="verificationSignFilter" />
+            </list>
+        </property>
+        <property name="excludes">
+            <list>
+                <value>/driver/login</value>
+                <value>/driver/logout</value>
+            </list>
+        </property>
+        <property name="jedisSentinelTemplate" ref="jedisSentinelTemplate"/>
+    </bean>
+</beans>

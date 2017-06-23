@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:car="http://www.stone.com/schema/car"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	   http://www.stone.com/schema/car http://www.stone.com/schema/car.xsd">
+    <!-- 多个包名可用逗号(,;)隔开 -->
+    <!--<car:optimizer base-package="com.car.sqoil.facade" />-->
+
+    <dubbo:application name="car-service-security" logger="slf4j" organization="${dubbo.application.organization}"/>
+
+    <!-- 广播注册中心暴露服务地址 -->
+    <dubbo:registry address="${dubbo.registry.address}" register="true" subscribe="true" protocol="${dubbo.registry.protocol}"/>
+
+
+    <!-- 用dubbo协议在20886端口暴露服务 -->
+    <!-- optimizer="com.car.sqoil.facade.optimizer.SerializationOptimizerImpl" -->
+    <!-- optimizer="com.zhuanche.car.commons.serializer.optimizer.DefaultSerializationOptimizer" -->
+    <dubbo:protocol name="dubbo"
+                    port="${car.service.security.port}"
+                    threadpool="fixed"
+                    threads="100"
+                    accepts="1000"
+                    accesslog="true"
+                    serialization="${dubbo.protocol.serialization}"
+                    />
+
+    <dubbo:monitor protocol="registry" />
+
+    <dubbo:service interface="com.car.sqoil.facade.security.service.OAuthService" ref="oAuthService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 超时时间(毫秒) -->
+    <!-- 授权客户端管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.AppService" ref="appService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 授权管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.AuthorizationService" ref="authorizationService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 组织管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.OrganizationService" ref="organizationService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+
+    <!-- 认证管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.PermissionService" ref="permissionService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 资源管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.ResourceService" ref="resourceService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 角色管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.RoleService" ref="roleService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+
+    <!-- 用户管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.UserService" ref="userService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+
+    <!-- 图标管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.IconService" ref="iconService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 验证管理 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.VerificationService" ref="verificationService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!-- 全局变量 -->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.GlobalVariableService" ref="globalVariableService" loadbalance="roundrobin" version="1.0" timeout="25000"/>
+
+    <!--记录-->
+    <dubbo:service interface="com.car.sqoil.facade.security.service.OperationLogService" ref="operationLogService"  loadbalance="roundrobin"  version="1.0" timeout="25000"/>
+</beans>

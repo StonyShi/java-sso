@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 超时时间(毫秒) 默认1000 -->
+    <!-- 客户端管理 -->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.security.service.AppService" id="appService" version="1.0" timeout="35000"/>
+    <!-- 授权管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.AuthorizationService" id="authorizationService" version="1.0" timeout="35000"/>
+    <!-- 组织管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.OrganizationService" id="organizationService" version="1.0" timeout="35000"/>
+    <!-- 认证管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.PermissionService" id="permissionService" version="1.0" timeout="35000"/>
+
+    <!-- 资源管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.ResourceService" id="resourceService" version="1.0" timeout="35000"/>
+    <!-- 角色管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.RoleService" id="roleService" version="1.0" timeout="35000"/>
+    <!-- 用户管理 -->
+    <dubbo:reference check="false"  interface="com.car.sqoil.facade.security.service.UserService" id="userService" version="1.0" timeout="35000"/>
+
+    <!-- Oauth管理 -->
+    <dubbo:reference  check="false" interface="com.car.sqoil.facade.security.service.OAuthService" id="oAuthService" version="1.0" timeout="35000"/>
+    <!-- 图标管理 -->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.security.service.IconService" id="iconService" version="1.0" timeout="35000" />
+    <!-- 验证管理 -->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.security.service.VerificationService" id="verificationService" version="1.0" timeout="35000" />
+
+    <!-- 全局变量 -->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.security.service.GlobalVariableService" id="globalVariableService" version="1.0" timeout="35000" />
+
+    <!--站点列表-->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.user.service.GasStationService" id="gasStationService" version="1.0" timeout="35000" />
+
+    <!--记录-->
+    <dubbo:reference check="false" interface="com.car.sqoil.facade.security.service.OperationLogService" id="operationLogService" version="1.0" timeout="35000" />
+</beans>

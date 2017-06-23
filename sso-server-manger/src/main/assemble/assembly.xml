@@ -1,0 +1,25 @@
+<assembly>
+    <id>assembly</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/sso-commons-shell/META-INF/assembly/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>bin</outputDirectory>
+            <excludes>
+                <exclude>*.jar</exclude>
+            </excludes>
+            <includes>
+                <include>${groupId}:${artifactId}:war</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

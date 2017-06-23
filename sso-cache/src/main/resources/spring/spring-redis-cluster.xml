@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- redis pool config 统一的线程池配置 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大活跃连接数 -->
+        <property name="maxTotal" value="${redis.pool.maxActive}" />
+        <!-- 最大闲置数量 -->
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
+        <!-- 最大等待时间 -->
+        <property name="maxWaitMillis" value="${redis.pool.maxWait}" />
+        <!-- 调用borrow时是否检查其有效性 -->
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+        <!-- 调用return时是否检查其有效性 -->
+        <property name="testOnReturn" value="${redis.pool.testOnReturn}" />
+        <!-- 空闲时是否检查对象有效性 -->
+        <property name="testWhileIdle" value="${redis.pool.testWhileIdle}" />
+    </bean>
+
+    <!-- jedisCluster config -->
+    <bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">
+        <constructor-arg index="0">
+            <set>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_0_ip}"/>
+                    <constructor-arg type="int" value="${redis_0_port}"/>
+                </bean>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_1_ip}"/>
+                    <constructor-arg type="int" value="${redis_1_port}"/>
+                </bean>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_2_ip}"/>
+                    <constructor-arg type="int" value="${redis_2_port}"/>
+                </bean>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_3_ip}"/>
+                    <constructor-arg type="int" value="${redis_3_port}"/>
+                </bean>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_4_ip}"/>
+                    <constructor-arg type="int" value="${redis_4_port}"/>
+                </bean>
+                <bean class="redis.clients.jedis.HostAndPort">
+                    <constructor-arg type="java.lang.String" value="${redis_5_ip}"/>
+                    <constructor-arg type="int" value="${redis_5_port}"/>
+                </bean>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="1" value="3000" />
+        <constructor-arg index="2" value="3000" />
+        <constructor-arg index="3" value="3" />
+        <constructor-arg index="4" value="P65UCJVVG7" />
+        <constructor-arg index="5" ref="jedisPoolConfig" />
+    </bean>
+    <bean id="jedisTemplate" class="com.stony.sso.cache.redis.JedisClusterTemplate" >
+        <property name="jedisCluster" ref="jedisCluster" />
+    </bean>
+</beans>		        

@@ -1,0 +1,47 @@
+
+
+import com.stony.sso.facade.service.PermissionService;
+import org.apache.shiro.session.mgt.SimpleSession;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.http.*;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+
+/**
+ * <p>Created with IntelliJ IDEA. </p>
+ * <p>User: Stony </p>
+ * <p>Date: 2016/5/31 </p>
+ * <p>Time: 14:35 </p>
+ * <p>Version: 1.0 </p>
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:client/spring-client.xml"})
+public class PermissTest {
+
+
+    @javax.annotation.Resource
+    private PermissionService permission;
+
+    public static final String remoteServiceUrl = "http://localhost:8083/permission";
+    public static final String appKey = "5efaf7c8-8315-35c7-ab67-ac3bde4963bd";
+
+    @Test
+    public void test(){
+        MultiValueMap<String ,Object> urlVariables = new LinkedMultiValueMap<String ,Object>();
+        SimpleSession session = new SimpleSession();
+        urlVariables.add("session", session);
+        urlVariables.add("appKey", appKey);
+
+//        Serializable sessionId = restTemplate.postForObject(getUrl(PermissionContext.CREATE_SESSION), null, Serializable.class, urlVariables);
+        System.out.println("---------------------------------------------------");
+        System.out.println(permission.createSession(session));
+    }
+
+    private String getUrl(String suffix){
+        return remoteServiceUrl + suffix;
+    }
+}

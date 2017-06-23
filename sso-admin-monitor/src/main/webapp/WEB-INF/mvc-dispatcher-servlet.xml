@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:view-controller path="/" view-name="index"/>
+    <bean id="adminSessionUserManager" class="com.zhuanche.car.security.client.session.AdminSessionUserManagerImpl" >
+        <property name="userService" ref="userService" />
+    </bean>
+    <bean id="menusManager" class="com.zhuanche.car.security.client.handler.MenusManagerImpl" />
+    <mvc:annotation-driven >
+        <mvc:argument-resolvers>
+            <bean class="com.zhuanche.car.web.resolver.AdminBaseFormArgumentResolver">
+                <property name="adminSessionUserManager" ref="adminSessionUserManager"/>
+            </bean>
+        </mvc:argument-resolvers>
+        <mvc:return-value-handlers>
+            <bean class="com.zhuanche.car.security.client.handler.MenusViewMethodReturnValueHandler" >
+                <property name="menusManager" ref="menusManager" />
+            </bean>
+        </mvc:return-value-handlers>
+    </mvc:annotation-driven>
+    <context:component-scan base-package="com.zhuanche.car.customer.admin.controller"/>
+    <aop:aspectj-autoproxy  proxy-target-class="true"/>
+
+    <import resource="classpath:webmvc/mvc-servlet-shiro.xml"/>
+</beans>

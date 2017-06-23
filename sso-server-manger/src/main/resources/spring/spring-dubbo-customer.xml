@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	   ">
+
+    <!-- 多个包名可用逗号(,;)隔开 -->
+    <!--<car:optimizer base-package="com.car.sqoil.facade" />-->
+
+    <dubbo:application name="sso-server-manger" logger="slf4j" organization="${dubbo.application.organization}"/>
+
+    <!-- 广播注册中心暴露服务地址 -->
+    <dubbo:registry address="${dubbo.registry.address}" register="true" subscribe="true" protocol="${dubbo.registry.protocol}"/>
+
+
+    <dubbo:monitor protocol="registry" />
+
+    <import resource="spring-dubbo-reference.xml"/>
+
+</beans>

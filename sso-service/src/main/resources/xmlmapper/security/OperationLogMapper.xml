@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stony.sso.service.mapper.OperationLogMapper" >
+  <resultMap id="BaseResultMap" type="com.car.sqoil.facade.security.entity.OperationLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="operation_type" property="operationType" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="operation_time" property="operationTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, operation_type, user_id, operation_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from operation_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findLoginTime" resultMap="BaseResultMap" parameterType="com.car.sqoil.facade.security.entity.OperationLog" >
+    select
+    <include refid="Base_Column_List" />
+    from operation_log
+    where 1=1
+    <if test="userId != null" >
+      and user_id =  #{userId,jdbcType=BIGINT}
+    </if>
+    order by operation_time desc
+    limit 0,3
+  </select>
+  <insert id="insert" parameterType="com.car.sqoil.facade.security.entity.OperationLog" >
+    insert into operation_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operationType != null" >
+        operation_type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="operationTime != null" >
+        operation_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operationType != null" >
+        #{operationType,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="operationTime != null" >
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

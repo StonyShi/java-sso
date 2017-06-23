@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="passwordHelper" class="com.stony.sso.service.helper.PasswordHelper"/>
+
+    <!-- jedis session cache -->
+    <bean id="sessionCache" class="com.stony.sso.cache.session.support.JedisSessionCache">
+        <constructor-arg index="0" ref="jedisTemplate"/>
+    </bean>
+    <!-- 会话ID生成器 -->
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+    <!-- 会话DAO -->
+    <bean id="sessionDAO" class="com.stony.sso.commons.security.session.SecuritySessionDAO">
+        <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+        <property name="sessionCache" ref="sessionCache"/>
+        <property name="timeOut" value="86400"/> <!-- 会话超时 秒seconds -->
+        <property name="appKey" value="security-service" />
+    </bean>
+</beans>

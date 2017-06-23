@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:car="http://www.stone.com/schema/car"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	   http://www.stone.com/schema/car http://www.stone.com/schema/car.xsd">
+
+    <dubbo:application name="sso-admin-monitor" logger="slf4j" organization="${dubbo.application.organization}"/>
+
+    <!-- 广播注册中心暴露服务地址 -->
+    <dubbo:registry address="${dubbo.registry.address}" register="true" subscribe="true" protocol="${dubbo.registry.protocol}"/>
+
+
+    <dubbo:monitor protocol="registry" />
+
+    <import resource="spring-dubbo-reference.xml"/>
+
+</beans>
