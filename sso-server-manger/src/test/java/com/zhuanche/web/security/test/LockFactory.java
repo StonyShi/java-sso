@@ -1,5 +1,5 @@
 public class LockFactory {
-
+	//http://blog.csdn.net/qq418517226/article/details/51906357
 	public static void main(String[] args) throws Exception {
 		Storage<Integer> storage = new Storage(100);
 		final Random random = new Random();
