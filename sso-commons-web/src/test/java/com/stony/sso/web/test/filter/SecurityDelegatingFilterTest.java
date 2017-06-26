@@ -1,14 +1,15 @@
 package com.stony.sso.web.test.filter;
 
+import com.stony.sso.cache.redis.JedisSentinelTemplate;
+import com.stony.sso.cache.redis.JedisTemplate;
+import com.stony.sso.cache.ticket.DefaultTicketCacheManager;
+import com.stony.sso.cache.ticket.TicketCache;
+import com.stony.sso.cache.ticket.TicketCacheManager;
+import com.stony.sso.cache.ticket.support.JedisTicketCache;
 import com.stony.sso.web.constants.HeaderConstant;
 import com.stony.sso.web.verif.VerificationSign;
-import com.zhuanche.car.cache.redis.JedisSentinelTemplate;
-import com.zhuanche.car.cache.ticket.DefaultTicketCacheManager;
-import com.zhuanche.car.cache.ticket.TicketCache;
-import com.zhuanche.car.cache.ticket.TicketCacheManager;
-import com.zhuanche.car.cache.ticket.support.JedisTicketCache;
 import com.stony.sso.web.fliter.SecurityDelegatingFilter;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -131,7 +132,7 @@ public class SecurityDelegatingFilterTest {
         Servlet servlet = mock(Servlet.class);
 
         SecurityDelegatingFilter securityDelegatingFilter  = new SecurityDelegatingFilter();
-        JedisSentinelTemplate jedisSentinelTemplate = EasyMock.createMock(JedisSentinelTemplate.class);
+        JedisTemplate jedisSentinelTemplate = EasyMock.createMock(JedisSentinelTemplate.class);
         TicketCache ticketCache = new JedisTicketCache(jedisSentinelTemplate);
         TicketCacheManager ticketCacheManager = new DefaultTicketCacheManager();
         ticketCacheManager.setTicketCache(ticketCache);

@@ -6,7 +6,7 @@ import com.stony.sso.commons.security.SecurityConstants;
 import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.keys.OperationLogKeys;
 import com.stony.sso.facade.service.*;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;

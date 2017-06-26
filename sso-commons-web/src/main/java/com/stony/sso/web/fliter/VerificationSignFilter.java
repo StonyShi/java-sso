@@ -5,7 +5,7 @@ import com.stony.sso.web.constants.HeaderConstant;
 import com.stony.sso.web.entity.ResponseEntity;
 import com.stony.sso.web.constants.ResponseConstant;
 import com.stony.sso.web.verif.VerificationSign;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

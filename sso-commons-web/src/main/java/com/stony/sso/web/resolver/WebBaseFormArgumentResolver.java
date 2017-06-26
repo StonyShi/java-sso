@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.stony.sso.cache.ticket.SessionUser;
 import com.stony.sso.commons.CookieUtils;
 import com.stony.sso.web.constants.HeaderConstant;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.NativeWebRequest;

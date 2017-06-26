@@ -7,7 +7,7 @@ import com.stony.sso.commons.RequestHeaderUtil;
 import com.stony.sso.web.constants.HeaderConstant;
 import com.stony.sso.web.constants.ResponseConstant;
 import com.stony.sso.web.entity.ResponseEntity;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

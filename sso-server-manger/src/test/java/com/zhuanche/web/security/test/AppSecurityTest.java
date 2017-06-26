@@ -1,6 +1,6 @@
 package com.zhuanche.web.security.test;
 
-import com.car.sqoil.facade.security.service.UserService;
+import com.stony.sso.facade.service.UserService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -5,7 +5,7 @@ import com.stony.sso.commons.security.SecurityConstants;
 import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.facade.view.MenusView;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;

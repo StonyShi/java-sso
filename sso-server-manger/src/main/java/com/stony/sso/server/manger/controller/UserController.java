@@ -4,7 +4,7 @@ import com.stony.sso.commons.DateUtils;
 import com.stony.sso.facade.entity.User;
 import com.stony.sso.facade.service.UserService;
 import com.stony.sso.facade.view.MenusView;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

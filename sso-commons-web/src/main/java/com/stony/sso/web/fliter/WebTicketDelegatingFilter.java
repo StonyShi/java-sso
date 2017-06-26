@@ -1,8 +1,8 @@
 package com.stony.sso.web.fliter;
 
 import com.stony.sso.commons.CookieUtils;
+import com.stony.sso.commons.StringUtils;
 import com.stony.sso.web.constants.HeaderConstant;
-import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

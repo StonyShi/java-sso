@@ -1,6 +1,7 @@
 package com.stony.sso.facade.entity;
 
-import com.zhuanche.car.commons.page.PageBean;
+import com.stony.sso.commons.page.PageBean;
+
 import java.io.Serializable;
 import java.util.Date;
 

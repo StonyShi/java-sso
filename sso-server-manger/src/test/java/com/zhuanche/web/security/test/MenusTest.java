@@ -1,7 +1,7 @@
 package com.zhuanche.web.security.test;
 
 import com.stony.sso.facade.entity.Resource;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 

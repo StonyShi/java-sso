@@ -1,7 +1,7 @@
 package com.stony.sso.web.fliter;
 
 import com.stony.sso.cache.ticket.TicketCacheManager;
-import org.apache.commons.lang.StringUtils;
+import com.stony.sso.commons.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 import javax.servlet.FilterChain;
