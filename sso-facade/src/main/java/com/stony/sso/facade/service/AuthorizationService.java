@@ -99,4 +99,6 @@ public interface AuthorizationService {
 
     PermissionEntity getPermissionEntity(String appKey, String username);
 
+    List<Resource> convertMenus(List<Resource> resourceList);
+
 }

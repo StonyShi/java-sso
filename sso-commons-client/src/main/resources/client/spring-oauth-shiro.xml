@@ -13,7 +13,14 @@
         <property name="appKey" value="${client.app.key}"/>
         <property name="remoteServiceUrl" value="${client.remote.service.url}" />
         <property name="appSecret" value="${client.app.secret}"/>
+        <property name="accessTokenUrl" value="${client.access.token.url}"/>
+        <property name="permissionUserNameUrl"  value="${client.oauth.permission.username.url}"/>
+        <property name="permissionUrl" value="${client.oauth.permission.url}" />
+        <property name="redirectUrl" value="http://localhost:8089/oauth2-login"/>
+        <property name="loginUrl" value="${client.login.url}" />
+        <property name="logoutUrl" value="${client.logout.url}" />
     </bean>
+
 
     <!-- 缓存管理器 -->
     <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
@@ -21,19 +28,14 @@
     <!--</bean>-->
 
     <!-- Realm实现 -->
-    <bean id="oAuth2Realm" class="com.stony.sso.client.realm.OAuth2Realm">
+    <bean id="oAuth2Realm" class="com.stony.sso.client.realm.OAuth2ClientRealm">
         <!--<property name="cachingEnabled" value="true"/>-->
         <!--<property name="authenticationCachingEnabled" value="true"/>-->
         <!--<property name="authenticationCacheName" value="authenticationCache"/>-->
         <!--<property name="authorizationCachingEnabled" value="true"/>-->
         <!--<property name="authorizationCacheName" value="authorizationCache"/>-->
 
-        <property name="clientId" value="${client.app.key}"/>
-        <property name="clientSecret" value="${client.app.secret}"/>
-        <property name="accessTokenUrl" value="${client.access.token.url}"/>
-        <property name="userInfoUrl"  value="${client.oauth.info.url}"/>
-        <property name="permissionUrl" value="${client.oauth.permission.url}" />
-        <property name="redirectUrl" value="http://localhost:8089/oauth2-login"/>
+        <property name="clientInfoHold" ref="clientInfoHold" />
     </bean>
 
     <!-- 会话Cookie模板 -->
@@ -84,12 +86,7 @@
         <property name="timeOut" value="86400"/> <!-- 会话超时 秒seconds -->
         <property name="appKey" value="${client.app.key}"/>
     </bean>
-    <!-- 会话DAO -->
-    <!--<bean id="sessionDAO" class="com.zhuanche.car.security.client.ClientSessionDAO2">-->
-        <!--<property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
-        <!--<property name="permissionService" ref="permissionService"/>-->
-        <!--<property name="appKey" value="${client.app.key}"/>-->
-    <!--</bean>-->
+
     <!--<bean id="sessionValidationScheduler"-->
           <!--class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">-->
         <!--<property name="interval" value="3600000"/>-->
@@ -101,7 +98,7 @@
         <property name="globalSessionTimeout" value="1800000"/>  <!-- 设置全局会话超时时间，默认30分钟(1800000) -->
         <property name="sessionValidationInterval" value="1800000" /> <!-- 会话验证器调度时间 -->
         <property name="deleteInvalidSessions" value="true"/>
-        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="false"/> <!-- redis 自带过期 -->
         <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->
         <property name="sessionDAO" ref="sessionDAO"/>
         <property name="sessionIdCookieEnabled" value="true"/>
@@ -131,9 +128,7 @@
     </bean>
     <!-- 登陆 过滤器 -->
     <bean id="clientAuthenticationFilter" class="com.stony.sso.client.filter.ClientAuthenticationFilter">
-        <property name="authorizeUrl" value="${client.authorize.url}" />
-        <property name="appKey" value="${client.app.key}"/>
-        <property name="oauth2AuthcUrl" value="/oauth2-login" />
+        <property name="successUrl" value="${client.success.url}"/>
     </bean>
 
     <!-- 登出 -->
@@ -159,9 +154,13 @@
         <property name="lastFilterChainDefinitionsStr" value="${client.filter.chain.last.definitions}"/>
     </bean>
 
-
-
     <!-- Shiro生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+    <bean id="permissionService" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+        <property name="serviceUrl" value="${client.remote.service.url}"/>
+        <property name="serviceInterface" value="com.stony.sso.facade.service.PermissionService"/>
+    </bean>
 
 </beans>

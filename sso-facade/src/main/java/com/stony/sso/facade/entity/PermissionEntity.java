@@ -18,6 +18,7 @@ public class PermissionEntity implements Serializable{
     private long userId;
     private String username;
     private List<Resource> resources;
+    private List<Resource> menus;
     private List<Role> roles;
     private String responseTime;
     private String code;
@@ -25,6 +26,7 @@ public class PermissionEntity implements Serializable{
     private String refreshToken;
     private long expiresIn;
     private String clientId;
+    private User user;
 
     public PermissionEntity(String username, List<Resource> resources, List<Role> roles, String responseTime) {
         this.username = username;
@@ -116,12 +118,29 @@ public class PermissionEntity implements Serializable{
         this.clientId = clientId;
     }
 
+    public void setMenus(List<Resource> menus) {
+        this.menus = menus;
+    }
+
+    public List<Resource> getMenus() {
+        return menus;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String toString() {
         return "PermissionEntity{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", resources=" + resources +
+                ", menus=" + menus +
                 ", roles=" + roles +
                 ", responseTime='" + responseTime + '\'' +
                 ", code='" + code + '\'' +
@@ -129,6 +148,7 @@ public class PermissionEntity implements Serializable{
                 ", refreshToken='" + refreshToken + '\'' +
                 ", expiresIn=" + expiresIn +
                 ", clientId='" + clientId + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

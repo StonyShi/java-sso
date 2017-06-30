@@ -32,6 +32,7 @@ public class AdminBaseFormArgumentResolver extends BaseFormArgumentResolver {
     private static final Logger logger = LoggerFactory.getLogger(AdminBaseFormArgumentResolver.class);
 
     AdminSessionUserManager adminSessionUserManager;
+
     @Override
     protected SessionUser getSessionUser(NativeWebRequest webRequest) {
         if(SecurityUtils.getSubject().isAuthenticated()){

@@ -5,6 +5,8 @@ import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.service.AuthorizationService;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.facade.util.PermissionUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.slf4j.Logger;
@@ -32,36 +34,13 @@ public class PermissionServiceImpl implements PermissionService {
     @javax.annotation.Resource
     private AuthorizationService authorizationService;
 
-    @javax.annotation.Resource
-    private SessionDAO sessionDAO;
-
-    @Override
-    public SimpleSession getSession(String appKey, String sessionId) {
-        logger.info("Enter [appKey : {},sessionId : {}]", appKey, sessionId);
-        return (SimpleSession) getSessionDAO().readSession(sessionId);
-    }
-
-    @Override
-    public String createSession(SimpleSession session) {
-        logger.info("Enter [session : {}]", session);
-        return getSessionDAO().create(session).toString();
-    }
-
-    @Override
-    public void updateSession(String appKey, SimpleSession session) {
-        logger.info("Enter [appKey : {},session : {}]", appKey, session);
-        getSessionDAO().update(session);
-    }
-
-    @Override
-    public void deleteSession(String appKey, SimpleSession session) {
-        logger.info("Enter [appKey : {},session : {}]", appKey, session);
-        getSessionDAO().delete(session);
-    }
 
     @Override
     public PermissionContext getPermissions(String appKey, String username) {
         logger.info("Enter [appKey : {}, username : {}]", appKey, username);
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            throw new UnauthenticatedException("AppKey : " + appKey + " , username : " + username + " 身份验证失败.");
+        }
         PermissionContext permissionContext = new PermissionContext();
         List<Resource> resourceList = authorizationService.findResources(appKey, username);
         Set<String> permissions = PermissionUtil.getPermissionsByResources(resourceList);
@@ -71,7 +50,19 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionContext;
     }
 
-    public SessionDAO getSessionDAO() {
-        return sessionDAO;
+    @Override
+    public PermissionContext getMenus(String appKey, String username) {
+        logger.info("Enter [appKey : {}, username : {}]", appKey, username);
+        PermissionContext permissionContext = new PermissionContext();
+        permissionContext.setMenus(authorizationService.findMenusByAppUser(appKey, username));
+        return permissionContext;
+    }
+
+    @Override
+    public PermissionContext getResources() {
+        logger.info("Enter.");
+        PermissionContext permissionContext = new PermissionContext();
+        permissionContext.setResources(resourceService.findAll());
+        return permissionContext;
     }
 }

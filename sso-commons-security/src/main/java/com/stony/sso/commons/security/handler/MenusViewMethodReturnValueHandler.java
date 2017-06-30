@@ -1,4 +1,4 @@
-package com.stony.sso.server.handler;
+package com.stony.sso.commons.security.handler;
 
 import com.stony.sso.facade.entity.Resource;
 import com.stony.sso.facade.service.MenusManager;
@@ -24,7 +24,7 @@ import java.util.List;
  *  &lt;bean id="menusManager" class="MenusManagerImpl"/&gt;
  *  &lt;mvc:annotation-driven &gt;
          &lt;mvc:return-value-handlers&gt;
-         &lt;bean id="menusViewNameMethodReturnValueHandler" class="MenusViewMethodReturnValueHandler"&gt;
+         &lt;bean id="menusViewNameMethodReturnValueHandler" class="com.stony.sso.commons.security.handler.MenusViewMethodReturnValueHandler"&gt;
          &lt;property name="menusManager" ref="menusManager"/&gt;
          &lt;/bean&gt;
          &lt;/mvc:return-value-handlers&gt;
@@ -54,17 +54,17 @@ public class MenusViewMethodReturnValueHandler implements HandlerMethodReturnVal
             mavContainer.addAttribute("menus", menus);
             mavContainer.addAttribute("tree", TreeUtil.treeMenu(menus));
             String viewName = ((MenusView) returnValue).getViewName();
-            if(webRequest.getNativeRequest() instanceof HttpServletRequest){
+            if (webRequest.getNativeRequest() instanceof HttpServletRequest) {
                 String uri = ((HttpServletRequest) webRequest.getNativeRequest()).getRequestURI();
-                logger.debug("uri[{}] mapper view[{}]",uri,viewName);
+                logger.debug("uri[{}] mapper view[{}]", uri, viewName);
                 mavContainer.addAttribute("active", uri);
-                if(uri.equals("/index")){
+                if (uri.equals("/index")) {
                     mavContainer.addAttribute("start", uri);
-                }else{
+                } else {
                     mavContainer.addAttribute("start", "/");
                 }
-            }else{
-                mavContainer.addAttribute("active",viewName);
+            } else {
+                mavContainer.addAttribute("active", viewName);
                 mavContainer.addAttribute("start", "/");
             }
             logger.debug("view = {}", viewName);
@@ -72,8 +72,7 @@ public class MenusViewMethodReturnValueHandler implements HandlerMethodReturnVal
             if (isRedirectViewName(viewName)) {
                 mavContainer.setRedirectModelScenario(true);
             }
-        }
-        else {
+        } else {
             // should not happen
             throw new UnsupportedOperationException("Unexpected return type: " +
                     returnType.getParameterType().getName() + " in method: " + returnType.getMethod());
@@ -82,6 +81,7 @@ public class MenusViewMethodReturnValueHandler implements HandlerMethodReturnVal
 
     /**
      * Whether the given view name is a redirect view reference.
+     *
      * @param viewName the view name to check, never {@code null}
      * @return "true" if the given view name is recognized as a redirect view
      * reference; "false" otherwise.

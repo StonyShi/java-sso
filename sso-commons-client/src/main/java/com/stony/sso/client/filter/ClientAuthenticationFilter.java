@@ -1,6 +1,7 @@
 package com.stony.sso.client.filter;
 
 
+import com.stony.sso.client.ClientInfoHold;
 import com.stony.sso.commons.StringUtils;
 import com.stony.sso.commons.security.SecurityConstants;
 import com.stony.sso.commons.security.request.ClientSavedRequest;
@@ -29,9 +30,6 @@ import java.util.Map;
 public class ClientAuthenticationFilter extends AuthenticationFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationFilter.class);
-    private String authorizeUrl;
-    private String appKey;
-    private String oauth2AuthcUrl;
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
@@ -62,9 +60,9 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
 
 //        map.put(SecurityConstants.PARAMETER_BACKURL, backUrl);
 
-        map.put(SecurityConstants.CLIENT_ID, appKey);
+        map.put(SecurityConstants.CLIENT_ID, ClientInfoHold.APP_KEY);
         map.put(SecurityConstants.RESPONSE_TYPE, SecurityConstants.RESPONSE_TYPE_VALUE);
-        map.put(SecurityConstants.REDIRECT_URI, (backUrl + "oauth2-login"));
+        map.put(SecurityConstants.REDIRECT_URI, backUrl);
         logger.info("redirect map = {}", map);
         WebUtils.issueRedirect(request, response, loginUrl, map);
     }
@@ -94,18 +92,8 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
         }
         backUrl.append(contextPath);
         backUrl.append(getSuccessUrl());
+        ClientInfoHold.setLoginRedirectUrl(backUrl.toString());
         return backUrl.toString();
     }
 
-    public void setAuthorizeUrl(String authorizeUrl) {
-        this.authorizeUrl = authorizeUrl;
-    }
-
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
-    }
-
-    public void setOauth2AuthcUrl(String oauth2AuthcUrl) {
-        this.oauth2AuthcUrl = oauth2AuthcUrl;
-    }
 }

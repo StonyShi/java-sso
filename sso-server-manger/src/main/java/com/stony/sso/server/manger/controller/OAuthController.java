@@ -384,14 +384,14 @@ public class OAuthController {
             final String accessToken = oauthIssuerImpl.accessToken();
             final String refreshToken = oauthIssuerImpl.refreshToken();
             final String userName = oAuthService.getUsernameByAuthCode(authCode);
-            OAuthToken token = new OAuthToken();
+            TokenInfo token = new TokenInfo();
             token.setUsername(userName);
             token.setExpireIn(oAuthService.getExpireIn());
             token.setToken(accessToken);
             token.setClientId(oauthRequest.getClientId());
             token.setClientSecret(oauthRequest.getClientSecret());
 
-            OAuthToken token2 = token.clone();
+            TokenInfo token2 = token.clone();
             token2.setToken(refreshToken);
             token2.setExpireIn(oAuthService.getRefreshTokenExpireIn());
             //保存token到缓冲
@@ -474,7 +474,7 @@ public class OAuthController {
             }
 
 
-            final OAuthToken token = oAuthService.getToken(refreshToken);
+            final TokenInfo token = oAuthService.getToken(refreshToken);
             //验证 refresh_token
             if (token == null || token.getUsername() == null) {
                 // 如果不存在/过期了，返回未验证错误，需重新验证
@@ -486,7 +486,7 @@ public class OAuthController {
             OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
             final String accessToken = oauthIssuerImpl.accessToken();
 
-            OAuthToken token2 = token.clone();
+            TokenInfo token2 = token.clone();
             token2.setToken(accessToken);
             token2.setExpireIn(oAuthService.getExpireIn());
 
@@ -523,7 +523,7 @@ public class OAuthController {
      * @throws OAuthSystemException
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping("/info")
+    @RequestMapping("/permission/username")
     public HttpEntity userInfo(HttpServletRequest request) throws OAuthSystemException {
         logger.info("Enter");
         try {
@@ -538,7 +538,7 @@ public class OAuthController {
                 return getUnauthorizedResponseEntity("this access_token invalid.");
             }
             //返回用户名
-            OAuthToken token = oAuthService.getToken(accessToken);
+            TokenInfo token = oAuthService.getToken(accessToken);
 
             return new ResponseEntity(token.getUsername(), HttpStatus.OK);
         } catch (OAuthProblemException e) {
@@ -567,30 +567,35 @@ public class OAuthController {
             //获取Access Token
             String accessToken = oauthRequest.getAccessToken();
 
-            //验证Access Token
-            if (!oAuthService.checkAccessToken(accessToken)) {
+
+            //返回 TokenInfo
+            TokenInfo token = oAuthService.getToken(accessToken);
+
+            //验证 Access Token
+            if (token == null || token.getUsername() == null) {
                 // 如果不存在/过期了，返回未验证错误，需重新验证
                 return getUnauthorizedResponseEntity("this token invalid");
             }
-            //返回用户名
-            OAuthToken token = oAuthService.getToken(accessToken);
-            String username = token.getUsername();
-            if(token == null || StringUtils.isEmpty(username)){
+            //验证 用户
+            User user = userService.findByUsername(token.getUsername());
+            if(user == null || StringUtils.isEmpty(user.getUsername())){
                 return getUnauthorizedResponseEntity("user not found");
             }
+
+            String username = user.getUsername();
             String clientId = request.getParameter(OAuth.OAUTH_CLIENT_ID);
             if(StringUtils.isEmpty(clientId)){
                 return getUnauthorizedResponseEntity("client id not found");
             }
-
             //返回资源
-            PermissionEntity permissionEntity = authorizationService.getPermissionEntity(clientId, username);
-            permissionEntity.setUsername(username);
-            permissionEntity.setResponseTime(DateUtils.dateTimeString());
+            PermissionEntity entity = authorizationService.getPermissionEntity(clientId, username);
+            entity.setUsername(username);
+            entity.setResponseTime(DateUtils.dateTimeString());
+            entity.setUser(user);
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(OAuth.HeaderType.CONTENT_TYPE, "application/json;charset=UTF-8");
-            return new ResponseEntity(JSON.toJSON(permissionEntity), headers, HttpStatus.OK);
+            return new ResponseEntity(JSON.toJSON(entity), headers, HttpStatus.OK);
         } catch (OAuthProblemException e) {
             //检查是否设置了错误码
             String errorCode = e.getError();

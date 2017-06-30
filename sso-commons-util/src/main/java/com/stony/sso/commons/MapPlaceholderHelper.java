@@ -51,8 +51,9 @@ public class MapPlaceholderHelper extends PropertyPlaceholderHelper {
         Assert.notNull(maps, "Argument 'maps' must not be null.");
         return replacePlaceholders(value, new PlaceholderResolver() {
             public String resolvePlaceholder(String placeholderName) {
-                if(forcePlace && (null == maps.get(placeholderName))) return "";
-                return maps.get(placeholderName);
+                String v = maps.get(placeholderName);
+                if(forcePlace && (null == v)) return "";
+                return v;
             }
         });
     }

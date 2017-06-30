@@ -10,14 +10,14 @@ import java.io.Serializable;
  * @version 上午11:16
  * @since 2017/6/30
  */
-public class OAuthToken implements Serializable {
+public class TokenInfo implements Serializable {
     String token;
     long expireIn;
     String clientId;
     String clientSecret;
     String username;
 
-    public OAuthToken() {
+    public TokenInfo() {
     }
 
     public String getToken() {
@@ -60,8 +60,8 @@ public class OAuthToken implements Serializable {
         this.username = username;
     }
 
-    public OAuthToken clone(){
-        OAuthToken token = new OAuthToken();
+    public TokenInfo clone(){
+        TokenInfo token = new TokenInfo();
         token.setUsername(this.getUsername());
         token.setExpireIn(this.getExpireIn());
         token.setToken(this.getToken());
@@ -72,7 +72,7 @@ public class OAuthToken implements Serializable {
 
     @Override
     public String toString() {
-        return "OAuthToken{" +
+        return "TokenInfo{" +
                 "token='" + token + '\'' +
                 ", expireIn=" + expireIn +
                 ", clientId='" + clientId + '\'' +

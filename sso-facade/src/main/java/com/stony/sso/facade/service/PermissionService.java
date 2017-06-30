@@ -11,10 +11,6 @@ import org.apache.shiro.session.mgt.SimpleSession;
  * <p>Version: 1.0 </p>
  */
 public interface PermissionService {
-    SimpleSession getSession(String appKey, String sessionId);
-    String createSession(SimpleSession session);
-    void updateSession(String appKey, SimpleSession session);
-    void deleteSession(String appKey, SimpleSession session);
 
     /**
      * 获取用户许可信息，包括资源，菜单，权限，角色
@@ -25,4 +21,6 @@ public interface PermissionService {
     PermissionContext getPermissions(String appKey, String username);
 
     PermissionContext getMenus(String appKey, String username);
+
+    PermissionContext getResources();
 }

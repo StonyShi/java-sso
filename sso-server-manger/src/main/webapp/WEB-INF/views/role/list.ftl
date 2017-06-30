@@ -318,7 +318,7 @@
         if(id && id != ""){
             var table = $('#tableModalTable').dataTable();
             table.fnClearTable();
-            var url = "/role/" + id + "/resources";
+            var url = "/role/view/" + id;
             $.ajax({
                 url : url,
                 type: "POST",
@@ -568,7 +568,7 @@
                 });
                 return;
             }
-            var url = "/role/" + roleId + "/update/resources";
+            var url = "/role/update/resources/" + roleId ;
             $.ajax({
                 url : url,
                 type: "POST",

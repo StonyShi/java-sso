@@ -17,7 +17,7 @@
     <mvc:view-controller path="/" view-name="index"/>
     <mvc:annotation-driven >
         <mvc:return-value-handlers>
-            <bean id="menusViewNameMethodReturnValueHandler" class="com.stony.sso.server.handler.MenusViewMethodReturnValueHandler">
+            <bean id="menusViewNameMethodReturnValueHandler" class="com.stony.sso.commons.security.handler.MenusViewMethodReturnValueHandler">
                 <property name="menusManager" ref="menusManager"/>
             </bean>
         </mvc:return-value-handlers>
@@ -32,11 +32,10 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
-
-    <!-- /permission -->
-    <bean id="permission" class="com.stony.sso.server.manger.invoker.PermissionController"/>
-    <bean name="/permission" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-        <property name="service" ref="permission"/>
+    <!-- /invoker/permission -->
+    <bean id="permissionServiceInvoker" class="com.stony.sso.server.manger.invoker.PermissionServiceInvoker"/>
+    <bean name="/invoker/permission" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+        <property name="service" ref="permissionServiceInvoker"/>
         <property name="serviceInterface" value="com.stony.sso.facade.service.PermissionService"/>
     </bean>
 </beans>

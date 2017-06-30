@@ -25,10 +25,25 @@
         </dependency>
         <dependency>
             <groupId>com.stony.sso</groupId>
+            <artifactId>sso-config</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.stony.sso</groupId>
             <artifactId>sso-commons-util</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.stony.sso</groupId>
+            <artifactId>sso-facade</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.stony.sso</groupId>
+            <artifactId>sso-commons-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.oltu.oauth2</groupId>
             <artifactId>org.apache.oltu.oauth2.client</artifactId>
@@ -55,16 +70,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.stony.sso</groupId>
-            <artifactId>sso-facade</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.stony.sso</groupId>
-            <artifactId>sso-commons-security</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>

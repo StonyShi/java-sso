@@ -18,6 +18,7 @@ import org.apache.shiro.util.ByteSource;
  * <p>Time: 11:26 </p>
  * <p>Version: 1.0 </p>
  */
+@Deprecated
 public class ServerRealm extends AuthorizingRealm {
 
     @javax.annotation.Resource

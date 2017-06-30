@@ -19,10 +19,11 @@ import org.slf4j.LoggerFactory;
  * <p>Date: 2016/4/29 </p>
  * <p>Time: 9:33 </p>
  * <p>Version: 1.0 </p>
+ * @see org.apache.shiro.authc.UsernamePasswordToken
  */
-public class UserRealm extends AuthorizingRealm {
+public class OAuth2ServerRealm extends AuthorizingRealm {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserRealm.class);
+    private static final Logger logger = LoggerFactory.getLogger(OAuth2ServerRealm.class);
 
     @javax.annotation.Resource
     private UserService userService;
@@ -41,6 +42,7 @@ public class UserRealm extends AuthorizingRealm {
         authorizationInfo.setStringPermissions(PermissionUtil.getPermissionsByResources(authorizationService.findResources(appKey, username)));
         return authorizationInfo;
     }
+
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -96,4 +98,5 @@ public class UserRealm extends AuthorizingRealm {
     public void setAppKey(String appKey) {
         this.appKey = appKey;
     }
+
 }

@@ -27,6 +27,7 @@ import java.util.Map;
  * <p>Date: 2016/4/25</p>
  * <p>Time: 18:30</p>
  */
+@Deprecated
 public class ClientRealm extends AuthorizingRealm implements InitializingBean{
 
     private static final Logger logger = LoggerFactory.getLogger(ClientRealm.class);

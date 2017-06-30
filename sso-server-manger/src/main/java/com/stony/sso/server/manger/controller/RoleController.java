@@ -85,12 +85,12 @@ public class RoleController {
         return role;
     }
     /**
-     * 角色资源
+     * 角色资源显示
      * @param id
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/{id}/resources", method = RequestMethod.POST)
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.POST)
     public Object roleResources(@PathVariable("id") Long id) {
         logger.debug("Enter");
         /*获取当前登录人信息*/
@@ -134,7 +134,7 @@ public class RoleController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/{id}/update/resources", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/resources/{id}", method = RequestMethod.POST)
     public Object updateRoleResources(@PathVariable("id") Long id, @RequestParam(value = "resourceIds", required = true) String resourceIds){
         logger.debug("Enter");
         Map<String,Integer> map = new HashMap<>();

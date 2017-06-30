@@ -2,6 +2,8 @@
 
 import com.stony.sso.facade.service.PermissionService;
 import org.apache.shiro.session.mgt.SimpleSession;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.*;
@@ -19,16 +21,21 @@ import org.springframework.util.MultiValueMap;
  * <p>Version: 1.0 </p>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:client/spring-client.xml"})
+@ContextConfiguration(locations = {"classpath:client/test-spring-client.xml"})
 public class PermissTest {
 
 
     @javax.annotation.Resource
-    private PermissionService permission;
+    private PermissionService permissionService;
 
-    public static final String remoteServiceUrl = "http://localhost:8083/permission";
+    public static final String remoteServiceUrl = "http://127.0.0.1:8099/invoker/permission";
     public static final String appKey = "5efaf7c8-8315-35c7-ab67-ac3bde4963bd";
 
+
+    @BeforeClass
+    public static void beforeClass(){
+        System.setProperty("catalina.home", "/Users/stony/logs");
+    }
     @Test
     public void test(){
         MultiValueMap<String ,Object> urlVariables = new LinkedMultiValueMap<String ,Object>();
@@ -38,7 +45,7 @@ public class PermissTest {
 
 //        Serializable sessionId = restTemplate.postForObject(getUrl(PermissionContext.CREATE_SESSION), null, Serializable.class, urlVariables);
         System.out.println("---------------------------------------------------");
-        System.out.println(permission.createSession(session));
+        System.out.println(permissionService.getResources());
     }
 
     private String getUrl(String suffix){

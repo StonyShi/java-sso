@@ -1,6 +1,6 @@
 package com.stony.sso.facade.service;
 
-import com.stony.sso.facade.entity.OAuthToken;
+import com.stony.sso.facade.entity.TokenInfo;
 
 /**
  * <p>Created with car-facade-security.</p>
@@ -22,14 +22,14 @@ public interface OAuthService {
      * @param accessToken
      * @param token
      */
-    void addAccessToken(String accessToken, OAuthToken token);
+    void addAccessToken(String accessToken, TokenInfo token);
 
     /**
      * 添加 refreshToken
      * @param refreshToken
      * @param token
      */
-    void addRefreshToken(String refreshToken, OAuthToken token);
+    void addRefreshToken(String refreshToken, TokenInfo token);
 
     /**
      * 验证auth code是否有效
@@ -64,7 +64,7 @@ public interface OAuthService {
      * @param token
      * @return
      */
-    OAuthToken getToken(String token);
+    TokenInfo getToken(String token);
 
     /**
      * auth code , access token 过期时间

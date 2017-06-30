@@ -47,7 +47,7 @@ public class OrganizationController {
         return "organization/tree";
     }
 
-    @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
+    @RequestMapping(value = "/appendChild/{parentId}", method = RequestMethod.GET)
     public String showAppendChildForm(@PathVariable("parentId") Long parentId, Model model) {
         Organization parent = organizationService.findOne(parentId);
         model.addAttribute("parent", parent);
@@ -79,13 +79,13 @@ public class OrganizationController {
         return organization;
     }
 
-    @RequestMapping(value = "/{id}/maintain", method = RequestMethod.GET)
+    @RequestMapping(value = "/maintain/{id}", method = RequestMethod.GET)
     public String showMaintainForm(@PathVariable("id") Long id, Model model) {
         model.addAttribute("organization", organizationService.findOne(id));
         return "organization/maintain";
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Object delete(@PathVariable("id") Long id) {
         logger.debug("Enter");
         Map<String,Object> map = new HashMap<>();

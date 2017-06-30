@@ -1,8 +1,8 @@
 package com.stony.sso.client.handler;
 
 
+import com.stony.sso.facade.entity.PermissionEntity;
 import com.stony.sso.facade.entity.Resource;
-import com.stony.sso.facade.service.AuthorizationService;
 import com.stony.sso.facade.service.MenusManager;
 import com.stony.sso.client.ClientInfoHold;
 import org.apache.shiro.SecurityUtils;
@@ -21,22 +21,12 @@ import java.util.List;
 public class MenusManagerImpl implements MenusManager {
     private static final Logger logger = LoggerFactory.getLogger(MenusManagerImpl.class);
 
-
-    @javax.annotation.Resource
-    private AuthorizationService authorizationService;
-
-    public String appKey = ClientInfoHold.APP_KEY;
-
     @Override
     public List<Resource> getMenus(){
         Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipal();
-        List<Resource> menus = authorizationService.findMenusByAppUser(appKey, username);
-        logger.debug("username = {}, menus = {}",username, menus);
+        PermissionEntity entity = (PermissionEntity) subject.getPrincipal();
+        List<Resource> menus = entity.getMenus();
+        logger.debug("username = {}, menus = {}", entity.getUsername(), menus);
         return menus;
-    }
-
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
     }
 }

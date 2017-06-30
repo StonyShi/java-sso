@@ -1,4 +1,4 @@
-package com.stony.sso.client;
+package com.stony.sso.commons.security.exception;
 
 import org.apache.shiro.authc.AuthenticationException;
 

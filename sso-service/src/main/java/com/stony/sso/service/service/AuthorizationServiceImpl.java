@@ -194,8 +194,16 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public List<Resource> findMenusByAppUser(String appKey, String username) {
-        List<Resource> resourceList = resourceService.findResourcesByAppUser(appKey, username);
+        List<Resource> resourceList = findResources(appKey, username);
+        return convertMenus(resourceList);
+    }
+
+    @Override
+    public List<Resource> convertMenus(List<Resource> resourceList) {
         List<Resource> menus = new ArrayList<>();
+        if(resourceList == null || resourceList.isEmpty()){
+            return menus;
+        }
         Map<String, String> maps = globalVariableService.getFieldVariables();
         for (Resource resource : resourceList) {
             if (!resource.isAvailabled()) {
@@ -204,9 +212,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             if (resource.isButton()) {
                 continue;
             }
-            String url_old = resource.getUrl() == null ? "" : resource.getUrl();
-            resource.setUrl(helper.replacePlaceholders(url_old, maps));
-            logger.debug("【转换地址】url={};【转换后】url={}", url_old, resource.getUrl());
+            String old_url = resource.getUrl() == null ? "" : resource.getUrl();
+            String new_url = helper.replacePlaceholders(old_url, maps);
+            resource.setUrl(new_url);
+            if (new_url != null && old_url.length() != new_url.length()) {
+                logger.debug("【转换地址】{} >>> {}", old_url, resource.getUrl());
+            }
             menus.add(resource);
         }
         return menus;
@@ -216,9 +227,14 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public PermissionEntity getPermissionEntity(String appKey, String username) {
         PermissionEntity entity = new PermissionEntity();
         User user = userService.findByUsername(username);
+        //设置资源
         entity.setResources(findResources(appKey, username));
+        //色泽权限
         entity.setRoles(findRoles(appKey, username));
+        //设置菜单
+        entity.setMenus(convertMenus(entity.getResources()));
         entity.setUserId(user.getId());
+        entity.setUsername(user.getUsername());
         return entity;
     }
 

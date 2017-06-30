@@ -67,7 +67,7 @@ public class AppController {
         return app;
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public Object delete(@PathVariable("id") Long id) {
         logger.debug("Enter");
         Map<String,Object> map = new HashMap<>();

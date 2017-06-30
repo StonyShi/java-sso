@@ -36,7 +36,7 @@
     </bean>
 
     <!-- Realm实现 -->
-    <bean id="userRealm" class="com.stony.sso.server.realm.UserRealm">
+    <bean id="userRealm" class="com.stony.sso.server.realm.OAuth2ServerRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="false"/>
         <property name="appKey" value="${server.app.key}"/>
@@ -95,11 +95,7 @@
         <property name="timeOut" value="86400"/> <!-- 会话超时 秒seconds -->
         <property name="appKey" value="${server.app.key}"/>
     </bean>
-        <!--<bean id="sessionDAO" class="ServerSessionDAO" >-->
-            <!--<property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
-            <!--<property name="permissionService" ref="permissionService"/>-->
-            <!--<property name="appKey" value="${server.app.key}"/>-->
-        <!--</bean>-->
+
     <!--<bean id="sessionValidationScheduler"-->
           <!--class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">-->
         <!--<property name="interval" value="3600000"/>-->
@@ -112,7 +108,7 @@
         <property name="globalSessionTimeout" value="1800000"/>  <!-- 设置全局会话超时时间，默认30分钟(1800000) -->
         <property name="sessionValidationInterval" value="1800000" /> <!-- 会话验证器调度时间 -->
         <property name="deleteInvalidSessions" value="true"/>
-        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="false"/> <!-- redis 自带过期 -->
         <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->
         <property name="sessionDAO" ref="sessionDAO"/>
         <property name="sessionIdCookieEnabled" value="true"/>
@@ -187,12 +183,13 @@
           class="com.stony.sso.server.chain.ChainDefinitionSectionMetaSource">
         <property name="filterChainDefinitions">
             <value>
-                /remoteService=anon
-                /permission=anon
-                /oauth/authorize=anon
-                /oauth/access/token=anon
-                /oauth/info=anon
-                /oauth/permission=anon
+                /oauth2/authorize=anon
+                /oauth2/access_token=anon
+                /oauth2/refresh_token=anon
+                /oauth2/permission/username=anon
+                /oauth2/permission=anon
+                /oauth2/unauthorized=anon
+                /invoker/permission=anon
                 /unauthorized=anon
                 /static/**=anon
                 /login=authc
@@ -202,7 +199,7 @@
         </property>
         <property name="lastFilterChainDefinitions">
             <props>
-                <prop key="/**">authc</prop>
+                <prop key="/**">user</prop>
             </props>
         </property>
     </bean>

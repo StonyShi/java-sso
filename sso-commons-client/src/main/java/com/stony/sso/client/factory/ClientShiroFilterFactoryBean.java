@@ -3,7 +3,7 @@ package com.stony.sso.client.factory;
 
 import com.stony.sso.commons.StringUtils;
 import com.stony.sso.facade.entity.Resource;
-import com.stony.sso.facade.service.ResourceService;
+import com.stony.sso.facade.service.PermissionService;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,8 @@ public class ClientShiroFilterFactoryBean extends ShiroFilterFactoryBean impleme
     private ApplicationContext applicationContext;
 
     @javax.annotation.Resource
-    ResourceService resourceService;
+    PermissionService permissionService;
+
     public static final String PREMISSION_STRING="perms[\"{0}\"]";
     public static final String DELIMITER = ";";
     public static final String DELIMITER_KEY_VAL = "=";
@@ -69,7 +70,7 @@ public class ClientShiroFilterFactoryBean extends ShiroFilterFactoryBean impleme
     public void afterPropertiesSet() throws Exception {
         doInitFilterChainDefinitionsStr(this.filterChainDefinitionsStr);
 
-        List<Resource> resources = resourceService.findAll();
+        List<Resource> resources = permissionService.getResources().getResources();
         for(Resource resource : resources){
             if(StringUtils.isNotEmpty(resource.getUrl()) && StringUtils.isNotEmpty(resource.getPermission())) {
                 getFilterChainDefinitionMap().put(resource.getUrl(),formatMessage(PREMISSION_STRING,resource.getPermission()));

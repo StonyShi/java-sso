@@ -16,7 +16,6 @@ public class OAuth2Token implements AuthenticationToken {
     }
 
     private String authCode;
-    private String principal;
 
     public String getAuthCode() {
         return authCode;
@@ -26,12 +25,10 @@ public class OAuth2Token implements AuthenticationToken {
         this.authCode = authCode;
     }
 
-    public String getPrincipal() {
-        return principal;
-    }
 
-    public void setPrincipal(String principal) {
-        this.principal = principal;
+    @Override
+    public Object getPrincipal() {
+        return this.authCode;
     }
 
     @Override

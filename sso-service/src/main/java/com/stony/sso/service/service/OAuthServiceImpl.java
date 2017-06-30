@@ -2,9 +2,8 @@ package com.stony.sso.service.service;
 
 
 import com.alibaba.fastjson.JSON;
-import com.stony.sso.cache.redis.JedisSentinelTemplate;
 import com.stony.sso.cache.redis.JedisTemplate;
-import com.stony.sso.facade.entity.OAuthToken;
+import com.stony.sso.facade.entity.TokenInfo;
 import com.stony.sso.facade.keys.SecurityKeys;
 import com.stony.sso.facade.service.AppService;
 import com.stony.sso.facade.service.*;
@@ -53,13 +52,13 @@ public class OAuthServiceImpl implements OAuthService {
      * @param token
      */
     @Override
-    public void addAccessToken(String accessToken, OAuthToken token) {
+    public void addAccessToken(String accessToken, TokenInfo token) {
         logger.debug("accessToken = {}, username = {}", accessToken, token.getUsername());
         jedisTemplate.setStr(getTokenKey(accessToken), convert(token), Integer.valueOf(getExpireIn() + ""));
     }
 
     @Override
-    public void addRefreshToken(String refreshToken, OAuthToken token) {
+    public void addRefreshToken(String refreshToken, TokenInfo token) {
         logger.debug("refreshToken = {}, username = {}", refreshToken, token.getUsername());
         jedisTemplate.setStr(getTokenKey(refreshToken), convert(token), Integer.valueOf(getRefreshTokenExpireIn() + ""));
     }
@@ -70,22 +69,22 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public OAuthToken getToken(String token) {
+    public TokenInfo getToken(String token) {
         String info = jedisTemplate.getStr(getTokenKey(token));
         return convert(info);
     }
 
-    String convert(OAuthToken token) {
+    String convert(TokenInfo token) {
         if (token != null) {
             return JSON.toJSONString(token);
         }
         throw new NullPointerException("token must not null");
     }
-    OAuthToken convert(String info) {
+    TokenInfo convert(String info) {
         if (info == null || info.length() == 0) {
             return null;
         }
-        return JSON.parseObject(info, OAuthToken.class);
+        return JSON.parseObject(info, TokenInfo.class);
     }
     @Override
     public boolean checkAuthCode(String authCode) {

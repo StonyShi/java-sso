@@ -354,7 +354,7 @@
         if(roleId && roleId !=""){
             var table = $('#tableModalTable').dataTable();
             table.fnClearTable();
-            var url = "/role/" + roleId + "/resources";
+            var url = "/role/view/" + roleId;
             $.ajax({
                 url : url,
                 type: "POST",
@@ -580,7 +580,7 @@
                 });
                 return;
             }
-            var url = "/role/" + roleId + "/update/resources";
+            var url = "/role/update/resources/" + roleId;
             $.ajax({
                 url : url,
                 type: "POST",
