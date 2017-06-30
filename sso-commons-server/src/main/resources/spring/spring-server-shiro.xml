@@ -201,9 +201,9 @@
             </value>
         </property>
         <property name="lastFilterChainDefinitions">
-            <value>
-                /**=authc
-            </value>
+            <props>
+                <prop key="/**">authc</prop>
+            </props>
         </property>
     </bean>
 

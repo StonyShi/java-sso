@@ -576,6 +576,7 @@ CREATE TABLE `sys_role` (
   UNIQUE KEY `IDX_SYS_ROLE_N` (`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+INSERT INTO `sys_role` VALUES (1,'admin','超级管理员',1,'2016-05-12 19:34:25',NULL),(2,'app_manager','APP管理员',1,'2016-05-12 19:34:25','2016-06-20 10:25:33'),(3,'statistic','统计专员',1,'2016-05-12 19:34:25','2016-06-20 16:37:50'),(12,'kefu','客服',1,'2016-05-25 15:27:29',NULL),(15,'super','超级角色',1,'2016-05-25 15:24:58',NULL),(16,'sale','销售员',1,'2016-05-25 15:27:29',NULL),(25,'kefuzhuguan','客服主管',1,'2016-05-25 15:27:29',NULL),(38,'xiaoshouguanli','销售管理',1,'2016-06-16 11:23:56',NULL),(39,'caiwu','财务',1,'2016-06-16 11:25:37',NULL),(41,'test','测试',0,'2016-06-20 11:57:03','2016-06-20 14:11:33'),(42,'manage-admin','车队-管理员',1,'2016-06-22 14:39:56',NULL),(43,'support-test','',1,'2016-06-23 12:06:11',NULL),(44,'boss-admin','',1,'2016-06-23 17:30:34',NULL),(46,'moniter-admin','moniter系统',1,'2016-07-08 13:30:47',NULL);
 
 
 # Dump of table sys_role_resource

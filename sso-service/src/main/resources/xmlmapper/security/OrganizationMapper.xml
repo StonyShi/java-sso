@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.stony.sso.service.mapper.OrganizationMapper" >
-  <resultMap id="BaseResultMap" type="com.car.sqoil.facade.security.entity.Organization" >
+  <resultMap id="BaseResultMap" type="com.stony.sso.facade.entity.Organization" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="logo" property="logo" jdbcType="VARCHAR" />
@@ -25,7 +25,7 @@
     <include refid="Base_Column_List" />
     from sys_organization
   </select>
-  <select id="findAllWithExclude" resultMap="BaseResultMap" parameterType="com.car.sqoil.facade.security.entity.Organization" >
+  <select id="findAllWithExclude" resultMap="BaseResultMap" parameterType="com.stony.sso.facade.entity.Organization" >
     select
     <include refid="Base_Column_List" />
     from sys_organization
@@ -50,7 +50,7 @@
     delete from sys_organization
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.car.sqoil.facade.security.entity.Organization" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.stony.sso.facade.entity.Organization" useGeneratedKeys="true" keyProperty="id">
     insert into sys_organization (id, name, logo, parent_id,
       parent_ids, available, insert_date, 
       update_date)
@@ -58,7 +58,7 @@
       #{parentIds,jdbcType=VARCHAR}, #{available,jdbcType=INTEGER}, #{insertDate,jdbcType=TIMESTAMP}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.car.sqoil.facade.security.entity.Organization" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.stony.sso.facade.entity.Organization" useGeneratedKeys="true" keyProperty="id">
     insert into sys_organization
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,7 +113,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.car.sqoil.facade.security.entity.Organization" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.stony.sso.facade.entity.Organization" >
     update sys_organization
     <set >
       <if test="name != null" >
@@ -140,7 +140,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.car.sqoil.facade.security.entity.Organization" >
+  <update id="updateByPrimaryKey" parameterType="com.stony.sso.facade.entity.Organization" >
     update sys_organization
     set name = #{name,jdbcType=VARCHAR},
       logo = #{logo,jdbcType=VARCHAR},

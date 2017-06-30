@@ -39,9 +39,7 @@ public class UserController {
         User user = userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
         Integer userType = -1;
         if (user.getUserType() != null) userType = user.getUserType();
-        model.put("users", userService.findAllUser(userType));
-        model.put("userType", userType);
-        model.put("gasStationType", user.getGasStationId());
+        model.put("users", userService.findAll());
         return new MenusView("user/list");
     }
 

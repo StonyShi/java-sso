@@ -1,9 +1,6 @@
 <#--
  * Created by Stony on 2016/6/3.
 -->
-<#--
- * Created by Stony on 2016/5/6.
--->
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
@@ -16,7 +13,7 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <#include '../common/global_styles.ftl'>
+<#include '../common/global_styles.ftl'>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="${media_css_url}/select2_metro.css" />
@@ -57,9 +54,9 @@
             <div class="row-fluid">
                 <div class="span12">
                     <!-- BEGIN STYLE CUSTOMIZER -->
-                    <@shiro.hasPermission name="theme:color">
+                <@shiro.hasPermission name="theme:color">
                     <#include '../common/theme_color.ftl'/>
-                    </@shiro.hasPermission>
+                </@shiro.hasPermission>
                     <!-- END BEGIN STYLE CUSTOMIZER -->
 
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
@@ -120,21 +117,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#list list as item>
-                                <tr class="odd gradeX">
-                                    <td><input type="checkbox" class="checkboxes" value="1" /></td>
-                                    <td>${item.name}</td>
-                                    <td><i class="${item.name}" ></i></td>
-                                    <td class="hidden-480">${(item.description)!""}</td>
-                                    <td class="hidden-480">${(item.url)!""}</td>
-                                    <td class="center hidden-480"><#if (item.insertDate)??>${(item.insertDate)?datetime}</#if></td>
-                                    <#if item.available == 1>
-                                        <td ><span class="label label-success">available</span></td>
-                                    <#else >
-                                        <td ><span class="label label-inverse">unavailable</span></td>
-                                    </#if>
-                                </tr>
-                                </#list>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -226,10 +209,39 @@
 <script src="/static/js/sidebar.js"></script>
 <script src="/static/js/app.js" type="text/javascript"></script>
 <script>
+    function reloadDataTable(json){
+        var table = $('#sample_1').dataTable();
+        table.fnClearTable();
+        table.fnAddData(json.aaData);
+    }
     jQuery(document).ready(function() {
         Sidebar.init();
         App.init();
         $('#sample_1').dataTable({
+            aoColumns : [
+                {"mData": "id", "fnRender" : function (mdate,type,column) {
+                    var rid = mdate.aData.id;
+                    return '<input type="checkbox" class="checkboxes" value="0" date-id="'+rid+'"/>';
+                }},
+                {"mData": "name2", "fnRender" : function (mdate, type, col) {
+                    return mdate.aData.name;
+                },"sDefaultContent": "-"},
+                {"mData": "name", "fnRender" : function (mdate, type, col) {
+                    return '<i class="'+type+'"></i>';
+                }},
+                {"mData": "description", "sDefaultContent": "-"},
+                {"mData": "url","sDefaultContent": "-"},
+                {"mData": "insertDate","fnRender":function(mdate,type, col){
+                    return moment(type).format("YYYY-MM-DD HH:mm:ss");
+                },"sDefaultContent": "-"},
+                {"mData": "available", "fnRender" : function (mdate, type, col) {
+                    if(type == 1) {
+                        return '<span class="label label-success">available</span>';
+                    }else {
+                        return '<span class="label label-inverse">unavailable</span>';
+                    }
+                }}
+            ],
             "aLengthMenu": [
                 [5, 15, 20, 50, -1],
                 [5, 15, 20, 50, "All"] // change per page values here
@@ -244,6 +256,54 @@
                     "sPrevious": "Prev",
                     "sNext": "Next"
                 }
+            },
+            "bProcessing": false,
+            "bServerSide": true,
+            "sAjaxSource": "/icon/data",
+            "fnServerData": function(sSource,aoData, fnCallback){
+                //aoData:[{"name":"sEcho","value":1},{"name":"iColumns","value":7},{"name":"sColumns","value":""},{"name":"iDisplayStart","value":0},{"name":"iDisplayLength","value":15},{"name":"mDataProp_0","value":"id"},{"name":"mDataProp_1","value":"name"},{"name":"mDataProp_2","value":"name"},{"name":"mDataProp_3","value":"description"},{"name":"mDataProp_4","value":"url"},{"name":"mDataProp_5","value":"insertDate"},{"name":"mDataProp_6","value":"available"},{"name":"sSearch","value":""},{"name":"bRegex","value":false},{"name":"sSearch_0","value":""},{"name":"bRegex_0","value":false},{"name":"bSearchable_0","value":true},{"name":"sSearch_1","value":""},{"name":"bRegex_1","value":false},{"name":"bSearchable_1","value":true},{"name":"sSearch_2","value":""},{"name":"bRegex_2","value":false},{"name":"bSearchable_2","value":true},{"name":"sSearch_3","value":""},{"name":"bRegex_3","value":false},{"name":"bSearchable_3","value":true},{"name":"sSearch_4","value":""},{"name":"bRegex_4","value":false},{"name":"bSearchable_4","value":true},{"name":"sSearch_5","value":""},{"name":"bRegex_5","value":false},{"name":"bSearchable_5","value":true},{"name":"sSearch_6","value":""},{"name":"bRegex_6","value":false},{"name":"bSearchable_6","value":true},{"name":"iSortCol_0","value":0},{"name":"sSortDir_0","value":"asc"},{"name":"iSortingCols","value":1},{"name":"bSortable_0","value":true},{"name":"bSortable_1","value":true},{"name":"bSortable_2","value":true},{"name":"bSortable_3","value":true},{"name":"bSortable_4","value":true},{"name":"bSortable_5","value":true},{"name":"bSortable_6","value":true}]
+                //console.log(JSON.stringify(aoData));
+                //var data = {"aoData":JSON.stringify(aoData)};
+                var sEcho = 1;
+                var iDisplayStart = 0; // 起始索引
+                var iDisplayLength = 15; // 每页显示的行数
+                for(var key in aoData){
+                    var vd = aoData[key];
+                    if("iDisplayStart" == vd.name){
+                        //console.log(vd.value);
+                        iDisplayStart = vd.value;
+                    }
+                    if("iDisplayLength" == vd.name){
+                        //console.log(vd.value);
+                        iDisplayLength = vd.value;
+                    }
+                    if("sEcho" == vd.name){
+                        //console.log(vd.value);
+                        sEcho = vd.value;
+                    }
+                }
+                var data = {
+                    "pageNum": (iDisplayStart/iDisplayLength + 1),
+                    "pageSize": iDisplayLength,
+                    "echo": sEcho
+                };
+                $.ajax({
+                    url: sSource,
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    async: false,
+                    success: function(result){
+                        fnCallback(result);
+                    },
+                    error:function(xhr){
+                        Messenger().post({
+                            message: "错误：" + xhr.status + " " + xhr.statusText,
+                            type: 'error',
+                            showCloseButton: true
+                        });
+                    }
+                });
             }
         });
         jQuery('#sample_1 .group-checkable').change(function () {

@@ -44,9 +44,9 @@
     </bean>
 
     <bean id="dataSource" parent="abstractDataSource" p:driverClassName="${mysql.jdbc.driverClass}"
-          p:url="${sqoil.read.jdbcurl}">
-        <property name="username" value="${sqoil.read.username}"/>
-        <property name="password" value="${sqoil.read.password}"/>
+          p:url="${sso.db.jdbcurl}">
+        <property name="username" value="${sso.db.username}"/>
+        <property name="password" value="${sso.db.password}"/>
     </bean>
 
     <!--  TransactionManager -->

@@ -49,7 +49,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     List<User> findAll();
-    List<User> findAllUser(@Param("userType") Integer userType);
+
 
     User findByUsername(String username);
 

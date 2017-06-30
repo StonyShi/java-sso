@@ -195,11 +195,12 @@
                                     <td>
                                         <a href="javascript:editView(${item.id!},'${(item.name)!}',
                                         '${(item.type)!}','${(item.permission)!}','${(item.url)!}','${(item.icon)!}',
-                                        ${item.available!0},${(item.parentId)!},${(item.resourceType)!})"
+                                        ${item.available!0},${(item.parentId)!})"
                                            class="btn mini purple" id="editView_${item.id!}"><i class="icon-edit"></i> Edit</a>
                                     </td>
                                 </tr>
                                 </#list>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -290,18 +291,6 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">归属</label>
-                                    <div class="controls">
-                                        <select class="span8 select2" tabindex="1" name="resourceType" >
-                                            <option value=""></option>
-                                            <option value="-1">系统后台资源</option>
-                                            <option value="0">公共资源</option>
-                                            <option value="1">大后台资源</option>
-                                            <option value="2">站点后台资源</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
                                     <label class="control-label">有效</label>
                                         <div class="controls">
                                         <div class="basic-toggle-button">
@@ -365,7 +354,7 @@
     function isNotEmpty(name){
         return !isEmpty(name);
     }
-    function editView(id,name,type,permission,url,icon,live,parentId,resourceType){
+    function editView(id,name,type,permission,url,icon,live,parentId){
         $("#addForm")[0].reset();
         $("#addForm input[name='id']").val(id);
         $("#addForm input[name='name']").val(name);
@@ -375,7 +364,6 @@
         $("#addForm select[name='icon']").val(icon);
         $("#addForm select[name='icon']").select2("val",icon);
         $("#addForm select[name='parentId']").val(parentId);
-        $("#addForm select[name='resourceType']").val(resourceType);
         var available = $("#addForm input[name='available']").val();
         if(live != available){
             $("#addForm input[name='toggleAvailable']").siblings('label')
@@ -396,10 +384,10 @@
             ],
             // set the initial value
             "iDisplayLength": 15,
-            "sDom": "<'row-fluid't<'row-fluid'<'span6'li>p>>",
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
+                "sLengthMenu": "_MENU_ records per page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -440,7 +428,6 @@
             var permission = $("#addForm input[name='permission']").val();
             var type = $("#addForm select[name='type']").val();
             var parentId = $("#addForm select[name='parentId']").val();
-            var resourceType=$("#addForm select[name='resourceType']").val();
             if(isEmpty(parentId)){
                 $("#addForm select[name='parentId']").val(0);
             }
@@ -463,14 +450,6 @@
             if(isEmpty(type)){
                 Messenger().post({
                     message: "资源类型不能为空",
-                    type: 'error',
-                    showCloseButton: false
-                });
-                return;
-            }
-            if(isEmpty(resourceType)){
-                Messenger().post({
-                    message: "资源归属不能为空",
                     type: 'error',
                     showCloseButton: false
                 });

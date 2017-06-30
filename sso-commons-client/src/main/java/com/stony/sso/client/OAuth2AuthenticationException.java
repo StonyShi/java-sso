@@ -14,4 +14,14 @@ public class OAuth2AuthenticationException extends AuthenticationException {
     public OAuth2AuthenticationException(Throwable cause) {
         super(cause);
     }
+
+
+    /**
+     * Constructs a new AuthenticationException.
+     *
+     * @param message the reason for the exception
+     */
+    public OAuth2AuthenticationException(String message) {
+        super(message);
+    }
 }

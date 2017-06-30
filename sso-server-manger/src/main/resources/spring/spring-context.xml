@@ -35,8 +35,13 @@
 
 
 
-    <import resource="classpath:spring/spring-shiro.xml"/>
+    <import resource="classpath:spring/spring-ctx-cache.xml" />
     <import resource="classpath:spring/spring-ctx-repository.xml" />
     <import resource="classpath:spring/spring-ctx-mybatis.xml" />
+
+
+    <bean id="passwordHelper" class="com.stony.sso.service.helper.PasswordHelper"/>
+
+
 
 </beans>

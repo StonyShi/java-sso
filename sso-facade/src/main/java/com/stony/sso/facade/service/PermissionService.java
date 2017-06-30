@@ -23,4 +23,6 @@ public interface PermissionService {
      * @return
      */
     PermissionContext getPermissions(String appKey, String username);
+
+    PermissionContext getMenus(String appKey, String username);
 }

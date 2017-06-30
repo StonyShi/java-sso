@@ -1,4 +1,4 @@
-package com.car.sqoil.test;
+package com.stony.sso.service.test;
 
 
 import com.alibaba.fastjson.JSON;

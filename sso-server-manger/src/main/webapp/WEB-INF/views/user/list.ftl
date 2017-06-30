@@ -13,7 +13,7 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-<#include '../common/global_styles.ftl'>
+    <#include '../common/global_styles.ftl'>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link rel="stylesheet" type="text/css" href="${media_css_url}/select2_metro.css" />
@@ -40,7 +40,7 @@
 <!-- BEGIN CONTAINER -->
 <div class="page-container row-fluid">
     <!-- BEGIN SIDEBAR -->
-<#include '../common/sidebar.ftl'>
+    <#include '../common/sidebar.ftl'>
     <!-- END SIDEBAR -->
     <!-- BEGIN PAGE -->
     <div class="page-content">
@@ -61,9 +61,9 @@
             <div class="row-fluid">
                 <div class="span12">
                     <!-- BEGIN STYLE CUSTOMIZER -->
-                <@shiro.hasPermission name="theme:color">
-                    <#include '../common/theme_color.ftl'/>
-                </@shiro.hasPermission>
+                    <@shiro.hasPermission name="theme:color">
+                        <#include '../common/theme_color.ftl'/>
+                    </@shiro.hasPermission>
                     <!-- END BEGIN STYLE CUSTOMIZER -->
 
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
@@ -95,26 +95,22 @@
                             <div class="caption"><i class="icon-user"></i>用户列表</div>
                             <div class="actions">
                                 <a href="#" class="btn blue" id="addUser"><i class="icon-pencil"></i> 添加</a>
-                            <#--<div class="btn-group">-->
-                            <#--<a class="btn green" href="#" data-toggle="dropdown">-->
-                            <#--<i class="icon-cogs"></i> Tools-->
-                            <#--<i class="icon-angle-down"></i>-->
-                            <#--</a>-->
-                            <#--<ul class="dropdown-menu pull-right">-->
-                            <#--<li><a href="#"><i class="icon-pencil"></i> 编辑</a></li>-->
-                            <#--<li><a href="#"><i class="icon-trash"></i> 删除</a></li>-->
-                            <#--<li><a href="#"><i class="icon-ban-circle"></i> 禁用</a></li>-->
-                            <#--<li class="divider"></li>-->
-                            <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
-                            <#--</ul>-->
-                            <#--</div>-->
+                                <#--<div class="btn-group">-->
+                                    <#--<a class="btn green" href="#" data-toggle="dropdown">-->
+                                        <#--<i class="icon-cogs"></i> Tools-->
+                                        <#--<i class="icon-angle-down"></i>-->
+                                    <#--</a>-->
+                                    <#--<ul class="dropdown-menu pull-right">-->
+                                        <#--<li><a href="#"><i class="icon-pencil"></i> 编辑</a></li>-->
+                                        <#--<li><a href="#"><i class="icon-trash"></i> 删除</a></li>-->
+                                        <#--<li><a href="#"><i class="icon-ban-circle"></i> 禁用</a></li>-->
+                                        <#--<li class="divider"></li>-->
+                                        <#--<li><a href="#"><i class="i"></i> Make admin</a></li>-->
+                                    <#--</ul>-->
+                                <#--</div>-->
                             </div>
                         </div>
                         <div class="portlet-body">
-                            <!--当前登录人的归属后台-->
-                            <input type="hidden" id="loginUserType" value="${userType!}">
-                            <!--当前登录人的归属站点-->
-                            <input type="hidden" id="gasStationType" value="${gasStationType!}">
                             <table class="table table-striped table-bordered table-hover" id="sample_1">
                                 <thead>
                                 <tr>
@@ -122,7 +118,6 @@
                                     <th>名称</th>
                                     <th class="hidden-480">邮箱</th>
                                     <th class="hidden-480">手机号</th>
-                                    <th class="hidden-480">站点</th>
                                     <th class="hidden-480">创建时间</th>
                                     <th >Status</th>
                                     <th></th>
@@ -135,7 +130,6 @@
                                     <td>${user.username}</td>
                                     <td class="hidden-480"><a href="${(user.email)!""}">${(user.email)!""}</a></td>
                                     <td class="hidden-480">${(user.phone)!""}</td>
-                                    <td class="hidden-480">${(user.gasStationName)!""}</td>
                                     <td class="center hidden-480"><#if (user.insertDate)??>${(user.insertDate)?datetime}</#if></td>
                                     <#if user.locked == 1>
                                         <td ><span class="label label-inverse">Locked</span></td>
@@ -143,11 +137,12 @@
                                         <td ><span class="label label-success">UnLock</span></td>
                                     </#if>
                                     <td>
-                                        <a href="javascript:editView(${user.id!},'${(user.username)!}','${(user.email)!}','${(user.phone)!}',${(user.gasStationId)!0},${user.locked!0},${user.userType!0})"
+                                        <a href="javascript:editView(${user.id!},'${(user.username)!}','${(user.email)!}','${(user.phone)!}',${user.locked!0})"
                                            class="btn mini purple" id="editView_${user.id!}"><i class="icon-edit"></i> Edit</a>
                                     </td>
                                 </tr>
                                 </#list>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -209,26 +204,6 @@
                                         <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="control-group" id="gasStationShow">
-                                    <label class="control-label">站点</label>
-                                    <div class="controls">
-                                       <select name ="gasStationId" class="span6 m-wrap" >
-                                           <option value="">请选择</option>
-                                       <#list gasStation as gas>
-                                           <option value="${gas.id}">${gas.name}</option>
-                                       </#list>
-                                       </select>
-
-                                        <span class="help-inline"></span>
-                                    </div>
-                                </div>
-                                <div class="control-group" id="userTypeShow">
-                                    <label class="control-label">归属后台</label>
-                                    <div class="controls">
-                                        <select class="span6 m-wrap"  tabindex="1" name="userType" id="userType">
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="control-group">
                                     <label class="control-label">锁定</label>
                                     <div class="controls">
@@ -281,38 +256,12 @@
 <script src="/static/js/sidebar.js"></script>
 <script src="/static/js/app.js" type="text/javascript"></script>
 <script>
-
-    /*根据登录人显示归属*/
-    function showUserType(){
-        var result="";
-        var type =$("#loginUserType").val();
-        if( type==-1){
-            result+="<option value='-1'>系统后台</option>";
-            result+="<option value='1'>大后台</option>";
-            result+="<option value='2'>站点后台</option>";
-        }else{
-            if(type ==1){
-                result+="<option value='1'>大后台</option>";
-                result+="<option value='2'>站点后台</option>";
-            }else{
-                result+="<option value='2'>站点后台</option>";
-                $("#userTypeShow").hide();
-                $("#gasStationShow").hide();
-                $("#addUserForm select[name='userType']").val(type);
-                $("#addUserForm select[name='gasStationId']").val($("#gasStationType").val());
-            }
-        }
-        $("#userType").html(result);
-    }
-    function editView(id,name,email,phone,gasStationId,live,userType){
+    function editView(id,name,email,phone,live){
         $("#addUserForm")[0].reset();
         $("#addUserForm input[name='id']").val(id);
         $("#addUserForm input[name='username']").val(name);
         $("#addUserForm input[name='email']").val(email);
         $("#addUserForm input[name='phone']").val(phone);
-        if(gasStationId!=0){
-            $("#addUserForm select[name='gasStationId']").val(gasStationId);
-        }
         var available = $("#addUserForm input[name='locked']").val();
         if(live != available){
             $("#addUserForm input[name='toggleLocked']").siblings('label')
@@ -320,8 +269,6 @@
                     .trigger('mouseup')
                     .trigger('click');
         }
-        showUserType();
-        $("#addUserForm select[name='userType']").val(userType);
         $("#addUserModalTitle").html("编辑用户");
         $("#addUserModal").modal("toggle");
     }
@@ -335,10 +282,10 @@
             ],
             // set the initial value
             "iDisplayLength": 15,
-            "sDom": "<'row-fluid't<'row-fluid'<'span6'li>p>>",
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
+                "sLengthMenu": "_MENU_ records per page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -373,9 +320,7 @@
             $("#addUserForm")[0].reset();
             $("#addUserModalTitle").html("新增用户");
             $("#addUserModal").modal("toggle");
-            showUserType();
         });
-
         $("#submitAddUser").click(function () {
             var addUserForm = $("#addUserForm");
             var date = addUserForm.serialize();
@@ -408,7 +353,7 @@
                         message = "修改用户成功!";
                     }
                     table.fnAddData(
-                            [frist, data.username, data.email, data.phone,data.gasStationName, joined, lock,'']
+                            [frist, data.username, data.email, data.phone, joined, lock,'']
                     );
                     Messenger().post(message);
 
@@ -423,7 +368,6 @@
                 }
             });
         });
-
     });
 </script>
 </body>

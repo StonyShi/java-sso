@@ -122,8 +122,6 @@
                             </div>
                         </div>
                         <div class="portlet-body">
-                            <!--当前登录人的归属后台-->
-                            <input type="hidden" id="loginUserType" value="${userType!}">
                             <table class="table table-striped table-bordered table-hover" id="sample_1">
                                 <thead>
                                 <tr>
@@ -155,7 +153,7 @@
                                     </#if>
                                     <td><a  href="javascript:showView(${item.id!})" class="btn mini blue-stripe" id="showView">View</a></td>
                                     <td>
-                                        <a href="javascript:editView(${item.id!},'${(item.role)!}','${(item.description)!}',${item.available!0},${item.roleType!0})"
+                                        <a href="javascript:editView(${item.id!},'${(item.role)!}','${(item.description)!}',${item.available!0})"
                                            class="btn mini purple" id="editView_${item.id!}"><i class="icon-edit"></i> Edit</a>
                                     </td>
                                 </tr>
@@ -208,13 +206,6 @@
                                         <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="control-group" id="roleTypeShow">
-                                    <label class="control-label">归属后台</label>
-                                    <div class="controls">
-                                        <select class="span6 m-wrap"  tabindex="1" name="roleType" id="roleType">
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="control-group">
                                     <label class="control-label">有效</label>
                                     <div class="controls">
@@ -235,7 +226,7 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
-</div> <!- addModal -->
+</div> <!-- addModal -->
 <div class="modal fade hide" id="tableModal" tabindex="-1" role="dialog"
      aria-labelledby="tableModal" aria-hidden="true" roleId="">
     <div class="modal-dialog">
@@ -308,29 +299,7 @@
 <script src="/static/js/sidebar.js"></script>
 <script src="/static/js/app.js" type="text/javascript"></script>
 <script>
-
-    /*根据登录人显示归属*/
-    function showUserType(){
-        var result="";
-        var type =$("#loginUserType").val();
-        if( type==-1){
-            result+="<option value='-1'>系统后台</option>";
-            result+="<option value='1'>大后台</option>";
-            result+="<option value='2'>站点后台</option>";
-        }else{
-            if(type ==1){
-                result+="<option value='1'>大后台</option>";
-                result+="<option value='2'>站点后台</option>";
-            }else{
-                result+="<option value='2'>站点后台</option>";
-                $("#roleTypeShow").hide();
-                $("#addForm select[name='roleType']").val(type);
-            }
-        }
-        $("#roleType").html(result);
-    }
-
-    function editView(id,name,description,live,roleType){
+    function editView(id,name,description,live){
         $("#addForm")[0].reset();
         $("#addForm input[name='id']").val(id);
         $("#addForm input[name='role']").val(name);
@@ -344,8 +313,6 @@
         }
         $("#addModalTitle").html("编辑角色");
         $("#addModal").modal("toggle");
-        showUserType();
-        $("#addForm select[name='roleType']").val(roleType);
     }
     function showView(id){
         if(id && id != ""){
@@ -439,10 +406,10 @@
             ],
             // set the initial value
             "iDisplayLength": -1,
-            "sDom": "<'row-fluid't<'row-fluid'<'span6'li>p>>",
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
+                "sLengthMenu": "_MENU_ records per page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -456,10 +423,10 @@
             ],
             // set the initial value
             "iDisplayLength": 15,
-            "sDom": "<'row-fluid't<'row-fluid'<'span6'li>p>>",
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
+                "sLengthMenu": "_MENU_ records per page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"
@@ -494,7 +461,6 @@
             $("#addForm")[0].reset();
             $("#addModalTitle").html("新增角色");
             $("#addModal").modal("toggle");
-            showUserType();
         });
         $("#editItem").click(function () {
             var checkboxs = $("#sample_1 td input[type=checkbox]:checked");

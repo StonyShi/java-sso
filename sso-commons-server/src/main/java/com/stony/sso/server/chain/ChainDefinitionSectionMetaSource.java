@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * <p>Created with IntelliJ IDEA. </p>
@@ -25,7 +28,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Section> {
     private static final Logger logger = LoggerFactory.getLogger(ChainDefinitionSectionMetaSource.class);
 
     private String filterChainDefinitions;
-    private String lastFilterChainDefinitions;
+    private Properties lastFilterChainDefinitions;
     public static final String PREMISSION_STRING="perms[\"{0}\"]";
 
     @javax.annotation.Resource
@@ -44,7 +47,14 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Section> {
             }
         }
         if(lastFilterChainDefinitions != null){
-            ini.load(lastFilterChainDefinitions);
+            Iterator it = lastFilterChainDefinitions.keySet().iterator();
+            while (it.hasNext()) {
+                String key = (String) it.next();
+                String value = (String) lastFilterChainDefinitions.get(key);
+                if(StringUtils.isNotEmpty(key) && StringUtils.isNotEmpty(value)) {
+                    section.put(key, value);
+                }
+            }
         }
         logger.info("section = {}", section.entrySet());
         return section;
@@ -64,7 +74,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Section> {
         this.filterChainDefinitions = filterChainDefinitions;
     }
 
-    public void setLastFilterChainDefinitions(String lastFilterChainDefinitions) {
+    public void setLastFilterChainDefinitions(Properties lastFilterChainDefinitions) {
         this.lastFilterChainDefinitions = lastFilterChainDefinitions;
     }
 }

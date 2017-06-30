@@ -1,4 +1,8 @@
 
+<#macro media>http://images.01zhuanche.dev:8080/statics/media/</#macro>
+<#macro media_js>http://images.01zhuanche.dev:8080/statics/media/js/</#macro>
+<#macro media_css>http://images.01zhuanche.dev:8080/statics/media/css/</#macro>
+<#macro media_image>http://images.01zhuanche.dev:8080/statics/media/image/</#macro>
 <#macro seoKeywords>首汽约车,出租车，网络叫车，app打车，手机打车</#macro>
 <#macro seoDescription>首汽约车</#macro>
 <#macro seoCopyright>首汽约车</#macro>

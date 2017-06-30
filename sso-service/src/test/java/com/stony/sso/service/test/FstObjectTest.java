@@ -1,4 +1,4 @@
-package com.car.sqoil.test;
+package com.stony.sso.service.test;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,7 @@ import com.stony.sso.facade.entity.*;
 import org.apache.shiro.session.mgt.SimpleSession;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.nustaq.serialization.FSTConfiguration;
+//import org.nustaq.serialization.FSTConfiguration;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,17 +33,17 @@ public class FstObjectTest {
     @Ignore
     @Test
     public void test2(){
-        FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
-        SimpleSession session = new SimpleSession();
-//        FstObjectInput input = new FstObjectInput();
-        conf.registerClass(SimpleSession.class);
-        byte[] bytes = conf.asByteArray(session);
-        System.out.println(bytes);
-
-        System.out.println(conf.asObject(bytes));
-
-        System.out.println(App.class.getClassLoader());
-        System.out.println(List.class.getClassLoader());
+//        FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
+//        SimpleSession session = new SimpleSession();
+////        FstObjectInput input = new FstObjectInput();
+//        conf.registerClass(SimpleSession.class);
+//        byte[] bytes = conf.asByteArray(session);
+//        System.out.println(bytes);
+//
+//        System.out.println(conf.asObject(bytes));
+//
+//        System.out.println(App.class.getClassLoader());
+//        System.out.println(List.class.getClassLoader());
     }
 
     static List<Long> fstTimes = new LinkedList<>();
@@ -55,53 +55,53 @@ public class FstObjectTest {
     @Test
     public void fstTestDefault(){
 //        System.out.println("--------------------------------------");
-        int size = 0;
-        long beginTime = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
-            Resource resource = getResource(50);
-            User user = new User();
-            user.setId(1100L);
-            user.setPassword("dr234242342342");
-            user.setUsername("1231231");
-            user.setLocked(0);
-            user.setPhone("15534645646");
-            user.setEmail("bule@130.com");
-            byte[] bytes = fstSerizlize(resource);
-            //System.out.println("bytes = " + bytes);
-            size += bytes.length;
-            Resource unR = (Resource) fstUnSerizlize(bytes);
-            //System.out.println("unUser = " + unR);
-        }
-        Long overTime = (System.currentTimeMillis() - beginTime);
-        System.out.println("fstDefault序列化方案[序列化10000次]耗时：" + overTime + "ms ,size : " + size + " 字节");
-        fstTimesDefault.add(overTime);
+//        int size = 0;
+//        long beginTime = System.currentTimeMillis();
+//        for (int i = 0; i < 10000; i++) {
+//            Resource resource = getResource(50);
+//            User user = new User();
+//            user.setId(1100L);
+//            user.setPassword("dr234242342342");
+//            user.setUsername("1231231");
+//            user.setLocked(0);
+//            user.setPhone("15534645646");
+//            user.setEmail("bule@130.com");
+//            byte[] bytes = fstSerizlize(resource);
+//            //System.out.println("bytes = " + bytes);
+//            size += bytes.length;
+//            Resource unR = (Resource) fstUnSerizlize(bytes);
+//            //System.out.println("unUser = " + unR);
+//        }
+//        Long overTime = (System.currentTimeMillis() - beginTime);
+//        System.out.println("fstDefault序列化方案[序列化10000次]耗时：" + overTime + "ms ,size : " + size + " 字节");
+//        fstTimesDefault.add(overTime);
     }
 
     @Repeat(30)
     @Test
     public void fstTest(){
-        FSTConfiguration conf = FstConfigInitEvent.conf;
-//        System.out.println("--------------------------------------");
-        int size = 0;
-        long beginTime = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
-            Resource resource = getResource(50);
-            User user = new User();
-            user.setId(1100L);
-            user.setPassword("1sdf46dfgdfg");
-            user.setUsername("qqqqqqqsdsf");
-            user.setLocked(0);
-            user.setPhone("13124y554fgd");
-            user.setEmail("21sfsxe@120.com");
-            byte[] bytes = conf.asByteArray(resource);
-            //System.out.println("bytes = " + bytes);
-            size += bytes.length;
-            Resource unR = (Resource) conf.asObject(bytes);
-            //System.out.println("unUser = " + unR);
-        }
-        Long overTime = (System.currentTimeMillis() - beginTime);
-        System.out.println("fst序列化方案[序列化10000次]耗时：" + overTime + "ms ,size : " + size + " 字节");
-        fstTimes.add(overTime);
+//        FSTConfiguration conf = FstConfigInitEvent.conf;
+////        System.out.println("--------------------------------------");
+//        int size = 0;
+//        long beginTime = System.currentTimeMillis();
+//        for (int i = 0; i < 10000; i++) {
+//            Resource resource = getResource(50);
+//            User user = new User();
+//            user.setId(1100L);
+//            user.setPassword("1sdf46dfgdfg");
+//            user.setUsername("qqqqqqqsdsf");
+//            user.setLocked(0);
+//            user.setPhone("13124y554fgd");
+//            user.setEmail("21sfsxe@120.com");
+//            byte[] bytes = conf.asByteArray(resource);
+//            //System.out.println("bytes = " + bytes);
+//            size += bytes.length;
+//            Resource unR = (Resource) conf.asObject(bytes);
+//            //System.out.println("unUser = " + unR);
+//        }
+//        Long overTime = (System.currentTimeMillis() - beginTime);
+//        System.out.println("fst序列化方案[序列化10000次]耗时：" + overTime + "ms ,size : " + size + " 字节");
+//        fstTimes.add(overTime);
     }
     @Ignore
     @Repeat(30)
@@ -167,14 +167,14 @@ public class FstObjectTest {
             throw new RuntimeException(e);
         }
     }
-    static FSTConfiguration configuration = FSTConfiguration.createDefaultConfiguration();
+//    static FSTConfiguration configuration = FSTConfiguration.createDefaultConfiguration();
 
-    public static byte[] fstSerizlize(Serializable obj){
-        return configuration.asByteArray(obj);
-    }
-    public static Object fstUnSerizlize(byte[] src){
-        return configuration.asObject(src);
-    }
+//    public static byte[] fstSerizlize(Serializable obj){
+//        return configuration.asByteArray(obj);
+//    }
+//    public static Object fstUnSerizlize(byte[] src){
+//        return configuration.asObject(src);
+//    }
 
     static Resource getResource(int size){
         Resource resource = new Resource();

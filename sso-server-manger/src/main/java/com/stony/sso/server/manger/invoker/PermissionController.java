@@ -76,4 +76,11 @@ public class PermissionController implements PermissionService {
         permissionContext.setPermissions(permissions);
         return permissionContext;
     }
+
+    @Override
+    public PermissionContext getMenus(String appKey, String username) {
+        PermissionContext permissionContext = new PermissionContext();
+        permissionContext.setMenus(authorizationService.findMenusByAppUser(appKey, username));
+        return permissionContext;
+    }
 }

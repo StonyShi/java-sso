@@ -118,15 +118,19 @@ public class OAuth2Realm extends AuthorizingRealm {
 
 
     /**
-     *  返回授权信息
+     *  返回授权资源信息
      * @return username,roles,resources
      */
     private PermissionEntity postPermission(String code){
         try {
-            String accessToken = extractAccessToken(code);
-            logger.info("code = {}, accessToken = {}", code, accessToken);
-            PermissionEntity entity = postPermissionEntityByToken(accessToken);
-            putTokenCache(entity.getUsername(), accessToken);
+            OAuthAccessTokenResponse tokenInfo = postTokenInfo(code);
+            logger.info("code = {}, accessToken = {}, refreshToken = {}", code, tokenInfo.getAccessToken(),tokenInfo.getRefreshToken());
+            PermissionEntity entity = postPermissionEntityByToken(tokenInfo.getAccessToken());
+            entity.setCode(code);
+            entity.setAccessToken(tokenInfo.getAccessToken());
+            entity.setRefreshToken(tokenInfo.getRefreshToken());
+            entity.setExpiresIn(tokenInfo.getExpiresIn());
+            putTokenCache(entity.getUsername(), tokenInfo.getAccessToken());
             return entity;
         } catch (Exception e) {
             logger.error(code + " 获取资源错误", e);
@@ -146,7 +150,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         String body = resourceResponse.getBody();
         return JSON.parseObject(body, PermissionEntity.class);
     }
-    private String extractAccessToken(String code){
+    private OAuthAccessTokenResponse postTokenInfo(String code){
         logger.info("code = {}, accessTokenUrl = {}, clientId = {}, clientSecret = {}, redirectUrl = {}", code, accessTokenUrl, clientId, clientSecret, redirectUrl);
         try {
             OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
@@ -161,7 +165,10 @@ public class OAuth2Realm extends AuthorizingRealm {
             OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
             expiredSeconds = oAuthResponse.getExpiresIn();
             lastMilliseconds = System.currentTimeMillis();
-            return oAuthResponse.getAccessToken();
+            if(oAuthResponse == null || oAuthResponse.getAccessToken() == null){
+                throw new OAuth2AuthenticationException("获取token异常");
+            }
+            return oAuthResponse;
         } catch (Exception e) {
             e.printStackTrace();
             throw new OAuth2AuthenticationException(e);
@@ -279,7 +286,7 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     /**
      * 废弃请使用
-     * @see #extractAccessToken(String)
+     * @see #postTokenInfo(String)
      * @param code
      * @return
      */
@@ -287,9 +294,9 @@ public class OAuth2Realm extends AuthorizingRealm {
     private String extractUsername(String code) {
         try {
             OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
-            String accessToken = extractAccessToken(code);
+            OAuthAccessTokenResponse tokenInfo = postTokenInfo(code);
             OAuthClientRequest userInfoRequest = new OAuthBearerClientRequest(userInfoUrl)
-                    .setAccessToken(accessToken).buildQueryMessage();
+                    .setAccessToken(tokenInfo.getAccessToken()).buildQueryMessage();
             OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
             return resourceResponse.getBody();
         } catch (Exception e) {

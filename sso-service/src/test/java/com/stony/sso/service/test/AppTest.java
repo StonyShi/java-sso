@@ -1,13 +1,14 @@
-package com.car.sqoil.test;
+package com.stony.sso.service.test;
 
 
+import com.stony.sso.cache.redis.JedisTemplate;
+import com.stony.sso.commons.JacksonUtil;
 import com.stony.sso.facade.entity.*;
-import com.car.sqoil.facade.security.enums.ResourceType;
-import com.car.sqoil.facade.security.service.*;
+import com.stony.sso.facade.enums.ResourceType;
+import com.stony.sso.facade.service.*;
+import com.stony.sso.service.helper.PasswordHelper;
 import com.stony.sso.service.mapper.AppMapper;
 import com.stony.sso.service.mapper.UserMapper;
-import com.zhuanche.car.cache.redis.JedisSentinelTemplate;
-import com.zhuanche.car.commons.util.JacksonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,14 +33,14 @@ import java.util.*;
 //@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/spring-context.xml")
-@TransactionConfiguration(transactionManager = "sqoilTransactionManager")
+@TransactionConfiguration(transactionManager = "dataSourceTransactionManager")
 public class AppTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AppTest.class);
 
 
     @javax.annotation.Resource
-    public JedisSentinelTemplate jedisSentinelTemplate;
+    public JedisTemplate jedisTemplate;
 
     @javax.annotation.Resource
     UserMapper userMapper;
@@ -161,7 +162,7 @@ public class AppTest {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false, rollbackFor = RuntimeException.class)
     @Test
     public void testResourceService2(){
-        jedisSentinelTemplate.del("com.car.sqoil.service.security.service.ResourceServiceImpl_findPermissions");
+        jedisTemplate.del("com.car.sqoil.service.security.service.ResourceServiceImpl_findPermissions");
         Set<Long> resourceIds = new HashSet<>();
         resourceIds.add(11L);
         resourceIds.add(13L);
@@ -510,5 +511,26 @@ public class AppTest {
         logger.info("--------------------------------------------------------");
         logger.info("all = {}", all);
         logger.info("--------------------------------------------------------");
+    }
+
+
+    @Test
+    public void test_createUser(){
+        User user = new User();
+        user.setUsername("blue");
+        user.setOrganizationId(3L);
+        user.setLocked(0);
+        user.setPassword("123456");
+        user.setSea("123456");
+        user.setPhone("13910208011");
+        user.setEmail("blue@110.com");
+
+//        PasswordHelper passwordHelper = new PasswordHelper();
+//        passwordHelper.encryptPassword(user);
+
+        System.out.println(user);
+
+        User createUser = userService.createUser(user);
+        System.out.println(createUser);
     }
 }

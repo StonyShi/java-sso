@@ -137,6 +137,7 @@
                                     </#if>
                                 </tr>
                                 </#list>
+                                </tbody>
                             </table>
                         </div>
                     </div>

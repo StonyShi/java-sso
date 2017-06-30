@@ -70,7 +70,6 @@
                 <entry key="media_js_url" value="${media_js_url}" />
                 <entry key="media_css_url" value="${media_css_url}" />
                 <entry key="media_image_url" value="${media_image_url}" />
-                <entry key="wx_resources_url" value="${wx_resources_url}" />
             </map>
         </property>
     </bean>

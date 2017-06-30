@@ -1,5 +1,7 @@
 package com.stony.sso.facade.service;
 
+import com.stony.sso.facade.entity.OAuthToken;
+
 /**
  * <p>Created with car-facade-security.</p>
  * <p>User: Stony</p>
@@ -13,14 +15,21 @@ public interface OAuthService {
      * @param authCode
      * @param username
      */
-    public void addAuthCode(String authCode, String username);
+    void addAuthCode(String authCode, String username);
 
     /**
      * 添加 access token
      * @param accessToken
-     * @param username
+     * @param token
      */
-    public void addAccessToken(String accessToken, String username);
+    void addAccessToken(String accessToken, OAuthToken token);
+
+    /**
+     * 添加 refreshToken
+     * @param refreshToken
+     * @param token
+     */
+    void addRefreshToken(String refreshToken, OAuthToken token);
 
     /**
      * 验证auth code是否有效
@@ -37,6 +46,13 @@ public interface OAuthService {
     boolean checkAccessToken(String accessToken);
 
     /**
+     *
+     * @param refreshToken
+     * @return
+     */
+    boolean checkRefreshToken(String refreshToken);
+
+    /**
      * 根据auth code获取用户名
      * @param authCode
      * @return
@@ -44,11 +60,11 @@ public interface OAuthService {
     String getUsernameByAuthCode(String authCode);
 
     /**
-     * 根据access token获取用户名
-     * @param accessToken
+     * 根据用户token
+     * @param token
      * @return
      */
-    String getUsernameByAccessToken(String accessToken);
+    OAuthToken getToken(String token);
 
     /**
      * auth code , access token 过期时间
@@ -56,17 +72,19 @@ public interface OAuthService {
      */
     long getExpireIn();
 
+    long getRefreshTokenExpireIn();
+
     /**
      * 检查客户端id是否存在
      * @param appKey
      * @return
      */
-    public boolean checkClientId(String appKey);
+    boolean checkClientId(String appKey);
 
     /**
      * 坚持客户端安全KEY是否存在
      * @param appSecret
      * @return
      */
-    public boolean checkClientSecret(String appSecret);
+    boolean checkClientSecret(String appSecret);
 }

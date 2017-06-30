@@ -122,12 +122,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.findAll();
     }
 
-    /**
-     * 根据权限限制性查询
-     */
-    public List<User> findAllUser(Integer userType) {
-        return userMapper.findAllUser(userType);
-    }
 
     /**
      * 根据用户名查找用户

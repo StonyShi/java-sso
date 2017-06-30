@@ -1,6 +1,5 @@
-package com.car.sqoil.test.main;
+package com.stony.sso.service.test.main;
 
-import com.alibaba.dubbo.common.serialize.support.SerializableClassRegistry;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -17,7 +16,7 @@ public class DubboProvider {
             ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/spring-context.xml");
             context.start();
             System.out.println("################################### --STARTED-- ##################################################");
-            System.out.println("getRegisteredClasses : " + SerializableClassRegistry.getRegisteredClasses());
+//            System.out.println("getRegisteredClasses : " + SerializableClassRegistry.getRegisteredClasses());
             System.out.println("Dubbo " + context + " started!");
         } catch (Exception e) {
             System.out.println(e.getMessage());

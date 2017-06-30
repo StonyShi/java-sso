@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 注解缓存 -->
+    <bean id="cachez" class="com.stony.sso.cache.support.jedis.CachezJedis" >
+        <property name="jedisTemplate" ref="jedisTemplate" />
+    </bean>
+    <bean id="cachezMapManager" class="com.stony.sso.cache.support.DefaulteCachezManager">
+        <property name="cachez" ref="cachez"/>
+    </bean>
+    <bean id="cacheManagerAspect" class="com.stony.sso.cache.aspect.CacheManagerAspect">
+        <property name="cachezManager" ref="cachezMapManager"/>
+    </bean>
+</beans>

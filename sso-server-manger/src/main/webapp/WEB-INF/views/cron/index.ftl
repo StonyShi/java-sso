@@ -5,8 +5,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="${media_url}/themes/bootstrap/easyui.min.css" rel="stylesheet" type="text/css"/>
-    <link href="${media_url}/themes/icon.css" rel="stylesheet" type="text/css" />
+    <link href="<@global.media/>themes/bootstrap/easyui.min.css" rel="stylesheet" type="text/css"/>
+    <link href="<@global.media/>themes/icon.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .line
         {

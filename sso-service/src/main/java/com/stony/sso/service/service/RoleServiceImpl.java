@@ -87,10 +87,6 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findAll();
     }
 
-    @Override
-    public List<Role> findAllRole(Integer roleType) {
-        return roleMapper.findAllRole(roleType);
-    }
 
     @Cachezable(key = "'Roles_' + T(com.zhuanche.car.commons.util.CollectionUtil).arrayLongConvertStr(#roleIds,'_')",
             prefix = SecurityKeys.KEY_FIND_ROLE, type = Cachezable.CachezType.SET, watch = "RolesByIds")

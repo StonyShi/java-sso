@@ -40,14 +40,5 @@
         </property>
     </bean>
 
-    <!--<car:global id="globalPropertiesHolder" init-method="init"/>-->
-    <bean class="com.car.sqoil.test.FstConfigInitEvent" id="configInitEvent"/>
-    <car:optimizer base-package="com.car.sqoil.facade" />
-
-    <import resource="classpath:service/service-db-abs.xml"/>
-    <!--<import resource="classpath:service/service-db-rentcar.xml"/>-->
-    <!--<import resource="classpath:service/service-db-monitor.xml"/>-->
-    <!--<import resource="classpath:service/service-db-manager.xml"/>-->
-    <!--<import resource="classpath:service/service-db-business.xml"/>-->
-    <import resource="classpath:service/service-db-sqoil.xml"/>
-</beans>		        
+   
+</beans>

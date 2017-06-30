@@ -44,8 +44,8 @@ public class AuthorizationController {
         User user = userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
         model.addAttribute("list", authorizationService.findAllApp(user.getUserType()));
         model.addAttribute("apps", appService.findAllApp(user.getUserType()));
-        model.addAttribute("users", userService.findAllUser(user.getUserType()));
-        model.addAttribute("roles", roleService.findAllRole(user.getUserType()));
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.findAll());
         model.addAttribute("userId", user.getId());
         return new MenusView("authorization/list");
     }

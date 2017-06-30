@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>com.stony.sso</groupId>
+            <artifactId>sso-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.stony.sso</groupId>
             <artifactId>sso-commons-security</artifactId>
             <version>${project.version}</version>
         </dependency>

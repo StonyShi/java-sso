@@ -13,23 +13,24 @@
 
     <mvc:resources mapping="/static/**" location="/static/"/>
     <mvc:view-controller path="/" view-name="index"/>
-    <bean id="adminSessionUserManager" class="com.zhuanche.car.security.client.session.AdminSessionUserManagerImpl" >
+
+    <bean id="adminSessionUserManager" class="com.stony.sso.client.session.AdminSessionUserManagerImpl" >
         <property name="userService" ref="userService" />
     </bean>
-    <bean id="menusManager" class="com.zhuanche.car.security.client.handler.MenusManagerImpl" />
+    <bean id="menusManager" class="com.stony.sso.client.handler.MenusManagerImpl" />
     <mvc:annotation-driven >
         <mvc:argument-resolvers>
-            <bean class="com.zhuanche.car.web.resolver.AdminBaseFormArgumentResolver">
+            <bean class="com.stony.sso.web.resolver.AdminBaseFormArgumentResolver">
                 <property name="adminSessionUserManager" ref="adminSessionUserManager"/>
             </bean>
         </mvc:argument-resolvers>
         <mvc:return-value-handlers>
-            <bean class="com.zhuanche.car.security.client.handler.MenusViewMethodReturnValueHandler" >
+            <bean class="com.stony.sso.client.handler.MenusViewMethodReturnValueHandler" >
                 <property name="menusManager" ref="menusManager" />
             </bean>
         </mvc:return-value-handlers>
     </mvc:annotation-driven>
-    <context:component-scan base-package="com.zhuanche.car.customer.admin.controller"/>
+    <context:component-scan base-package="com.stony.sso.admin.monitor.controller"/>
     <aop:aspectj-autoproxy  proxy-target-class="true"/>
 
     <import resource="classpath:webmvc/mvc-servlet-shiro.xml"/>

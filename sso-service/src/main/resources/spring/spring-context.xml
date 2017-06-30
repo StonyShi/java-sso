@@ -26,21 +26,13 @@
 
     <import resource="classpath:spring/spring-redis-cluster.xml"/>
     <import resource="classpath:spring/spring-shiro.xml"/>
+    <import resource="classpath:spring/spring-ctx-cache.xml" />
     <import resource="classpath:spring/spring-ctx-repository.xml" />
     <import resource="classpath:spring/spring-ctx-mybatis.xml" />
     <!--<import resource="classpath:spring/spring-dubbo-provider.xml" />-->
     <!--<import resource="classpath:spring/spring-dubbo-reference.xml"/>-->
 
 
-    <!-- 注解缓存 -->
-    <bean id="cachez" class="com.stony.sso.cache.support.jedis.CachezJedis" >
-        <property name="jedisTemplate" ref="jedisTemplate" />
-    </bean>
-    <bean id="cachezMapManager" class="com.stony.sso.cache.support.DefaulteCachezManager">
-        <property name="cachez" ref="cachez"/>
-    </bean>
-    <bean id="cacheManagerAspect" class="com.stony.sso.cache.aspect.CacheManagerAspect">
-        <property name="cachezManager" ref="cachezMapManager"/>
-    </bean>
+
 
 </beans>

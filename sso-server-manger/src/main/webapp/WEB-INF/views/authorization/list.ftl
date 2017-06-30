@@ -161,14 +161,8 @@
                                     <td class="hidden-480">${(item.role.role)!""}</td>
                                     <td class="center hidden-480"><#if (item.insertDate)??>${(item.insertDate)?datetime}</#if></td>
                                     <td><a  href="javascript:showView(${(item.roleId)!})" class="btn mini blue-stripe" id="showView">View</a></td>
-                                    <td>
-                                        <#if userId != item.userId >
-                                            <a  href="javascript:disableView(${(item.userId)!},${(item.appId)!},${(item.roleId)!},${index})"
-                                                class="btn mini black" id="disableView_${index}"><i class="icon-trash"></i> Delete</a>
-                                        <#else>
-                                            ——
-                                        </#if>
-                                    </td>
+                                    <td><a  href="javascript:disableView(${(item.userId)!},${(item.appId)!},${(item.roleId)!},${index})"
+                                            class="btn mini black" id="disableView_${index}"><i class="icon-trash"></i> Delete</a></td>
                                 </tr>
                                 <#assign index = index + 1 />
                                 </#list>
@@ -455,10 +449,10 @@
             ],
             // set the initial value
             "iDisplayLength": -1,
-            "sDom": "<'row-fluid't<'row-fluid'<'span6'li>p>>",
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
-                "sLengthMenu": "_MENU_ ",
+                "sLengthMenu": "_MENU_ records per page",
                 "oPaginate": {
                     "sPrevious": "Prev",
                     "sNext": "Next"

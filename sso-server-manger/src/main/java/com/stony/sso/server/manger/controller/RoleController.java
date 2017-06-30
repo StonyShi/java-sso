@@ -49,10 +49,7 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.GET)
     public MenusView list(Model model) {
         logger.debug("Enter");
-        /*获取当前登录人信息*/
-        User user=userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
-        model.addAttribute("list", roleService.findAllRole(user.getUserType()));
-        model.addAttribute("userType",user.getUserType());
+        model.addAttribute("list", roleService.findAll());
         return new MenusView("role/list");
     }
 

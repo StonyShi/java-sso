@@ -60,15 +60,11 @@ public interface UserService {
     List<User> findAll();
 
     /**
-     * 根据权限限制性查询
-     */
-    List<User> findAllUser(Integer userType);
-    /**
      * 根据用户名查找用户
      * @param username
      * @return
      */
-    public User findByUsername(String username);
+    User findByUsername(String username);
 
     /**
      * 返回用户ID，User 键值对

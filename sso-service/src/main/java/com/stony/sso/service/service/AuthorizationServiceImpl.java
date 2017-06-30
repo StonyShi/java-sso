@@ -204,7 +204,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             if (resource.isButton()) {
                 continue;
             }
-            String url_old = resource.getUrl() == null ? "":resource.getUrl();
+            String url_old = resource.getUrl() == null ? "" : resource.getUrl();
             resource.setUrl(helper.replacePlaceholders(url_old, maps));
             logger.debug("【转换地址】url={};【转换后】url={}", url_old, resource.getUrl());
             menus.add(resource);
@@ -215,8 +215,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public PermissionEntity getPermissionEntity(String appKey, String username) {
         PermissionEntity entity = new PermissionEntity();
+        User user = userService.findByUsername(username);
         entity.setResources(findResources(appKey, username));
         entity.setRoles(findRoles(appKey, username));
+        entity.setUserId(user.getId());
         return entity;
     }
 
