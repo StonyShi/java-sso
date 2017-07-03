@@ -42,6 +42,4 @@
 
     <bean id="passwordHelper" class="com.stony.sso.service.helper.PasswordHelper"/>
 
-
-
 </beans>

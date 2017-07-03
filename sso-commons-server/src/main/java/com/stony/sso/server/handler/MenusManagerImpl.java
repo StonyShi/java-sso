@@ -1,6 +1,7 @@
 package com.stony.sso.server.handler;
 
 import com.stony.sso.commons.security.SecurityConstants;
+import com.stony.sso.facade.entity.PermissionEntity;
 import com.stony.sso.facade.entity.Resource;
 import com.stony.sso.facade.service.AuthorizationService;
 import com.stony.sso.facade.service.MenusManager;
@@ -28,7 +29,8 @@ public class MenusManagerImpl implements MenusManager {
     @Override
     public List<Resource> getMenus(){
         Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipal();
+        PermissionEntity entity = (PermissionEntity) subject.getPrincipal();
+        String username = entity.getUsername(); //(String) subject.getPrincipal();
         List<Resource> menus = authorizationService.findMenusByAppUser(SecurityConstants.SERVER_APP_KEY, username);
         logger.debug("username = {}, menus = {}",username, menus);
         return menus;

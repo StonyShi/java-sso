@@ -51,18 +51,14 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public PermissionContext getMenus(String appKey, String username) {
+    public List<Resource> getMenus(String appKey, String username) {
         logger.info("Enter [appKey : {}, username : {}]", appKey, username);
-        PermissionContext permissionContext = new PermissionContext();
-        permissionContext.setMenus(authorizationService.findMenusByAppUser(appKey, username));
-        return permissionContext;
+        return authorizationService.findMenusByAppUser(appKey, username);
     }
 
     @Override
-    public PermissionContext getResources() {
+    public List<Resource> getResources(String appKey) {
         logger.info("Enter.");
-        PermissionContext permissionContext = new PermissionContext();
-        permissionContext.setResources(resourceService.findAll());
-        return permissionContext;
+        return resourceService.findAll();
     }
 }

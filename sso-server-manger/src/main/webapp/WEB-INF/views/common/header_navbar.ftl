@@ -216,7 +216,7 @@
                 <li class="dropdown user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img alt="" src="${media_image_url}/avatar1_small.jpg" />
-                        <span class="username"><@shiro.principal/></span>
+                        <span class="username"><@shiro.principal property="username"/></span>
                         <i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">

@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.stony.sso.cache.annotation.Cachezable;
 import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.MapPlaceholderHelper;
+import com.stony.sso.commons.StringUtils;
 import com.stony.sso.facade.entity.App;
 import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.keys.SecurityKeys;
@@ -194,6 +195,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public List<Resource> findMenusByAppUser(String appKey, String username) {
+        if(StringUtils.isEmpty(username)){
+            return Collections.EMPTY_LIST;
+        }
         List<Resource> resourceList = findResources(appKey, username);
         return convertMenus(resourceList);
     }

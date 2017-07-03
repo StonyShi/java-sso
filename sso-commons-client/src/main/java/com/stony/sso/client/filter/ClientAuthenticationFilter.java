@@ -31,6 +31,8 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationFilter.class);
 
+    String redirectUrl;
+
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         logger.info("Enter");
@@ -41,13 +43,13 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         logger.info("Enter");
-        String backUrl = request.getParameter(SecurityConstants.PARAMETER_BACKURL);
-        String fallbackUrl = getDefaultBackUrl(WebUtils.toHttp(request));
-        if(StringUtils.isEmpty(backUrl)){
-            backUrl = fallbackUrl;
-        }
-        saveRequest(request, backUrl, fallbackUrl);
-        redirectToLogin(request, response, fallbackUrl);
+//        String backUrl = request.getParameter(SecurityConstants.PARAMETER_BACKURL);
+        String backUrl = getDefaultBackUrl(WebUtils.toHttp(request));
+//        if(StringUtils.isEmpty(backUrl)){
+//            backUrl = fallbackUrl;
+//        }
+        saveRequest(request, backUrl, backUrl);
+        redirectToLogin(request, response, backUrl);
         return false;
     }
 
@@ -75,7 +77,7 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
         SavedRequest savedRequest = new ClientSavedRequest(httpRequest, backUrl);
         session.setAttribute(WebUtils.SAVED_REQUEST_KEY, savedRequest);
         logger.info("session = [{},{}], backUrl = {}", session.getId(), session.getHost(), backUrl);
-        logger.info("session = [{},{}], fallbackUrl = {}", session.getId(), session.getHost(), fallbackUrl);
+//        logger.info("session = [{},{}], fallbackUrl = {}", session.getId(), session.getHost(), fallbackUrl);
     }
     private String getDefaultBackUrl(HttpServletRequest request) {
         String scheme = request.getScheme();
@@ -91,9 +93,16 @@ public class ClientAuthenticationFilter extends AuthenticationFilter {
             backUrl.append(":").append(String.valueOf(port));
         }
         backUrl.append(contextPath);
-        backUrl.append(getSuccessUrl());
+        backUrl.append(getRedirectUrl());
         ClientInfoHold.setLoginRedirectUrl(backUrl.toString());
         return backUrl.toString();
     }
 
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
 }

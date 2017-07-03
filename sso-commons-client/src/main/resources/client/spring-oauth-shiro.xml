@@ -124,11 +124,12 @@
     <bean id="oAuth2AuthenticationFilter" class="com.stony.sso.client.filter.OAuth2AuthenticationFilter">
         <property name="authcCodeParam" value="code"/>
         <property name="failureUrl" value="/oauth2Failure"/>
-
+        <property name="successUrl" value="${client.success.url}" />
     </bean>
     <!-- 登陆 过滤器 -->
     <bean id="clientAuthenticationFilter" class="com.stony.sso.client.filter.ClientAuthenticationFilter">
         <property name="successUrl" value="${client.success.url}"/>
+        <property name="redirectUrl" value="${client.redirect.url}" />
     </bean>
 
     <!-- 登出 -->

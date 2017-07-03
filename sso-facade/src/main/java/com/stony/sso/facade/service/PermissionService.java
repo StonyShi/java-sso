@@ -1,7 +1,10 @@
 package com.stony.sso.facade.service;
 
 import com.stony.sso.facade.context.PermissionContext;
+import com.stony.sso.facade.entity.Resource;
 import org.apache.shiro.session.mgt.SimpleSession;
+
+import java.util.List;
 
 /**
  * <p>Created with IntelliJ IDEA. </p>
@@ -20,7 +23,7 @@ public interface PermissionService {
      */
     PermissionContext getPermissions(String appKey, String username);
 
-    PermissionContext getMenus(String appKey, String username);
+    List<Resource> getMenus(String appKey, String username);
 
-    PermissionContext getResources();
+    List<Resource> getResources(String appKey);
 }

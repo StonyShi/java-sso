@@ -32,10 +32,12 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
+
     <!-- /invoker/permission -->
     <bean id="permissionServiceInvoker" class="com.stony.sso.server.manger.invoker.PermissionServiceInvoker"/>
     <bean name="/invoker/permission" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
         <property name="service" ref="permissionServiceInvoker"/>
         <property name="serviceInterface" value="com.stony.sso.facade.service.PermissionService"/>
     </bean>
+
 </beans>

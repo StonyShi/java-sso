@@ -82,7 +82,7 @@
     <!-- heart live -->
     <filter>
         <filter-name>liveFilter</filter-name>
-        <filter-class>com.zhuanche.car.web.fliter.LiveFilter</filter-class>
+        <filter-class>com.stony.sso.web.fliter.LiveFilter</filter-class>
         <async-supported>true</async-supported>
     </filter>
     <filter-mapping>

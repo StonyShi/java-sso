@@ -85,29 +85,29 @@
                     <stopWait>10</stopWait>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.stony.sso</groupId>
-                                    <artifactId>sso-config</artifactId>
-                                    <version>${project.version}</version>
-                                    <outputDirectory>${project.build.directory}/sso-commons-config</outputDirectory>
-                                    <includes>META-INF/assembly/**</includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>unpack</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>unpack</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<artifactItems>-->
+                                <!--<artifactItem>-->
+                                    <!--<groupId>com.stony.sso</groupId>-->
+                                    <!--<artifactId>sso-config</artifactId>-->
+                                    <!--<version>${project.version}</version>-->
+                                    <!--<outputDirectory>${project.build.directory}/sso-commons-config</outputDirectory>-->
+                                    <!--<includes>META-INF/assembly/**</includes>-->
+                                <!--</artifactItem>-->
+                            <!--</artifactItems>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>

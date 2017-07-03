@@ -1,6 +1,7 @@
 package com.stony.sso.client.factory;
 
 
+import com.stony.sso.client.ClientInfoHold;
 import com.stony.sso.commons.StringUtils;
 import com.stony.sso.facade.entity.Resource;
 import com.stony.sso.facade.service.PermissionService;
@@ -70,7 +71,7 @@ public class ClientShiroFilterFactoryBean extends ShiroFilterFactoryBean impleme
     public void afterPropertiesSet() throws Exception {
         doInitFilterChainDefinitionsStr(this.filterChainDefinitionsStr);
 
-        List<Resource> resources = permissionService.getResources().getResources();
+        List<Resource> resources = permissionService.getResources(ClientInfoHold.APP_KEY);
         for(Resource resource : resources){
             if(StringUtils.isNotEmpty(resource.getUrl()) && StringUtils.isNotEmpty(resource.getPermission())) {
                 getFilterChainDefinitionMap().put(resource.getUrl(),formatMessage(PREMISSION_STRING,resource.getPermission()));
