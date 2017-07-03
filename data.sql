@@ -7,7 +7,7 @@
 #
 # Host: 10.0.11.172 (MySQL 5.5.5-10.0.14-MariaDB-log)
 # Database: sso
-# Generation Time: 2017-06-23 02:06:42 +0000
+# Generation Time: 2017-07-03 07:38:12 +0000
 # ************************************************************
 
 
@@ -46,6 +46,31 @@ VALUES
 	(3,'sso_url','http://127.0.0.1:8099','sso地址',1,'2016-09-06 15:34:18',NULL);
 
 /*!40000 ALTER TABLE `global_variable` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table operation_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `operation_log`;
+
+CREATE TABLE `operation_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `operation_type` int(10) DEFAULT '0' COMMENT '0 登陆',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `operation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';
+
+LOCK TABLES `operation_log` WRITE;
+/*!40000 ALTER TABLE `operation_log` DISABLE KEYS */;
+
+INSERT INTO `operation_log` (`id`, `operation_type`, `user_id`, `operation_time`)
+VALUES
+	(5,0,1,'2017-07-03 10:47:55'),
+	(6,0,1,'2017-07-03 11:08:33');
+
+/*!40000 ALTER TABLE `operation_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -92,7 +117,9 @@ VALUES
 	(21,'APP-SUPPORT','c487d790-36aa-3956-8b40-411133d046ee','7b16c47a-eabb-34ae-acf7-6c643a8428df',1,'2016-05-31 20:20:56',NULL),
 	(24,'APP-MANAGER','c3cd89f8-8a47-30c9-834b-03b248924a96','1918f439-6a43-3fb4-a004-49574b943ced',1,'2016-06-12 10:21:57',NULL),
 	(25,'APP-BOSS','1cf212a6-af29-3707-b976-7b82f7b9c83b','269d09e0-333b-335c-a034-c922a9373dfe',1,'2016-06-12 10:22:26',NULL),
-	(26,'APP-BUSINESS','987252a4-5afc-3d2b-8cfb-e1460e8e62d7','b3a05320-fc5c-3aac-8dfd-344cf8896b94',1,'2016-06-12 10:35:40',NULL);
+	(26,'APP-BUSINESS','987252a4-5afc-3d2b-8cfb-e1460e8e62d7','b3a05320-fc5c-3aac-8dfd-344cf8896b94',1,'2016-06-12 10:35:40',NULL),
+	(214,'测试类','e18dd2a2-2dfd-3701-8ea0-8d33a5de616e','50ea8f26-a221-352c-a803-0173ec07488c',1,'2017-06-30 12:39:01',NULL),
+	(215,'cccc','e18e55e3-a392-37fb-8b8b-f28b3c223c9d','c779a103-3185-314e-aaea-1afee2fe7194',1,'2017-06-30 12:44:57',NULL);
 
 /*!40000 ALTER TABLE `sys_app` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -515,39 +542,40 @@ LOCK TABLES `sys_resource` WRITE;
 INSERT INTO `sys_resource` (`id`, `name`, `type`, `url`, `parent_id`, `parent_ids`, `permission`, `available`, `icon`, `insert_date`, `update_date`)
 VALUES
 	(1,'系统管理','MENU','',0,'0/','admin:menu',1,'icon-cog','2016-05-12 19:34:25',NULL),
-	(11,'组织机构管理','MENU','/organization',1,'0/1/','admin:organization:menu',1,'icon-group','2016-05-12 19:34:25','2016-06-22 13:38:49'),
-	(12,'组织机构新增','BUTTON','',11,'0/1/11/','admin:organization:create',1,'','2016-05-12 19:34:25','2016-06-22 13:39:01'),
-	(13,'组织机构修改','BUTTON','',11,'0/1/11/','admin:organization:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(14,'组织机构删除','BUTTON','',11,'0/1/11/','admin:organization:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(15,'组织机构查看','BUTTON','',11,'0/1/11/','admin:organization:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(11,'组织机构管理','MENU','/organization',1,'0/1/','admin:organization:menu',1,'icon-group','2016-05-12 19:34:25','2017-06-30 13:22:43'),
+	(12,'组织机构新增','BUTTON','/organization/create',11,'0/1/11/','admin:organization:create',1,'','2016-05-12 19:34:25','2017-06-30 13:21:14'),
+	(13,'组织机构修改','BUTTON','/organization/update',11,'0/1/11/','admin:organization:update',1,'','2016-05-12 19:34:25','2017-06-30 13:21:24'),
+	(14,'组织机构删除','BUTTON','/organization/delete/*',11,'0/1/11/','admin:organization:delete',1,'','2016-05-12 19:34:25','2017-06-30 13:21:48'),
+	(15,'组织机构查看','BUTTON','/organization/view/*',11,'0/1/11/','admin:organization:view',1,'','2016-05-12 19:34:25','2017-06-30 13:21:39'),
 	(16,'应用管理','MENU','/app',1,'0/1/','admin:app:menu',1,' icon-apple','2016-05-12 19:34:25',NULL),
-	(17,'应用新增','BUTTON','',16,'0/1/16/','admin:app:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(18,'应用修改','BUTTON','',16,'0/1/16/','admin:app:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(19,'应用删除','BUTTON','',16,'0/1/16/','admin:app:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(20,'应用查看','BUTTON','',16,'0/1/16/','admin:app:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(17,'应用新增','BUTTON','/app/create',16,'0/1/16/','admin:app:create',1,'','2016-05-12 19:34:25','2017-06-30 12:48:57'),
+	(18,'应用修改','BUTTON','/app/update',16,'0/1/16/','admin:app:update',1,'','2016-05-12 19:34:25','2017-06-30 12:50:33'),
+	(19,'应用删除','BUTTON','/app/delete/*',16,'0/1/16/','admin:app:delete',1,'','2016-05-12 19:34:25','2017-06-30 12:50:22'),
+	(20,'应用查看','BUTTON','/app/view/*',16,'0/1/16/','admin:app:view',1,'','2016-05-12 19:34:25','2017-06-30 13:16:20'),
 	(21,'用户管理','MENU','/user',1,'0/1/','admin:user:menu',1,'icon-user','2016-05-12 19:34:25',NULL),
-	(23,'用户修改','BUTTON','',21,'0/1/21/','admin:user:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(24,'用户删除','BUTTON','',21,'0/1/21/','admin:user:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(25,'用户查看','BUTTON','',21,'0/1/21/','admin:user:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(23,'用户修改','BUTTON','/user/update',21,'0/1/21/','admin:user:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(24,'用户删除','BUTTON','/user/delete/*',21,'0/1/21/','admin:user:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(25,'用户查看','BUTTON','/user/view/*',21,'0/1/21/','admin:user:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(26,'用户创建','BUTTON','/user/create',21,'0/1/21/','admin:user:create',1,'','2017-06-30 13:12:49',NULL),
 	(31,'资源管理','MENU','/resource',1,'0/1/','admin:resource:menu',1,'icon-globe','2016-05-12 19:34:25',NULL),
-	(32,'资源新增','BUTTON','',31,'0/1/31/','admin:resource:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(33,'资源修改','BUTTON','',31,'0/1/31/','admin:resource:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(34,'资源删除','BUTTON','',31,'0/1/31/','admin:resource:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(35,'资源查看','BUTTON','',31,'0/1/31/','admin:resource:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(32,'资源新增','BUTTON','/resource/create',31,'0/1/31/','admin:resource:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(33,'资源修改','BUTTON','/resource/update',31,'0/1/31/','admin:resource:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(34,'资源删除','BUTTON','/resource/delete/*',31,'0/1/31/','admin:resource:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(35,'资源查看','BUTTON','/resource/view/*',31,'0/1/31/','admin:resource:view',1,NULL,'2016-05-12 19:34:25',NULL),
 	(41,'角色管理','MENU','/role',1,'0/1/','admin:role:menu',1,'icon-eye-open','2016-05-12 19:34:25',NULL),
-	(42,'角色新增','BUTTON','',41,'0/1/41/','admin:role:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(43,'角色修改','BUTTON','',41,'0/1/41/','admin:role:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(44,'角色删除','BUTTON','',41,'0/1/41/','admin:role:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(45,'角色查看','BUTTON','',41,'0/1/41/','admin:role:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(42,'角色新增','BUTTON','/role/create',41,'0/1/41/','admin:role:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(43,'角色修改','BUTTON','/role/update',41,'0/1/41/','admin:role:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(44,'角色删除','BUTTON','/role/delete/*',41,'0/1/41/','admin:role:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(45,'角色查看','BUTTON','/role/view/*',41,'0/1/41/','admin:role:view',1,NULL,'2016-05-12 19:34:25',NULL),
 	(51,'授权管理','MENU','/authorization',1,'0/1/','admin:authorization:menu',1,'icon-key','2016-05-12 19:34:25',NULL),
-	(52,'授权新增','BUTTON','',51,'0/1/51/','admin:authorization:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(53,'授权修改','BUTTON','',51,'0/1/51/','admin:authorization:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(54,'授权删除','BUTTON','',51,'0/1/51/','admin:authorization:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(55,'授权查看','BUTTON','',51,'0/1/51/','admin:authorization:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(52,'授权新增','BUTTON','/authorization/create',51,'0/1/51/','admin:authorization:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(53,'授权修改','BUTTON','/authorization/update',51,'0/1/51/','admin:authorization:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(54,'授权删除','BUTTON','/authorization/delete/*',51,'0/1/51/','admin:authorization:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(55,'授权查看','BUTTON','/authorization/view/*',51,'0/1/51/','admin:authorization:view',1,NULL,'2016-05-12 19:34:25',NULL),
 	(65,'统计管理','MENU','',0,NULL,'monitor:statistics:menu',1,'icon-share-alt','2016-06-03 16:08:43','2016-07-08 13:29:01'),
-	(66,'司机统计','BUTTON','/statistics/driver',65,NULL,'monitor:statistics:driver:menu',1,'','2016-06-12 11:52:39','2016-06-22 16:05:51'),
-	(67,'司机统计列表','MENU','/statistics/driver/list',65,NULL,'monitor:statistics:driver:list',1,'icon-archive','2016-06-12 11:53:42','2016-06-22 16:06:00'),
-	(68,'订单列表','MENU','/statistics/order/list',65,NULL,'monitor:statistics:order:menu',1,'icon-sun','2016-06-12 11:56:44','2016-06-22 16:06:10'),
+	(66,'司机统计','BUTTON','/statistics/driver',65,NULL,'monitor:statistics:driver:menu',1,'','2016-06-12 11:52:39','2017-06-30 13:22:24'),
+	(67,'司机统计列表','MENU','${monitor_url}/statistics/driver/list',65,NULL,'monitor:statistics:driver:list',1,'icon-archive','2016-06-12 11:53:42','2017-06-30 13:23:00'),
+	(68,'订单列表','MENU','${monitor_url}/statistics/order/list',65,NULL,'monitor:statistics:order:menu',1,'icon-sun','2016-06-12 11:56:44','2017-06-30 13:23:11'),
 	(69,'图标管理','MENU','/icon',1,NULL,'admin:icon:menu',1,'icon-fire','2016-06-12 14:27:05','2016-06-22 13:46:05'),
 	(71,'主题颜色','BUTTON','',1,NULL,'admin:theme:color',1,'','2016-06-14 17:14:13','2016-06-22 13:45:49'),
 	(123,'定时任务表达式','MENU','/cron',1,NULL,'admin:cron:menu',1,'icon-time','2016-06-23 14:15:54',NULL),
@@ -576,7 +604,21 @@ CREATE TABLE `sys_role` (
   UNIQUE KEY `IDX_SYS_ROLE_N` (`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-INSERT INTO `sys_role` VALUES (1,'admin','超级管理员',1,'2016-05-12 19:34:25',NULL),(2,'app_manager','APP管理员',1,'2016-05-12 19:34:25','2016-06-20 10:25:33'),(3,'statistic','统计专员',1,'2016-05-12 19:34:25','2016-06-20 16:37:50'),(12,'kefu','客服',1,'2016-05-25 15:27:29',NULL),(15,'super','超级角色',1,'2016-05-25 15:24:58',NULL),(16,'sale','销售员',1,'2016-05-25 15:27:29',NULL),(25,'kefuzhuguan','客服主管',1,'2016-05-25 15:27:29',NULL),(38,'xiaoshouguanli','销售管理',1,'2016-06-16 11:23:56',NULL),(39,'caiwu','财务',1,'2016-06-16 11:25:37',NULL),(41,'test','测试',0,'2016-06-20 11:57:03','2016-06-20 14:11:33'),(42,'manage-admin','车队-管理员',1,'2016-06-22 14:39:56',NULL),(43,'support-test','',1,'2016-06-23 12:06:11',NULL),(44,'boss-admin','',1,'2016-06-23 17:30:34',NULL),(46,'moniter-admin','moniter系统',1,'2016-07-08 13:30:47',NULL);
+LOCK TABLES `sys_role` WRITE;
+/*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
+
+INSERT INTO `sys_role` (`id`, `role`, `description`, `available`, `insert_date`, `update_date`)
+VALUES
+	(1,'admin','超级管理员',1,'2016-05-12 19:34:25',NULL),
+	(2,'app_manager','APP管理员',1,'2016-05-12 19:34:25','2016-06-20 10:25:33'),
+	(3,'statistic','统计专员',1,'2016-05-12 19:34:25','2016-06-20 16:37:50'),
+	(43,'support-test','',1,'2016-06-23 12:06:11',NULL),
+	(44,'boss-admin','',1,'2016-06-23 17:30:34',NULL),
+	(46,'moniter-admin','moniter系统',1,'2016-07-08 13:30:47',NULL),
+	(47,'tes','test',0,'2017-06-29 18:07:09',NULL);
+
+/*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table sys_role_resource
@@ -700,20 +742,6 @@ VALUES
 	(1024,44,87,1,'2016-09-26 11:40:21',NULL),
 	(1025,44,88,1,'2016-09-26 11:40:21',NULL),
 	(1026,44,89,1,'2016-09-26 11:40:21',NULL),
-	(1058,1,67,1,'2016-10-08 18:47:44',NULL),
-	(1059,1,21,1,'2016-10-08 18:47:44',NULL),
-	(1060,1,66,1,'2016-10-08 18:47:44',NULL),
-	(1061,1,1,1,'2016-10-08 18:47:44',NULL),
-	(1062,1,68,1,'2016-10-08 18:47:44',NULL),
-	(1063,1,41,1,'2016-10-08 18:47:44',NULL),
-	(1064,1,123,1,'2016-10-08 18:47:44',NULL),
-	(1065,1,31,1,'2016-10-08 18:47:44',NULL),
-	(1066,1,51,1,'2016-10-08 18:47:44',NULL),
-	(1067,1,65,1,'2016-10-08 18:47:44',NULL),
-	(1068,1,71,1,'2016-10-08 18:47:44',NULL),
-	(1069,1,16,1,'2016-10-08 18:47:44',NULL),
-	(1070,1,11,1,'2016-10-08 18:47:44',NULL),
-	(1071,1,141,1,'2016-10-08 18:47:44',NULL),
 	(1072,12,159,1,'2016-10-13 13:25:42',NULL),
 	(1073,12,158,1,'2016-10-13 13:25:42',NULL),
 	(1074,12,176,1,'2016-10-13 13:25:42',NULL),
@@ -745,7 +773,42 @@ VALUES
 	(1100,12,161,1,'2016-10-13 13:25:42',NULL),
 	(1101,12,162,1,'2016-10-13 13:25:42',NULL),
 	(1102,12,163,1,'2016-10-13 13:25:42',NULL),
-	(1103,12,160,1,'2016-10-13 13:25:42',NULL);
+	(1103,12,160,1,'2016-10-13 13:25:42',NULL),
+	(1104,1,44,1,'2017-06-30 13:17:56',NULL),
+	(1105,1,66,1,'2017-06-30 13:17:56',NULL),
+	(1106,1,45,1,'2017-06-30 13:17:56',NULL),
+	(1107,1,67,1,'2017-06-30 13:17:56',NULL),
+	(1108,1,68,1,'2017-06-30 13:17:56',NULL),
+	(1109,1,69,1,'2017-06-30 13:17:56',NULL),
+	(1110,1,71,1,'2017-06-30 13:17:56',NULL),
+	(1111,1,51,1,'2017-06-30 13:17:56',NULL),
+	(1112,1,52,1,'2017-06-30 13:17:56',NULL),
+	(1113,1,53,1,'2017-06-30 13:17:56',NULL),
+	(1114,1,31,1,'2017-06-30 13:17:56',NULL),
+	(1115,1,54,1,'2017-06-30 13:17:56',NULL),
+	(1116,1,32,1,'2017-06-30 13:17:56',NULL),
+	(1117,1,55,1,'2017-06-30 13:17:56',NULL),
+	(1118,1,11,1,'2017-06-30 13:17:56',NULL),
+	(1119,1,33,1,'2017-06-30 13:17:56',NULL),
+	(1120,1,12,1,'2017-06-30 13:17:56',NULL),
+	(1121,1,34,1,'2017-06-30 13:17:56',NULL),
+	(1122,1,13,1,'2017-06-30 13:17:56',NULL),
+	(1123,1,35,1,'2017-06-30 13:17:56',NULL),
+	(1124,1,14,1,'2017-06-30 13:17:56',NULL),
+	(1125,1,15,1,'2017-06-30 13:17:56',NULL),
+	(1126,1,16,1,'2017-06-30 13:17:56',NULL),
+	(1127,1,17,1,'2017-06-30 13:17:56',NULL),
+	(1128,1,18,1,'2017-06-30 13:17:56',NULL),
+	(1129,1,19,1,'2017-06-30 13:17:56',NULL),
+	(1130,1,141,1,'2017-06-30 13:17:56',NULL),
+	(1131,1,1,1,'2017-06-30 13:17:56',NULL),
+	(1132,1,123,1,'2017-06-30 13:17:56',NULL),
+	(1133,1,41,1,'2017-06-30 13:17:56',NULL),
+	(1134,1,20,1,'2017-06-30 13:17:56',NULL),
+	(1135,1,42,1,'2017-06-30 13:17:56',NULL),
+	(1136,1,43,1,'2017-06-30 13:17:56',NULL),
+	(1137,1,21,1,'2017-06-30 13:17:56',NULL),
+	(1138,1,65,1,'2017-06-30 13:17:56',NULL);
 
 /*!40000 ALTER TABLE `sys_role_resource` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -778,7 +841,9 @@ LOCK TABLES `sys_user` WRITE;
 INSERT INTO `sys_user` (`id`, `organization_id`, `username`, `password`, `salt`, `locked`, `phone`, `email`, `avatar`, `insert_date`, `update_date`)
 VALUES
 	(1,1,'admin','d3c59d25033dbf980d29554025c23a75','8d78869f470951332959580424d4bf4f',0,'19230201033','admin@123.com',NULL,'2016-05-12 18:45:37',NULL),
-	(2,4,'stony','3aa21e6b501f6e6cadc50d26188175a8','ad614f07308852096cccd6637ae14b46',0,'18210208025','stony@123.com',NULL,'2016-05-12 18:45:37',NULL);
+	(2,4,'stony','3aa21e6b501f6e6cadc50d26188175a8','ad614f07308852096cccd6637ae14b46',0,'18210208025','stony@123.com',NULL,'2016-05-12 18:45:37',NULL),
+	(3,11,'shihui','a65c9050c39afb2eb3cbe4dd8facbbe0','e8e812c9dc785ac24d13655af18bac1b',0,'18210208011','shihui@110.com',NULL,NULL,NULL),
+	(36,3,'blue','0f8fe5e87c68f697fba0564334523a05','ce7a15598b30fefd9d201cdded79d048',0,'13910208011','blue@110.com',NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -806,26 +871,9 @@ LOCK TABLES `sys_user_app_role` WRITE;
 INSERT INTO `sys_user_app_role` (`id`, `user_id`, `app_id`, `role_id`, `insert_date`, `update_date`)
 VALUES
 	(1,1,1,1,'2016-05-12 18:45:37',NULL),
-	(16,14,1,1,'2016-05-27 12:45:37',NULL),
-	(19,14,19,1,'2016-05-27 14:13:03',NULL),
-	(21,23,21,25,'2016-06-01 10:28:35',NULL),
-	(22,24,21,12,'2016-06-01 10:31:39',NULL),
-	(23,25,21,25,'2016-06-01 10:31:49',NULL),
-	(26,17,21,1,'2016-06-02 20:59:22',NULL),
-	(27,17,21,25,'2016-06-02 20:59:22',NULL),
-	(29,17,1,1,'2016-06-02 20:59:50',NULL),
-	(32,23,1,1,'2016-06-02 21:42:25',NULL),
-	(34,15,1,1,'2016-06-02 21:43:22',NULL),
-	(37,27,26,38,'2016-06-17 15:02:23',NULL),
-	(40,29,26,38,'2016-06-20 09:59:55',NULL),
-	(41,30,26,39,'2016-06-20 10:00:20',NULL),
-	(42,28,21,39,'2016-06-21 10:37:48',NULL),
-	(52,31,24,42,'2016-06-22 14:41:10',NULL),
-	(53,1,21,43,'2016-06-23 12:06:16',NULL),
-	(54,32,25,44,'2016-06-23 17:54:49',NULL),
-	(55,24,24,42,'2016-06-24 13:52:33',NULL),
-	(56,24,25,44,'2016-06-24 13:53:15',NULL),
-	(59,33,24,42,'2016-08-30 18:03:13',NULL);
+	(16,2,1,1,'2016-05-27 12:45:37',NULL),
+	(29,3,1,1,'2016-06-02 20:59:50',NULL),
+	(32,4,1,1,'2016-06-02 21:42:25',NULL);
 
 /*!40000 ALTER TABLE `sys_user_app_role` ENABLE KEYS */;
 UNLOCK TABLES;
