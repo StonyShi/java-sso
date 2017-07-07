@@ -3086,7 +3086,37 @@ Dashboard stats
 
 .dashboard-stat.purple .more { 
   background-color: #6e1881;
-} 
+}
+
+
+.dashboard-stat.pink {
+  background-color: #FF69B4;
+}
+
+.dashboard-stat.pink .more {
+  background-color: #FC458F;
+}
+.dashboard-stat.orange {
+  background-color: #ffc138;
+}
+
+.dashboard-stat.orange .more {
+  background-color: #ffaa33;
+}
+.dashboard-stat.beige {
+  background-color: #fff6be;
+}
+
+.dashboard-stat.beige .more {
+  background-color: #fff4ac;
+}
+.dashboard-stat.gray {
+  background-color: #a3a19d;
+}
+
+.dashboard-stat.gray .more {
+  background-color: #99979a;
+}
 
 /***
 Circle Stats(KNOB, new in v1.1.1)

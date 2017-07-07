@@ -38,6 +38,7 @@ public class AppController {
     public MenusView list(Model model) {
         logger.debug("Enter");
         model.addAttribute("list", appService.findAll());
+        //blue,green yellow purple pink orange beige gray
         return new MenusView("app/list");
     }
 

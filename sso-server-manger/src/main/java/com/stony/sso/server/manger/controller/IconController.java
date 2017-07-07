@@ -35,7 +35,7 @@ public class IconController {
         return new MenusView("icon/list");
     }
 
-    @RequestMapping(value = "/all", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/data", method = {RequestMethod.POST, RequestMethod.GET})
     public Object list(){
         logger.debug("Enter");
         List<Icon> all = iconService.findAll();

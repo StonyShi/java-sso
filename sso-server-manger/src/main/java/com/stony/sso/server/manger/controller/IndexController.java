@@ -39,7 +39,7 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Resource
-    private ResourceService resourceService;
+    private AppService appService;
 
     @Resource
     private AuthorizationService authorizationService;
@@ -53,6 +53,7 @@ public class IndexController {
     @RequestMapping(value = {"/index","/"})
     public MenusView index(Model model) {
         model.addAttribute("v","2");
+        model.addAttribute("list", appService.findAll());
         return new MenusView("index");
     }
 

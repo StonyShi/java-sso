@@ -7,11 +7,14 @@
     <result column="app_key" property="appKey" jdbcType="VARCHAR" />
     <result column="app_secret" property="appSecret" jdbcType="VARCHAR" />
     <result column="available" property="available" jdbcType="TINYINT" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="insert_date" property="insertDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, app_key, app_secret, available, insert_date, update_date
+    id, name, app_key, app_secret, available, address,icon,desc,insert_date, update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -54,10 +57,17 @@
   </delete>
   <insert id="insert" parameterType="com.stony.sso.facade.entity.App" useGeneratedKeys="true" keyProperty="id">
     insert into sys_app (id, name, app_key, 
-      app_secret, available, insert_date, 
+      app_secret, available, address, icon,
+      insert_date,
       update_date)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, 
-      #{appSecret,jdbcType=VARCHAR}, #{available,jdbcType=TINYINT}, #{insertDate,jdbcType=TIMESTAMP},
+    values (#{id,jdbcType=BIGINT},
+      #{name,jdbcType=VARCHAR},
+      #{appKey,jdbcType=VARCHAR},
+      #{appSecret,jdbcType=VARCHAR},
+      #{available,jdbcType=TINYINT},
+      #{address,jdbcType=VARCHAR},
+      #{icon,jdbcType=VARCHAR},
+      #{insertDate,jdbcType=TIMESTAMP},
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.stony.sso.facade.entity.App" useGeneratedKeys="true" keyProperty="id">
@@ -77,6 +87,12 @@
       </if>
       <if test="available != null" >
         available,
+      </if>
+      <if test="address != null" >
+      address,
+      </if>
+      <if test="icon != null" >
+        icon,
       </if>
       <if test="insertDate != null" >
         insert_date,
@@ -101,6 +117,12 @@
       <if test="available != null" >
         #{available,jdbcType=TINYINT},
       </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
       <if test="insertDate != null" >
         #{insertDate,jdbcType=TIMESTAMP},
       </if>
@@ -124,6 +146,12 @@
       <if test="available != null" >
         available = #{available,jdbcType=TINYINT},
       </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
       <if test="insertDate != null" >
         insert_date = #{insertDate,jdbcType=TIMESTAMP},
       </if>
@@ -139,6 +167,8 @@
       app_key = #{appKey,jdbcType=VARCHAR},
       app_secret = #{appSecret,jdbcType=VARCHAR},
       available = #{available,jdbcType=TINYINT},
+      address = #{address,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
       insert_date = #{insertDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

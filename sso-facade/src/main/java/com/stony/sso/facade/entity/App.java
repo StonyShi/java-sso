@@ -65,6 +65,23 @@ public class App implements Serializable {
     private Integer available;
 
     /**
+     * 地址域名
+     * sys_app.address
+     */
+    private String address;
+
+    /**
+     * 图标
+     * sys_app.icon
+     */
+    private String icon;
+    /**
+     * 描述
+     * sys_app.desc
+     */
+    private String desc;
+
+    /**
      * 插入时间
      * sys_app.insert_date
      *
@@ -207,6 +224,30 @@ public class App implements Serializable {
         this.available = available;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
     /**
      * 插入时间
      * sys_app.insert_date
@@ -273,6 +314,8 @@ public class App implements Serializable {
         sb.append(", appKey=").append(appKey);
         sb.append(", appSecret=").append(appSecret);
         sb.append(", available=").append(available);
+        sb.append(", address=").append(address);
+        sb.append(", icon=").append(icon);
         sb.append(", insertDate=").append(insertDate);
         sb.append(", updateDate=").append(updateDate);
         sb.append("]");

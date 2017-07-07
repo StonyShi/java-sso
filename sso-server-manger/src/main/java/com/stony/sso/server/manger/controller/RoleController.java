@@ -93,17 +93,15 @@ public class RoleController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.POST)
     public Object roleResources(@PathVariable("id") Long id) {
         logger.debug("Enter");
-        /*获取当前登录人信息*/
-        User user = userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
-        List<Resource> resources = resourceService.findAllUser(user.getUserType());
+        List<Resource> resources = resourceService.findAll();
         List<Resource> roleResources = resourceService.findResourcesByRoleIds(String.valueOf(id));
         List<Long> roleResourceIds = new ArrayList<>();
-        for (Resource re : roleResources) {
+        for(Resource re : roleResources){
             roleResourceIds.add(re.getId());
         }
         List<Resource> result = new ArrayList<>();
-        for (Resource resource : resources) {
-            if (roleResourceIds.contains(resource.getId())) {
+        for(Resource resource : resources){
+            if(roleResourceIds.contains(resource.getId())){
                 resource.setHasRole(true);
             }
             result.add(resource);

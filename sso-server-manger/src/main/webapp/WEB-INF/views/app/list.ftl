@@ -116,10 +116,11 @@
                                 <tr>
                                     <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
                                     <th>应用</th>
-                                    <th class="hidden-480">AppKey</th>
-                                    <th class="hidden-480">AppSecret</th>
+                                    <th class="hidden-480">Key</th>
+                                    <th class="hidden-480">Secret</th>
+                                    <th class="hidden-480">地址</th>
                                     <th class="hidden-480">创建时间</th>
-                                    <th >Status</th>
+                                    <th >状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -129,6 +130,7 @@
                                     <td>${item.name}</td>
                                     <td class="hidden-480">${(item.appKey)!""}</td>
                                     <td class="hidden-480">${(item.appSecret)!""}</td>
+                                    <td class="hidden-480">${(item.address)!""}</td>
                                     <td class="center hidden-480"><#if (item.insertDate)??>${(item.insertDate)?datetime}</#if></td>
                                     <#if item.available == 1>
                                         <td ><span class="label label-success">available</span></td>
@@ -206,7 +208,7 @@
 <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 <script src="${media_js_url}/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 <script src="${media_js_url}/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="${media_js_url}/jquery.toggle.buttons.js"></script>
+<script src="${media_js_url}/jquery.toggle.buttons.js" type="text/javascript"></script>
 
 <!--[if lt IE 9]>
 <script src="${media_js_url}/excanvas.min.js"></script>
@@ -226,9 +228,9 @@
 <script type="text/javascript" src="${media_js_url}/messenger-theme-future.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="/static/js/sidebar.js"></script>
+<script src="/static/js/sidebar.js" type="text/javascript"></script>
 <script src="/static/js/app.js" type="text/javascript"></script>
-<script src="/static/js/table-managed.js"></script>
+<script src="/static/js/table-managed.js" type="text/javascript"></script>
 <script>
     jQuery(document).ready(function() {
         Sidebar.init();
@@ -274,7 +276,7 @@
                         lock = "<span class=\"label label-inverse\">unavailable</span>";
                     }
                     $('#sample_1').dataTable().fnAddData(
-                            [frist, data.name, data.appKey, data.appSecret, data.insertDate, lock]
+                            [frist, data.name, data.appKey, data.appSecret, data.address, joined, lock]
                     );
                     Messenger().post("添加应用成功!");
                 },

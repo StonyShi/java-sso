@@ -36,9 +36,6 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public MenusView list(ModelMap model) {
         logger.debug("Enter");
-        User user = userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
-        Integer userType = -1;
-        if (user.getUserType() != null) userType = user.getUserType();
         model.put("users", userService.findAll());
         return new MenusView("user/list");
     }

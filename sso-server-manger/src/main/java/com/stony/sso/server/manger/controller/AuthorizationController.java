@@ -40,13 +40,10 @@ public class AuthorizationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public MenusView list(Model model) {
-        /*获取当前登录人信息*/
-        User user = userService.findByUsername((String) SecurityUtils.getSubject().getPrincipal());
-        model.addAttribute("list", authorizationService.findAllApp(user.getUserType()));
-        model.addAttribute("apps", appService.findAllApp(user.getUserType()));
+        model.addAttribute("list", authorizationService.findAll());
+        model.addAttribute("apps", appService.findAll());
         model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("userId", user.getId());
         return new MenusView("authorization/list");
     }
     @ResponseBody
