@@ -64,7 +64,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     public void move(Organization source, Organization target) {
         Organization moveSource = new Organization();
         moveSource.setParentId(target.getParentId());
-        moveSource.setParentIds(target.getParentIds());
         moveSource.setId(source.getId());
         //update source to target info
         organizationMapper.updateByPrimaryKeySelective(moveSource);

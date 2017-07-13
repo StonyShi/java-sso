@@ -28,9 +28,10 @@ public class SpringInvokerTest {
         System.setProperty("catalina.home", "/Users/stony/logs");
     }
 
+    final String appKey = "5efaf7c8-8315-35c7-ab67-ac3bde4963bd";
+
     @Test
     public void test_24(){
-
-        System.out.println(permissionService.getResources());
+        System.out.println(permissionService.getResources(appKey));
     }
 }

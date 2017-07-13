@@ -67,13 +67,6 @@ public class Resource implements Serializable {
      */
     private String parentName;
 
-    /**
-     * 
-     * sys_resource.parent_ids
-     *
-     * @mbggenerated
-     */
-    private String parentIds;
 
     /**
      * 权限
@@ -278,29 +271,6 @@ public class Resource implements Serializable {
         this.parentId = parentId;
     }
 
-    /**
-     * 
-     * sys_resource.parent_ids
-     *
-     * @return sys_resource.parent_ids
-     *
-     * @mbggenerated
-     */
-    public String getParentIds() {
-        return parentIds;
-    }
-
-    /**
-     * 
-     * sys_resource.parent_ids
-     *
-     * @param parentIds sys_resource.parent_ids
-     *
-     * @mbggenerated
-     */
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds == null ? null : parentIds.trim();
-    }
 
     /**
      * 权限
@@ -462,7 +432,6 @@ public class Resource implements Serializable {
         sb.append(", url=").append(url);
         sb.append(", parentId=").append(parentId);
         sb.append(", parentName=").append(parentName);
-        sb.append(", parentIds=").append(parentIds);
         sb.append(", permission=").append(permission);
         sb.append(", available=").append(available);
         sb.append(", hasRole=").append(hasRole);

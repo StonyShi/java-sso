@@ -7,7 +7,6 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
-    <result column="parent_ids" property="parentIds" jdbcType="VARCHAR" />
     <result column="permission" property="permission" jdbcType="VARCHAR" />
     <result column="available" property="available" jdbcType="TINYINT" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
@@ -15,7 +14,7 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, type, url, parent_id, parent_ids, permission, available, icon,insert_date,
+    id, name, type, url, parent_id,  permission, available, icon,insert_date,
     update_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -53,7 +52,7 @@
   </select>
   <select id="findResourcesByAppUser" resultMap="BaseResultMap" parameterType="java.util.Map">
     SELECT DISTINCT
-           re.id, re.name, re.type, re.url, re.parent_id, re.parent_ids, re.permission, re.available, re.icon, re.insert_date, re.update_date
+           re.id, re.name, re.type, re.url, re.parent_id,  re.permission, re.available, re.icon, re.insert_date, re.update_date
     from sys_resource re,
         sys_role_resource rr,
         sys_user_app_role uar,
@@ -71,7 +70,7 @@
   </select>
   <select id="findResourcesByRoleIds" resultMap="BaseResultMap" parameterType="java.lang.String" >
     SELECT DISTINCT
-           re.id, re.name, re.type, re.url, re.parent_id, re.parent_ids, re.permission, re.available, re.icon, re.insert_date, re.update_date
+           re.id, re.name, re.type, re.url, re.parent_id, re.permission, re.available, re.icon, re.insert_date, re.update_date
     FROM sys_resource re,
         sys_role_resource rr
     WHERE re.id = rr.resource_id
@@ -84,11 +83,12 @@
   </delete>
   <insert id="insert" parameterType="com.stony.sso.facade.entity.Resource" useGeneratedKeys="true" keyProperty="id">
     insert into sys_resource (id, name, type, 
-      url, parent_id, parent_ids, 
+      url, parent_id,
       permission, available, icon, 
       insert_date, update_date)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{parentIds,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR},
+      #{parentId,jdbcType=BIGINT},
       #{permission,jdbcType=VARCHAR}, #{available,jdbcType=TINYINT}, #{icon,jdbcType=VARCHAR},
       #{insertDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
@@ -109,9 +109,6 @@
       </if>
       <if test="parentId != null" >
         parent_id,
-      </if>
-      <if test="parentIds != null" >
-        parent_ids,
       </if>
       <if test="permission != null" >
         permission,
@@ -145,9 +142,6 @@
       <if test="parentId != null" >
         #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="parentIds != null" >
-        #{parentIds,jdbcType=VARCHAR},
-      </if>
       <if test="permission != null" >
         #{permission,jdbcType=VARCHAR},
       </if>
@@ -180,9 +174,6 @@
       <if test="parentId != null" >
         parent_id = #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="parentIds != null" >
-        parent_ids = #{parentIds,jdbcType=VARCHAR},
-      </if>
       <if test="permission != null" >
         permission = #{permission,jdbcType=VARCHAR},
       </if>
@@ -208,7 +199,6 @@
       type = #{type,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=BIGINT},
-      parent_ids = #{parentIds,jdbcType=VARCHAR},
       permission = #{permission,jdbcType=VARCHAR},
       available = #{available,jdbcType=TINYINT},
       icon = #{icon,jdbcType=VARCHAR},

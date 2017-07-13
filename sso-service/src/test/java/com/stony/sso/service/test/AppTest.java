@@ -217,7 +217,6 @@ public class AppTest {
         resource.setAvailable(1);
         resource.setName("uuuuu");
         resource.setParentId(11L);
-        resource.setParentIds("11,12");
         resource.setPermission("organization:*");
         resource.setUrl("");
         resource.setType(ResourceType.BUTTON.TYPE);
@@ -313,7 +312,6 @@ public class AppTest {
         Organization organization = new Organization();
         organization.setParentId(11L);
         organization.setName("YYYYYYY");
-        organization.setParentIds("11,22,33");
         organization.setAvailable(1);
         Organization createOrg = organizationService.createOrganization(organization);
 

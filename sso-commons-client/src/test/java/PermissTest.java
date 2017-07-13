@@ -45,7 +45,7 @@ public class PermissTest {
 
 //        Serializable sessionId = restTemplate.postForObject(getUrl(PermissionContext.CREATE_SESSION), null, Serializable.class, urlVariables);
         System.out.println("---------------------------------------------------");
-        System.out.println(permissionService.getResources());
+        System.out.println(permissionService.getResources(appKey));
     }
 
     private String getUrl(String suffix){

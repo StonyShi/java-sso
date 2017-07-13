@@ -40,13 +40,6 @@ public class Organization implements Serializable {
 
     private String parentName;
 
-    /**
-     * 
-     * sys_organization.parent_ids
-     *
-     * @mbggenerated
-     */
-    private String parentIds;
 
     /**
      * 1 有效
@@ -188,29 +181,6 @@ public class Organization implements Serializable {
         this.parentName = parentName;
     }
 
-    /**
-     * 
-     * sys_organization.parent_ids
-     *
-     * @return sys_organization.parent_ids
-     *
-     * @mbggenerated
-     */
-    public String getParentIds() {
-        return parentIds;
-    }
-
-    /**
-     * 
-     * sys_organization.parent_ids
-     *
-     * @param parentIds sys_organization.parent_ids
-     *
-     * @mbggenerated
-     */
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds == null ? null : parentIds.trim();
-    }
 
     /**
      * 1 有效
@@ -302,7 +272,6 @@ public class Organization implements Serializable {
         sb.append(", logo=").append(logo);
         sb.append(", parentId=").append(parentId);
         sb.append(", parentName=").append(parentName);
-        sb.append(", parentIds=").append(parentIds);
         sb.append(", available=").append(available);
         sb.append(", insertDate=").append(insertDate);
         sb.append(", updateDate=").append(updateDate);

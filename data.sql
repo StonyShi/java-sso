@@ -7,7 +7,7 @@
 #
 # Host: 10.0.11.172 (MySQL 5.5.5-10.0.14-MariaDB-log)
 # Database: sso
-# Generation Time: 2017-07-03 07:38:12 +0000
+# Generation Time: 2017-07-13 07:28:39 +0000
 # ************************************************************
 
 
@@ -26,11 +26,11 @@
 DROP TABLE IF EXISTS `global_variable`;
 
 CREATE TABLE `global_variable` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `field` varchar(255) DEFAULT NULL COMMENT '字段',
   `value` varchar(255) DEFAULT NULL COMMENT '值',
   `description` varchar(250) DEFAULT NULL COMMENT '描述',
-  `available` tinyint(3) DEFAULT '1' COMMENT '1 有效',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
   `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -55,11 +55,12 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `operation_log`;
 
 CREATE TABLE `operation_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `operation_type` int(10) DEFAULT '0' COMMENT '0 登陆',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `operation_type` tinyint(1) unsigned DEFAULT '0' COMMENT '0 登陆',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT '用户id',
   `operation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '操作时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `IDX_OPERATION_LOG_UID` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';
 
 LOCK TABLES `operation_log` WRITE;
@@ -74,14 +75,14 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table sessions
+# Dump of table sys_sessions
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `sessions`;
+DROP TABLE IF EXISTS `sys_sessions`;
 
-CREATE TABLE `sessions` (
+CREATE TABLE `sys_sessions` (
   `id` varchar(200) NOT NULL DEFAULT '',
-  `session` varchar(2000) DEFAULT NULL,
+  `session` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -93,33 +94,37 @@ CREATE TABLE `sessions` (
 DROP TABLE IF EXISTS `sys_app`;
 
 CREATE TABLE `sys_app` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT 'app名称',
-  `app_key` varchar(100) DEFAULT NULL COMMENT 'appKey',
-  `app_secret` varchar(100) DEFAULT NULL COMMENT 'app 安全码',
-  `available` tinyint(1) DEFAULT '1' COMMENT '1 有效',
+  `app_key` char(100) DEFAULT NULL COMMENT 'appKey',
+  `app_secret` char(100) DEFAULT NULL COMMENT 'app 安全码',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
+  `address` varchar(120) DEFAULT NULL COMMENT '地址域名',
+  `icon` varchar(20) DEFAULT NULL COMMENT '图标',
+  `desc` varchar(2000) DEFAULT NULL COMMENT '描述',
   `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_sys_app_app_key` (`app_key`),
-  UNIQUE KEY `IDX_SYS_APP_NAME` (`name`)
+  UNIQUE KEY `UK_SYS_APP_KEY` (`app_key`),
+  UNIQUE KEY `UK_SYS_APP_SECRET` (`app_secret`),
+  UNIQUE KEY `UK_SYS_APP_NAME` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `sys_app` WRITE;
 /*!40000 ALTER TABLE `sys_app` DISABLE KEYS */;
 
-INSERT INTO `sys_app` (`id`, `name`, `app_key`, `app_secret`, `available`, `insert_date`, `update_date`)
+INSERT INTO `sys_app` (`id`, `name`, `app_key`, `app_secret`, `available`, `address`, `icon`, `desc`, `insert_date`, `update_date`)
 VALUES
-	(1,'中心服务器','645ba616-370a-43a8-a8e0-993e7a590cf0','bb74abb6-bae0-47dd-a7b1-9571ea3a0f33',1,'2016-05-12 19:31:33',NULL),
-	(2,'APP-1','645ba612-370a-43a8-a8e0-993e7a590cf0','bb74abb2-bae0-47dd-a7b1-9571ea3a0f33',1,'2016-05-12 19:31:33',NULL),
-	(3,'APP-2','645ba613-370a-43a8-a8e0-993e7a590cf0','bb74abb3-bae0-47dd-a7b1-9571ea3a0f33',1,'2016-05-12 19:31:33',NULL),
-	(19,'APP-MONITOR','5efaf7c8-8315-35c7-ab67-ac3bde4963bd','cfa383ca-468d-3851-848f-eb6e72eb32c5',1,'2016-05-27 14:11:21',NULL),
-	(21,'APP-SUPPORT','c487d790-36aa-3956-8b40-411133d046ee','7b16c47a-eabb-34ae-acf7-6c643a8428df',1,'2016-05-31 20:20:56',NULL),
-	(24,'APP-MANAGER','c3cd89f8-8a47-30c9-834b-03b248924a96','1918f439-6a43-3fb4-a004-49574b943ced',1,'2016-06-12 10:21:57',NULL),
-	(25,'APP-BOSS','1cf212a6-af29-3707-b976-7b82f7b9c83b','269d09e0-333b-335c-a034-c922a9373dfe',1,'2016-06-12 10:22:26',NULL),
-	(26,'APP-BUSINESS','987252a4-5afc-3d2b-8cfb-e1460e8e62d7','b3a05320-fc5c-3aac-8dfd-344cf8896b94',1,'2016-06-12 10:35:40',NULL),
-	(214,'测试类','e18dd2a2-2dfd-3701-8ea0-8d33a5de616e','50ea8f26-a221-352c-a803-0173ec07488c',1,'2017-06-30 12:39:01',NULL),
-	(215,'cccc','e18e55e3-a392-37fb-8b8b-f28b3c223c9d','c779a103-3185-314e-aaea-1afee2fe7194',1,'2017-06-30 12:44:57',NULL);
+	(1,'中心服务器','645ba616-370a-43a8-a8e0-993e7a590cf0','bb74abb6-bae0-47dd-a7b1-9571ea3a0f33',1,NULL,NULL,NULL,'2016-05-12 19:31:33',NULL),
+	(2,'APP-1','645ba612-370a-43a8-a8e0-993e7a590cf0','bb74abb2-bae0-47dd-a7b1-9571ea3a0f33',1,NULL,'icon-comments',NULL,'2016-05-12 19:31:33',NULL),
+	(3,'APP-2','645ba613-370a-43a8-a8e0-993e7a590cf0','bb74abb3-bae0-47dd-a7b1-9571ea3a0f33',1,NULL,'icon-comments',NULL,'2016-05-12 19:31:33',NULL),
+	(19,'APP-MONITOR','5efaf7c8-8315-35c7-ab67-ac3bde4963bd','cfa383ca-468d-3851-848f-eb6e72eb32c5',1,'http://127.0.0.1:8090','icon-bar-chart',NULL,'2016-05-27 14:11:21',NULL),
+	(21,'APP-SUPPORT','c487d790-36aa-3956-8b40-411133d046ee','7b16c47a-eabb-34ae-acf7-6c643a8428df',1,'http://127.0.0.1:8091','icon-bar-chart',NULL,'2016-05-31 20:20:56',NULL),
+	(24,'APP-MANAGER','c3cd89f8-8a47-30c9-834b-03b248924a96','1918f439-6a43-3fb4-a004-49574b943ced',1,'http://127.0.0.1:8092','icon-bar-chart',NULL,'2016-06-12 10:21:57',NULL),
+	(25,'APP-BOSS','1cf212a6-af29-3707-b976-7b82f7b9c83b','269d09e0-333b-335c-a034-c922a9373dfe',1,'http://127.0.0.1:8095','icon-bar-chart',NULL,'2016-06-12 10:22:26',NULL),
+	(26,'APP-BUSINESS','987252a4-5afc-3d2b-8cfb-e1460e8e62d7','b3a05320-fc5c-3aac-8dfd-344cf8896b94',1,'http://127.0.0.1:8096','icon-bar-chart',NULL,'2016-06-12 10:35:40',NULL),
+	(214,'测试类','e18dd2a2-2dfd-3701-8ea0-8d33a5de616e','50ea8f26-a221-352c-a803-0173ec07488c',1,NULL,'icon-bar-chart',NULL,'2017-06-30 12:39:01',NULL),
+	(215,'cccc','e18e55e3-a392-37fb-8b8b-f28b3c223c9d','c779a103-3185-314e-aaea-1afee2fe7194',1,NULL,'icon-bar-chart',NULL,'2017-06-30 12:44:57',NULL);
 
 /*!40000 ALTER TABLE `sys_app` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -131,11 +136,11 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_icon`;
 
 CREATE TABLE `sys_icon` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(85) DEFAULT NULL COMMENT '图标名称',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(80) DEFAULT NULL COMMENT '图标名称',
   `description` varchar(250) DEFAULT NULL COMMENT '描述',
   `url` varchar(200) DEFAULT NULL COMMENT '图标地址',
-  `available` int(1) DEFAULT '1' COMMENT '1 有效',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
   `insert_date` timestamp NULL DEFAULT NULL COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -480,36 +485,35 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_organization`;
 
 CREATE TABLE `sys_organization` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT '组织名称',
   `parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父ID,顶级节点默认0',
-  `parent_ids` varchar(100) DEFAULT NULL,
-  `available` int(1) DEFAULT '1' COMMENT '1 有效',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
   `logo` varchar(80) DEFAULT NULL COMMENT 'logo icon图标',
   `insert_date` timestamp NULL DEFAULT NULL COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `idx_sys_organization_parent_id` (`parent_id`)
+  KEY `IDX_SYS_ORG_PID` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `sys_organization` WRITE;
 /*!40000 ALTER TABLE `sys_organization` DISABLE KEYS */;
 
-INSERT INTO `sys_organization` (`id`, `name`, `parent_id`, `parent_ids`, `available`, `logo`, `insert_date`, `update_date`)
+INSERT INTO `sys_organization` (`id`, `name`, `parent_id`, `available`, `logo`, `insert_date`, `update_date`)
 VALUES
-	(1,'总公司',0,'0/',1,NULL,'2016-05-27 18:06:20',NULL),
-	(2,'大中华区',1,'0/1/',1,NULL,'2016-05-27 18:06:20',NULL),
-	(3,'太平洋区',1,'0/1/',1,NULL,'2016-05-27 18:06:20',NULL),
-	(4,'美洲区',1,'0/1/2/',1,NULL,'2016-05-27 18:06:20',NULL),
-	(5,'北极圈',1,'11,22,33',1,NULL,'2016-05-27 18:06:20',NULL),
-	(13,'阿里巴巴',2,NULL,1,'icon-maxcdn','2016-05-27 18:06:20',NULL),
-	(14,'百度',2,NULL,1,'icon-bitcoin','2016-05-27 18:06:56',NULL),
-	(15,'新浪',2,NULL,0,'icon-weibo','2016-05-27 18:21:56',NULL),
-	(16,'腾讯',2,NULL,0,'icon-linux','2016-05-30 11:41:18',NULL),
-	(17,'Google',3,NULL,1,'icon-google-plus','2016-05-30 12:01:03',NULL),
-	(18,'布鲁克',3,NULL,1,'icon-foursquare','2016-05-30 13:30:09',NULL),
-	(23,'新华社',2,NULL,1,'icon-pinterest','2016-06-14 20:15:30',NULL),
-	(24,'LinkIn',4,NULL,1,'icon-linkedin','2016-06-15 16:59:47',NULL);
+	(1,'总公司',0,1,NULL,'2016-05-27 18:06:20',NULL),
+	(2,'大中华区',1,1,NULL,'2016-05-27 18:06:20',NULL),
+	(3,'太平洋区',1,1,NULL,'2016-05-27 18:06:20',NULL),
+	(4,'美洲区',1,1,NULL,'2016-05-27 18:06:20',NULL),
+	(5,'北极圈',1,1,NULL,'2016-05-27 18:06:20',NULL),
+	(13,'阿里巴巴',2,1,'icon-maxcdn','2016-05-27 18:06:20',NULL),
+	(14,'百度',2,1,'icon-bitcoin','2016-05-27 18:06:56',NULL),
+	(15,'新浪',2,0,'icon-weibo','2016-05-27 18:21:56',NULL),
+	(16,'腾讯',2,0,'icon-linux','2016-05-30 11:41:18',NULL),
+	(17,'Google',3,1,'icon-google-plus','2016-05-30 12:01:03',NULL),
+	(18,'布鲁克',3,1,'icon-foursquare','2016-05-30 13:30:09',NULL),
+	(23,'新华社',2,1,'icon-pinterest','2016-06-14 20:15:30',NULL),
+	(24,'LinkIn',4,1,'icon-linkedin','2016-06-15 16:59:47',NULL);
 
 /*!40000 ALTER TABLE `sys_organization` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -521,68 +525,68 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_resource`;
 
 CREATE TABLE `sys_resource` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT '名称',
-  `type` varchar(50) DEFAULT NULL COMMENT 'MENU,BUTTON',
+  `type` char(30) DEFAULT NULL COMMENT 'MENU,BUTTON',
   `url` varchar(200) DEFAULT NULL COMMENT '资源路径',
-  `parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父ID',
-  `parent_ids` varchar(100) DEFAULT NULL,
+  `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
   `permission` varchar(100) NOT NULL DEFAULT '' COMMENT '权限',
-  `available` tinyint(1) DEFAULT '1' COMMENT '1 有效',
-  `icon` varchar(60) DEFAULT NULL COMMENT '样式',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
+  `icon` char(80) DEFAULT NULL COMMENT '样式',
   `insert_date` timestamp NULL DEFAULT NULL COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `IDX_SYS_RESOURCE_NAME_TYPE` (`name`,`type`,`permission`,`url`)
+  KEY `IDX_SYS_RESOURCE_PID` (`parent_id`),
+  UNIQUE KEY `UK_SYS_RESOURCE` (`name`,`type`,`permission`,`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `sys_resource` WRITE;
 /*!40000 ALTER TABLE `sys_resource` DISABLE KEYS */;
 
-INSERT INTO `sys_resource` (`id`, `name`, `type`, `url`, `parent_id`, `parent_ids`, `permission`, `available`, `icon`, `insert_date`, `update_date`)
+INSERT INTO `sys_resource` (`id`, `name`, `type`, `url`, `parent_id`, `permission`, `available`, `icon`, `insert_date`, `update_date`)
 VALUES
-	(1,'系统管理','MENU','',0,'0/','admin:menu',1,'icon-cog','2016-05-12 19:34:25',NULL),
-	(11,'组织机构管理','MENU','/organization',1,'0/1/','admin:organization:menu',1,'icon-group','2016-05-12 19:34:25','2017-06-30 13:22:43'),
-	(12,'组织机构新增','BUTTON','/organization/create',11,'0/1/11/','admin:organization:create',1,'','2016-05-12 19:34:25','2017-06-30 13:21:14'),
-	(13,'组织机构修改','BUTTON','/organization/update',11,'0/1/11/','admin:organization:update',1,'','2016-05-12 19:34:25','2017-06-30 13:21:24'),
-	(14,'组织机构删除','BUTTON','/organization/delete/*',11,'0/1/11/','admin:organization:delete',1,'','2016-05-12 19:34:25','2017-06-30 13:21:48'),
-	(15,'组织机构查看','BUTTON','/organization/view/*',11,'0/1/11/','admin:organization:view',1,'','2016-05-12 19:34:25','2017-06-30 13:21:39'),
-	(16,'应用管理','MENU','/app',1,'0/1/','admin:app:menu',1,' icon-apple','2016-05-12 19:34:25',NULL),
-	(17,'应用新增','BUTTON','/app/create',16,'0/1/16/','admin:app:create',1,'','2016-05-12 19:34:25','2017-06-30 12:48:57'),
-	(18,'应用修改','BUTTON','/app/update',16,'0/1/16/','admin:app:update',1,'','2016-05-12 19:34:25','2017-06-30 12:50:33'),
-	(19,'应用删除','BUTTON','/app/delete/*',16,'0/1/16/','admin:app:delete',1,'','2016-05-12 19:34:25','2017-06-30 12:50:22'),
-	(20,'应用查看','BUTTON','/app/view/*',16,'0/1/16/','admin:app:view',1,'','2016-05-12 19:34:25','2017-06-30 13:16:20'),
-	(21,'用户管理','MENU','/user',1,'0/1/','admin:user:menu',1,'icon-user','2016-05-12 19:34:25',NULL),
-	(23,'用户修改','BUTTON','/user/update',21,'0/1/21/','admin:user:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(24,'用户删除','BUTTON','/user/delete/*',21,'0/1/21/','admin:user:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(25,'用户查看','BUTTON','/user/view/*',21,'0/1/21/','admin:user:view',1,NULL,'2016-05-12 19:34:25',NULL),
-	(26,'用户创建','BUTTON','/user/create',21,'0/1/21/','admin:user:create',1,'','2017-06-30 13:12:49',NULL),
-	(31,'资源管理','MENU','/resource',1,'0/1/','admin:resource:menu',1,'icon-globe','2016-05-12 19:34:25',NULL),
-	(32,'资源新增','BUTTON','/resource/create',31,'0/1/31/','admin:resource:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(33,'资源修改','BUTTON','/resource/update',31,'0/1/31/','admin:resource:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(34,'资源删除','BUTTON','/resource/delete/*',31,'0/1/31/','admin:resource:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(35,'资源查看','BUTTON','/resource/view/*',31,'0/1/31/','admin:resource:view',1,NULL,'2016-05-12 19:34:25',NULL),
-	(41,'角色管理','MENU','/role',1,'0/1/','admin:role:menu',1,'icon-eye-open','2016-05-12 19:34:25',NULL),
-	(42,'角色新增','BUTTON','/role/create',41,'0/1/41/','admin:role:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(43,'角色修改','BUTTON','/role/update',41,'0/1/41/','admin:role:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(44,'角色删除','BUTTON','/role/delete/*',41,'0/1/41/','admin:role:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(45,'角色查看','BUTTON','/role/view/*',41,'0/1/41/','admin:role:view',1,NULL,'2016-05-12 19:34:25',NULL),
-	(51,'授权管理','MENU','/authorization',1,'0/1/','admin:authorization:menu',1,'icon-key','2016-05-12 19:34:25',NULL),
-	(52,'授权新增','BUTTON','/authorization/create',51,'0/1/51/','admin:authorization:create',1,NULL,'2016-05-12 19:34:25',NULL),
-	(53,'授权修改','BUTTON','/authorization/update',51,'0/1/51/','admin:authorization:update',1,NULL,'2016-05-12 19:34:25',NULL),
-	(54,'授权删除','BUTTON','/authorization/delete/*',51,'0/1/51/','admin:authorization:delete',1,NULL,'2016-05-12 19:34:25',NULL),
-	(55,'授权查看','BUTTON','/authorization/view/*',51,'0/1/51/','admin:authorization:view',1,NULL,'2016-05-12 19:34:25',NULL),
-	(65,'统计管理','MENU','',0,NULL,'monitor:statistics:menu',1,'icon-share-alt','2016-06-03 16:08:43','2016-07-08 13:29:01'),
-	(66,'司机统计','BUTTON','/statistics/driver',65,NULL,'monitor:statistics:driver:menu',1,'','2016-06-12 11:52:39','2017-06-30 13:22:24'),
-	(67,'司机统计列表','MENU','${monitor_url}/statistics/driver/list',65,NULL,'monitor:statistics:driver:list',1,'icon-archive','2016-06-12 11:53:42','2017-06-30 13:23:00'),
-	(68,'订单列表','MENU','${monitor_url}/statistics/order/list',65,NULL,'monitor:statistics:order:menu',1,'icon-sun','2016-06-12 11:56:44','2017-06-30 13:23:11'),
-	(69,'图标管理','MENU','/icon',1,NULL,'admin:icon:menu',1,'icon-fire','2016-06-12 14:27:05','2016-06-22 13:46:05'),
-	(71,'主题颜色','BUTTON','',1,NULL,'admin:theme:color',1,'','2016-06-14 17:14:13','2016-06-22 13:45:49'),
-	(123,'定时任务表达式','MENU','/cron',1,NULL,'admin:cron:menu',1,'icon-time','2016-06-23 14:15:54',NULL),
-	(141,'变量管理','MENU','/global/variable',1,NULL,'admin:variable:menu',1,'icon-gittip','2016-07-28 17:49:38',NULL),
-	(142,'ZK管理','MENU','',0,NULL,'admin:zk:menu',1,'icon-beaker','2016-07-28 17:54:03',NULL),
-	(143,'Host管理','MENU','/zk',142,NULL,'admin:zk:hostmenu',1,'icon-hospital','2016-07-28 17:55:35',NULL),
-	(144,'Node管理','MENU','/zk/node',142,NULL,'admin:zk:node:menu',1,'icon-tint','2016-07-28 17:56:27',NULL);
+	(1,'系统管理','MENU','',0,'admin:menu',1,'icon-cog','2016-05-12 19:34:25',NULL),
+	(11,'组织管理','MENU','/organization',1,'admin:organization:menu',1,'icon-group','2016-05-12 19:34:25','2017-06-30 13:22:43'),
+	(12,'组织新增','BUTTON','/organization/create',11,'admin:organization:create',1,'','2016-05-12 19:34:25','2017-06-30 13:21:14'),
+	(13,'组织修改','BUTTON','/organization/update',11,'admin:organization:update',1,'','2016-05-12 19:34:25','2017-06-30 13:21:24'),
+	(14,'组织删除','BUTTON','/organization/delete/*',11,'admin:organization:delete',1,'','2016-05-12 19:34:25','2017-06-30 13:21:48'),
+	(15,'组织查看','BUTTON','/organization/view/*',11,'admin:organization:view',1,'','2016-05-12 19:34:25','2017-06-30 13:21:39'),
+	(16,'应用管理','MENU','/app',1,'admin:app:menu',1,' icon-apple','2016-05-12 19:34:25',NULL),
+	(17,'应用新增','BUTTON','/app/create',16,'admin:app:create',1,'','2016-05-12 19:34:25','2017-06-30 12:48:57'),
+	(18,'应用修改','BUTTON','/app/update',16,'admin:app:update',1,'','2016-05-12 19:34:25','2017-06-30 12:50:33'),
+	(19,'应用删除','BUTTON','/app/delete/*',16,'admin:app:delete',1,'','2016-05-12 19:34:25','2017-06-30 12:50:22'),
+	(20,'应用查看','BUTTON','/app/view/*',16,'admin:app:view',1,'','2016-05-12 19:34:25','2017-06-30 13:16:20'),
+	(21,'用户管理','MENU','/user',1,'admin:user:menu',1,'icon-user','2016-05-12 19:34:25',NULL),
+	(23,'用户修改','BUTTON','/user/update',21,'admin:user:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(24,'用户删除','BUTTON','/user/delete/*',21,'admin:user:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(25,'用户查看','BUTTON','/user/view/*',21,'admin:user:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(26,'用户创建','BUTTON','/user/create',21,'admin:user:create',1,'','2017-06-30 13:12:49',NULL),
+	(31,'资源管理','MENU','/resource',1,'admin:resource:menu',1,'icon-globe','2016-05-12 19:34:25',NULL),
+	(32,'资源新增','BUTTON','/resource/create',31,'admin:resource:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(33,'资源修改','BUTTON','/resource/update',31,'admin:resource:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(34,'资源删除','BUTTON','/resource/delete/*',31,'admin:resource:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(35,'资源查看','BUTTON','/resource/view/*',31,'admin:resource:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(41,'角色管理','MENU','/role',1,'admin:role:menu',1,'icon-eye-open','2016-05-12 19:34:25',NULL),
+	(42,'角色新增','BUTTON','/role/create',41,'admin:role:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(43,'角色修改','BUTTON','/role/update',41,'admin:role:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(44,'角色删除','BUTTON','/role/delete/*',41,'admin:role:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(45,'角色查看','BUTTON','/role/view/*',41,'admin:role:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(51,'授权管理','MENU','/authorization',1,'admin:authorization:menu',1,'icon-key','2016-05-12 19:34:25',NULL),
+	(52,'授权新增','BUTTON','/authorization/create',51,'admin:authorization:create',1,NULL,'2016-05-12 19:34:25',NULL),
+	(53,'授权修改','BUTTON','/authorization/update',51,'admin:authorization:update',1,NULL,'2016-05-12 19:34:25',NULL),
+	(54,'授权删除','BUTTON','/authorization/delete/*',51,'admin:authorization:delete',1,NULL,'2016-05-12 19:34:25',NULL),
+	(55,'授权查看','BUTTON','/authorization/view/*',51,'admin:authorization:view',1,NULL,'2016-05-12 19:34:25',NULL),
+	(65,'统计管理','MENU','',0,'monitor:statistics:menu',1,'icon-share-alt','2016-06-03 16:08:43','2016-07-08 13:29:01'),
+	(66,'司机统计','BUTTON','/statistics/driver',65,'monitor:statistics:driver:menu',1,'','2016-06-12 11:52:39','2017-06-30 13:22:24'),
+	(67,'司机统计列表','MENU','${monitor_url}/statistics/driver/list',65,'monitor:statistics:driver:list',1,'icon-archive','2016-06-12 11:53:42','2017-06-30 13:23:00'),
+	(68,'订单列表','MENU','${monitor_url}/statistics/order/list',65,'monitor:statistics:order:menu',1,'icon-sun','2016-06-12 11:56:44','2017-06-30 13:23:11'),
+	(69,'图标管理','MENU','/icon',1,'admin:icon:menu',1,'icon-fire','2016-06-12 14:27:05','2016-06-22 13:46:05'),
+	(71,'主题颜色','BUTTON','',1,'admin:theme:color',1,'','2016-06-14 17:14:13','2016-06-22 13:45:49'),
+	(123,'定时任务表达式','MENU','/cron',1,'admin:cron:menu',1,'icon-time','2016-06-23 14:15:54',NULL),
+	(141,'变量管理','MENU','/global/variable',1,'admin:variable:menu',1,'icon-gittip','2016-07-28 17:49:38',NULL),
+	(142,'ZK管理','MENU','',0,'admin:zk:menu',1,'icon-beaker','2016-07-28 17:54:03',NULL),
+	(143,'Host管理','MENU','/zk',142,'admin:zk:hostmenu',1,'icon-hospital','2016-07-28 17:55:35',NULL),
+	(144,'Node管理','MENU','/zk/node',142,'admin:zk:node:menu',1,'icon-tint','2016-07-28 17:56:27',NULL);
 
 /*!40000 ALTER TABLE `sys_resource` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -594,14 +598,14 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_role`;
 
 CREATE TABLE `sys_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role` varchar(100) DEFAULT NULL COMMENT '角色',
   `description` varchar(250) DEFAULT NULL COMMENT '角色描述',
-  `available` tinyint(1) DEFAULT '1' COMMENT '1 有效',
+  `available` tinyint(1) unsigned DEFAULT '1' COMMENT '1 有效',
   `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `IDX_SYS_ROLE_N` (`role`)
+  UNIQUE KEY `UK_SYS_ROLE` (`role`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `sys_role` WRITE;
@@ -627,14 +631,15 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_role_resource`;
 
 CREATE TABLE `sys_role_resource` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
-  `resource_id` bigint(11) DEFAULT NULL COMMENT '资源ID',
-  `available` int(1) NOT NULL DEFAULT '1' COMMENT '是否有效 1 有效',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` bigint(20) unsigned DEFAULT NULL COMMENT '角色ID',
+  `resource_id` bigint(11) unsigned DEFAULT NULL COMMENT '资源ID',
+  `available` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否有效 1 有效',
   `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `idx_sys_role_resource_ids` (`resource_id`)
+  KEY `IDX_SYS_ROLE_RESID` (`resource_id`),
+  KEY `IDX_SYS_ROLE_ROLEID` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色资源映射表';
 
 LOCK TABLES `sys_role_resource` WRITE;
@@ -808,7 +813,11 @@ VALUES
 	(1135,1,42,1,'2017-06-30 13:17:56',NULL),
 	(1136,1,43,1,'2017-06-30 13:17:56',NULL),
 	(1137,1,21,1,'2017-06-30 13:17:56',NULL),
-	(1138,1,65,1,'2017-06-30 13:17:56',NULL);
+	(1138,1,65,1,'2017-06-30 13:17:56',NULL),
+	(1139,46,66,1,'2017-07-06 16:05:12',NULL),
+	(1140,46,67,1,'2017-07-06 16:05:12',NULL),
+	(1141,46,68,1,'2017-07-06 16:05:12',NULL),
+	(1142,46,65,1,'2017-07-06 16:05:12',NULL);
 
 /*!40000 ALTER TABLE `sys_role_resource` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -820,19 +829,21 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_user`;
 
 CREATE TABLE `sys_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `organization_id` bigint(20) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `organization_id` bigint(20) unsigned DEFAULT NULL,
   `username` varchar(100) DEFAULT NULL COMMENT '用户名称',
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `salt` varchar(100) DEFAULT NULL COMMENT '盐',
-  `locked` int(1) DEFAULT '0' COMMENT '1 锁定',
+  `locked` tinyint(1) unsigned DEFAULT '0' COMMENT '1 锁定',
   `phone` varchar(13) DEFAULT NULL COMMENT '手机号',
   `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
-  `insert_date` timestamp NULL DEFAULT NULL COMMENT '插入时间',
+  `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_sys_user_username` (`username`)
+  UNIQUE KEY `UK_SYS_USER_NAME` (`username`),
+  KEY `IDX_SYS_USER_PHONE` (`phone`),
+  KEY `IDX_SYS_USER_EMAIL` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 LOCK TABLES `sys_user` WRITE;
@@ -855,14 +866,14 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sys_user_app_role`;
 
 CREATE TABLE `sys_user_app_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
-  `app_id` bigint(20) DEFAULT NULL COMMENT '应用ID',
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned DEFAULT NULL COMMENT '用户ID',
+  `app_id` bigint(20) unsigned DEFAULT NULL COMMENT '应用ID',
+  `role_id` bigint(20) unsigned DEFAULT NULL COMMENT '角色ID',
   `insert_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
   `update_date` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `idx_user_app_role_un` (`user_id`,`app_id`,`role_id`)
+  UNIQUE KEY `UK_SYS_USER_APP_ROLE` (`user_id`,`app_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户APP角色映射表';
 
 LOCK TABLES `sys_user_app_role` WRITE;
@@ -873,7 +884,7 @@ VALUES
 	(1,1,1,1,'2016-05-12 18:45:37',NULL),
 	(16,2,1,1,'2016-05-27 12:45:37',NULL),
 	(29,3,1,1,'2016-06-02 20:59:50',NULL),
-	(32,4,1,1,'2016-06-02 21:42:25',NULL);
+	(60,1,19,46,'2017-07-06 16:05:56',NULL);
 
 /*!40000 ALTER TABLE `sys_user_app_role` ENABLE KEYS */;
 UNLOCK TABLES;
