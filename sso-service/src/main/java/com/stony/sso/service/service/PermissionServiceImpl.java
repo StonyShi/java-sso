@@ -61,4 +61,14 @@ public class PermissionServiceImpl implements PermissionService {
         logger.info("Enter.");
         return resourceService.findAll();
     }
+
+    @Override
+    public List<Resource> getResources(String appKey, String username) {
+        return authorizationService.findResources(appKey, username);
+    }
+
+    @Override
+    public List<Role> getRoles(String appKey, String username) {
+        return authorizationService.findRoles(appKey, username);
+    }
 }

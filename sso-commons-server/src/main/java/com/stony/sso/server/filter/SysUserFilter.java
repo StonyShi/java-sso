@@ -2,6 +2,7 @@ package com.stony.sso.server.filter;
 
 
 import com.stony.sso.commons.security.SecurityConstants;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.User;
 import com.stony.sso.facade.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -27,7 +28,8 @@ public class SysUserFilter extends PathMatchingFilter {
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipal();
+        PermissionContext context = (PermissionContext) subject.getPrincipal();
+        String username = context.getUsername(); // (String) subject.getPrincipal();
         Object obj = subject.getSession(true).getAttribute(ATTR_CURRENT_USER);
         if(obj != null){
             if(obj instanceof User){

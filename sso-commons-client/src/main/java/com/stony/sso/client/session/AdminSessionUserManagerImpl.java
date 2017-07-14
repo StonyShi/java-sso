@@ -3,7 +3,7 @@ package com.stony.sso.client.session;
 import com.stony.sso.cache.ticket.SessionUser;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.commons.security.AdminSessionUserManager;
-import com.stony.sso.facade.entity.PermissionEntity;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.User;
 import com.stony.sso.facade.service.UserService;
 import com.stony.sso.client.ClientInfoHold;
@@ -24,8 +24,8 @@ public class AdminSessionUserManagerImpl implements AdminSessionUserManager {
     @Override
     public SessionUser getSessionUser(String username) {
         Subject subject = SecurityUtils.getSubject();
-        PermissionEntity entity = (PermissionEntity) subject.getPrincipal();
-        User user = entity.getUser();
+        PermissionContext context = (PermissionContext) subject.getPrincipal();
+        User user = context.getUser();
         if(user == null){
             return null;
         }

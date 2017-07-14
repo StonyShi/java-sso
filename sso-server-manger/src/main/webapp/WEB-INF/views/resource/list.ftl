@@ -169,7 +169,7 @@
                                     <th class="hidden-480">图标</th>
                                     <th >创建日期</th>
                                     <th >Status</th>
-                                    <th></th>
+                                    <th >编辑</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -8,11 +8,11 @@
     <title>订单列表</title>
 </head>
 <body>
-<h1><@shiro.principal />, how are you today?</h1>
+<h1><@shiro.principal property="username"/>, how are you today?</h1>
+<h4>角色列表</h4>
 <ul>
-    <li><@shiro.hasPermission name="monitor:statistics:order:*">monitor:statistics:driver:*</@shiro.hasPermission></li>
-    <li><@shiro.hasPermission name="monitor:statistics:order:*">monitor:statistics:order:*</@shiro.hasPermission></li>
-    <li><@shiro.hasPermission name="admin:resource:*">admin:resource:*</@shiro.hasPermission></li>
+    <li><@shiro.hasRole name="moniter-admin">moniter-admin</@shiro.hasRole></li>
+    <li><@shiro.hasRole name="admin">admin</@shiro.hasRole></li>
 </ul>
 </body>
 </html>

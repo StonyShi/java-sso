@@ -2,6 +2,7 @@ package com.stony.sso.server.manger.invoker;
 
 import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.Resource;
+import com.stony.sso.facade.entity.Role;
 import com.stony.sso.facade.entity.TokenInfo;
 import com.stony.sso.facade.service.OAuthService;
 import com.stony.sso.facade.service.PermissionService;
@@ -41,7 +42,7 @@ public class PermissionServiceInvoker implements PermissionService {
     @Override
     public List<Resource> getMenus(String appKey, String accessToken) {
         TokenInfo token = oAuthService.getToken(accessToken);
-        if(token == null || token.getUsername() == null){
+        if (token == null || token.getUsername() == null) {
             return Collections.EMPTY_LIST;
         }
         return permissionService.getMenus(appKey, token.getUsername());
@@ -53,5 +54,21 @@ public class PermissionServiceInvoker implements PermissionService {
             return Collections.EMPTY_LIST;
         }
         return permissionService.getResources(appKey);
+    }
+
+    @Override
+    public List<Resource> getResources(String appKey, String username) {
+        if (!oAuthService.checkClientId(appKey)) {
+            return Collections.EMPTY_LIST;
+        }
+        return permissionService.getResources(appKey, username);
+    }
+
+    @Override
+    public List<Role> getRoles(String appKey, String username) {
+        if (!oAuthService.checkClientId(appKey)) {
+            return Collections.EMPTY_LIST;
+        }
+        return permissionService.getRoles(appKey, username);
     }
 }

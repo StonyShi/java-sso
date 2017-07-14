@@ -3,7 +3,8 @@ package com.stony.sso.client.realm;
 import com.alibaba.fastjson.JSON;
 import com.stony.sso.client.ClientInfoHold;
 import com.stony.sso.commons.StringUtils;
-import com.stony.sso.facade.entity.PermissionEntity;
+import com.stony.sso.facade.context.PermissionContext;
+import com.stony.sso.facade.service.PermissionService;
 import com.stony.sso.facade.util.PermissionUtil;
 import com.stony.sso.commons.security.exception.OAuth2AuthenticationException;
 import com.stony.sso.client.OAuth2Token;
@@ -41,6 +42,8 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
 
     ClientInfoHold clientInfoHold;
 
+    @javax.annotation.Resource
+    PermissionService permissionService;
     /**
      * Realm 支持 Token 类型
      * @param token
@@ -54,19 +57,18 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         logger.info("Enter ");
-        PermissionEntity entity = (PermissionEntity) principals.getPrimaryPrincipal();
-        logger.info("appKey = {} ,username = {}", entity.getClientId(), entity.getUsername());
+        PermissionContext context = (PermissionContext) principals.getPrimaryPrincipal();
+        logger.info("appKey = {} ,username = {}", clientInfoHold.getAppKey(), context.getUsername());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        if(null == entity){
+        if (null == context) {
             throw new AuthenticationException("授权码过期，请重新登陆！");
         }
-        authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(entity.getRoles()));
-        authorizationInfo.setStringPermissions(PermissionUtil.getPermissionsByResources(entity.getResources()));
-        logger.debug("roles = {} ,permissions = {}",authorizationInfo.getRoles(), authorizationInfo.getStringPermissions());
-//        authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(authorizationService.findRoles(clientId, username)));
-//        authorizationInfo.setStringPermissions(PermissionUtil.getPermissionsByResources(authorizationService.findResources(clientId, username)));
-//        logger.info("roles = {} ,permissions = {}",authorizationInfo.getRoles(), authorizationInfo.getStringPermissions());
+        authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(permissionService.getRoles(clientInfoHold.getAppKey(), context.getUsername())));
+        authorizationInfo.setStringPermissions(PermissionUtil.getPermissionsByResources(permissionService.getResources(clientInfoHold.getAppKey(), context.getUsername())));
+//        authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(entity.getRoles()));
+//        authorizationInfo.setStringPermissions(PermissionUtil.getPermissionsByResources(entity.getResources()));
+        logger.debug("roles = {}, permissions = {}", authorizationInfo.getRoles(), authorizationInfo.getStringPermissions());
         return authorizationInfo;
     }
 
@@ -77,9 +79,9 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
         if(StringUtils.isEmpty(code)){
             throw new AuthenticationException("授权code不能为空!");
         }
-        PermissionEntity permissionEntity = postPermission(code);
+        PermissionContext context = postPermission(code);
 //        String username = postUsername(code);
-        return new SimpleAuthenticationInfo(permissionEntity, code, getName());
+        return new SimpleAuthenticationInfo(context, code, getName());
     }
 
 
@@ -88,22 +90,23 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
      *  返回授权资源信息
      * @return username,roles,resources
      */
-    private PermissionEntity postPermission(String code){
+    private PermissionContext postPermission(String code){
         try {
             OAuthAccessTokenResponse tokenInfo = postTokenInfo(code);
             logger.info("code = {}, accessToken = {}, refreshToken = {}", code, tokenInfo.getAccessToken(),tokenInfo.getRefreshToken());
-            PermissionEntity entity = postPermissionByToken(tokenInfo.getAccessToken());
-            entity.setCode(code);
-            entity.setAccessToken(tokenInfo.getAccessToken());
-            entity.setRefreshToken(tokenInfo.getRefreshToken());
-            entity.setExpiresIn(tokenInfo.getExpiresIn());
-            return entity;
+            PermissionContext context = postPermissionByToken(tokenInfo.getAccessToken());
+            context.setCode(code);
+            context.setAccessToken(tokenInfo.getAccessToken());
+            context.setRefreshToken(tokenInfo.getRefreshToken());
+            context.setExpiresIn(tokenInfo.getExpiresIn());
+            context.setClientId(clientInfoHold.getAppKey());
+            return context;
         } catch (Exception e) {
             logger.error("[code=" + code + "], 获取授权信息错误", e);
             throw new OAuth2AuthenticationException(e);
         }
     }
-    private PermissionEntity postPermissionByToken(String token) throws OAuthSystemException, OAuthProblemException {
+    private PermissionContext postPermissionByToken(String token) throws OAuthSystemException, OAuthProblemException {
         OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
         OAuthClientRequest userInfoRequest = new OAuthPermissionClientRequest(clientInfoHold.getPermissionUrl())
                 .setClientId(clientInfoHold.getAppKey())
@@ -114,7 +117,7 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
         userInfoRequest.setHeader(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.URL_ENCODED);
         OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.POST, OAuthResourceResponse.class);
         String body = resourceResponse.getBody();
-        return JSON.parseObject(body, PermissionEntity.class);
+        return JSON.parseObject(body, PermissionContext.class);
     }
     private OAuthAccessTokenResponse postTokenInfo(String code){
         logger.info("code = {}, accessTokenUrl = {}, clientId = {}, clientSecret = {}, redirectUrl = {}",

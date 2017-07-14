@@ -1,7 +1,7 @@
 package com.stony.sso.facade.service;
 
 
-import com.stony.sso.facade.entity.PermissionEntity;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.UserAppRole;
 import com.stony.sso.facade.entity.Resource;
 import com.stony.sso.facade.entity.Role;
@@ -93,11 +93,9 @@ public interface AuthorizationService {
      */
     public Boolean isUserAtRole(String appKey, String username, String roleIds);
 
-
-
     List<Resource> findMenusByAppUser(String appKey, String username);
 
-    PermissionEntity getPermissionEntity(String appKey, String username);
+    PermissionContext getPermissionContext(String appKey, String username);
 
     List<Resource> convertMenus(List<Resource> resourceList);
 

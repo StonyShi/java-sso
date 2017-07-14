@@ -5,6 +5,7 @@ import com.stony.sso.cache.annotation.Cachezable;
 import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.MapPlaceholderHelper;
 import com.stony.sso.commons.StringUtils;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.App;
 import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.keys.SecurityKeys;
@@ -228,18 +229,18 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     @Override
-    public PermissionEntity getPermissionEntity(String appKey, String username) {
-        PermissionEntity entity = new PermissionEntity();
+    public PermissionContext getPermissionContext(String appKey, String username) {
+        PermissionContext context = new PermissionContext();
         User user = userService.findByUsername(username);
         //设置资源
-        entity.setResources(findResources(appKey, username));
-        //色泽权限
-        entity.setRoles(findRoles(appKey, username));
+        context.setResources(findResources(appKey, username));
+        //设置权限
+        context.setRoles(findRoles(appKey, username));
         //设置菜单
-        entity.setMenus(convertMenus(entity.getResources()));
-        entity.setUserId(user.getId());
-        entity.setUsername(user.getUsername());
-        return entity;
+        context.setMenus(convertMenus(context.getResources()));
+        context.setUserId(user.getId());
+        context.setUsername(user.getUsername());
+        return context;
     }
 
     @Override

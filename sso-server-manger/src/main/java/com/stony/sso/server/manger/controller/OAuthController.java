@@ -3,6 +3,7 @@ package com.stony.sso.server.manger.controller;
 import com.alibaba.fastjson.JSON;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.commons.security.SecurityConstants;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.*;
 import com.stony.sso.facade.keys.OperationLogKeys;
 import com.stony.sso.facade.service.*;
@@ -195,8 +196,8 @@ public class OAuthController {
                     return view;
                 }
             }
-
-            String username = (String)subject.getPrincipal();
+            PermissionContext context = (PermissionContext) subject.getPrincipal();
+            String username = context.getUsername(); //(String)subject.getPrincipal();
             User user =userService.findByUsername(username);
             operationLogService.insertOperation(new OperationLog(OperationLogKeys.LOGIN_OPERATION, user.getId()));
 
@@ -588,14 +589,14 @@ public class OAuthController {
                 return getUnauthorizedResponseEntity("client id not found");
             }
             //返回资源
-            PermissionEntity entity = authorizationService.getPermissionEntity(clientId, username);
-            entity.setUsername(username);
-            entity.setResponseTime(DateUtils.dateTimeString());
-            entity.setUser(user);
+            PermissionContext context = authorizationService.getPermissionContext(clientId, username);
+            context.setUsername(username);
+            context.setResponseTime(DateUtils.dateTimeString());
+            context.setUser(user);
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(OAuth.HeaderType.CONTENT_TYPE, "application/json;charset=UTF-8");
-            return new ResponseEntity(JSON.toJSON(entity), headers, HttpStatus.OK);
+            return new ResponseEntity(JSON.toJSON(context), headers, HttpStatus.OK);
         } catch (OAuthProblemException e) {
             //检查是否设置了错误码
             String errorCode = e.getError();

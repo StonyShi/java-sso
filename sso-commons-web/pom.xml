@@ -17,7 +17,11 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.stony.sso</groupId>
+            <artifactId>sso-facade</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.stony.sso</groupId>
             <artifactId>sso-commons-util</artifactId>
@@ -170,6 +174,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+
 
     </dependencies>
     <build>

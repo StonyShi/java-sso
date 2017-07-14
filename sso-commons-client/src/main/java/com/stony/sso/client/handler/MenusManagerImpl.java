@@ -1,7 +1,7 @@
 package com.stony.sso.client.handler;
 
 
-import com.stony.sso.facade.entity.PermissionEntity;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.Resource;
 import com.stony.sso.facade.service.MenusManager;
 import com.stony.sso.client.ClientInfoHold;
@@ -37,9 +37,9 @@ public class MenusManagerImpl implements MenusManager {
         List<Resource> menus = null;
         String username = null;
         if (subject.isAuthenticated()) {
-            PermissionEntity entity = (PermissionEntity) subject.getPrincipal();
-            username = entity.getUsername();
-            menus = permissionService.getMenus(ClientInfoHold.APP_KEY, entity.getAccessToken());
+            PermissionContext context = (PermissionContext) subject.getPrincipal();
+            username = context.getUsername();
+            menus = permissionService.getMenus(ClientInfoHold.APP_KEY, context.getAccessToken());
         } else {
             menus = Collections.EMPTY_LIST;
         }

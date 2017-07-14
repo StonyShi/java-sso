@@ -2,6 +2,7 @@ package com.stony.sso.facade.service;
 
 import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.Resource;
+import com.stony.sso.facade.entity.Role;
 import org.apache.shiro.session.mgt.SimpleSession;
 
 import java.util.List;
@@ -23,7 +24,35 @@ public interface PermissionService {
      */
     PermissionContext getPermissions(String appKey, String username);
 
+    /**
+     * 获取用户所在应用的菜单
+     * @param appKey
+     * @param username
+     * @return
+     */
     List<Resource> getMenus(String appKey, String username);
 
+    /**
+     * 获取全部
+     * @param appKey
+     * @return
+     */
     List<Resource> getResources(String appKey);
+
+    /**
+     * 获取用户所在应用的资源
+     * @param appKey
+     * @param username
+     * @return
+     */
+    List<Resource> getResources(String appKey, String username);
+
+    /**
+     * 获取用户所在应用的角色
+     * @param appKey
+     * @param username
+     * @return
+     */
+    List<Role> getRoles(String appKey, String username);
+
 }

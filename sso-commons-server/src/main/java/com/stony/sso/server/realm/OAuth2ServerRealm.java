@@ -1,6 +1,6 @@
 package com.stony.sso.server.realm;
 
-import com.stony.sso.facade.entity.PermissionEntity;
+import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.entity.User;
 import com.stony.sso.facade.service.AuthorizationService;
 import com.stony.sso.facade.service.UserService;
@@ -36,9 +36,9 @@ public class OAuth2ServerRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        PermissionEntity entity = (PermissionEntity) principals.getPrimaryPrincipal();
+        PermissionContext context = (PermissionContext) principals.getPrimaryPrincipal();
 //        String username = (String)principals.getPrimaryPrincipal();
-        final String username = entity.getUsername();
+        final String username = context.getUsername();
         logger.info("appKey = {} ,username = {}",appKey, username);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(authorizationService.findRoles(appKey, username)));
@@ -57,14 +57,14 @@ public class OAuth2ServerRealm extends AuthorizingRealm {
         if(user.isLock()) {
             throw new LockedAccountException(); //帐号锁定
         }
-        PermissionEntity entity = new PermissionEntity();
-        entity.setUsername(username);
-        entity.setUserId(user.getId());
-        entity.setUser(user);
-        entity.setClientId(appKey);
+        PermissionContext context = new PermissionContext();
+        context.setUsername(username);
+        context.setUserId(user.getId());
+        context.setUser(user);
+        context.setClientId(appKey);
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                entity, //用户
+                context, //用户
                 user.getSea(), //密码
                 ByteSource.Util.bytes(user.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name

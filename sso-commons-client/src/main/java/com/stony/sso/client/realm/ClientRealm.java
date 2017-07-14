@@ -4,6 +4,7 @@ package com.stony.sso.client.realm;
 
 import com.stony.sso.facade.context.PermissionContext;
 import com.stony.sso.facade.service.PermissionService;
+import com.stony.sso.facade.util.PermissionUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -57,7 +58,7 @@ public class ClientRealm extends AuthorizingRealm implements InitializingBean{
         urlVariables.put("appKey", appKey);
         logger.info("授权信息验证 appKey [{}] of username [{}]", appKey, username);
         PermissionContext context = permissionService.getPermissions(appKey, username);
-        authorizationInfo.setRoles(context.getRoles());
+        authorizationInfo.setRoles(PermissionUtil.getRoleNameByRoles(context.getRoles()));
         authorizationInfo.setStringPermissions(context.getPermissions());
         logger.info("PermissionContext =  ", context);
         return authorizationInfo;

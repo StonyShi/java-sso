@@ -2,8 +2,10 @@ package com.stony.sso.web.resolver;
 
 import com.stony.sso.cache.ticket.SessionUser;
 import com.stony.sso.commons.security.AdminSessionUserManager;
+import com.stony.sso.facade.context.PermissionContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -35,8 +37,10 @@ public class AdminBaseFormArgumentResolver extends BaseFormArgumentResolver {
 
     @Override
     protected SessionUser getSessionUser(NativeWebRequest webRequest) {
-        if(SecurityUtils.getSubject().isAuthenticated()){
-            String username = (String) SecurityUtils.getSubject().getPrincipal();
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            PermissionContext context = (PermissionContext) subject.getPrincipal();
+            String username = context.getUsername(); //(String)subject.getPrincipal();
             logger.debug("username = {}", username);
             return adminSessionUserManager.getSessionUser(username);
         }
