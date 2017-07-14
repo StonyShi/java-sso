@@ -3,7 +3,7 @@
 -->
 <div class="footer">
     <div class="footer-inner">
-        2016 &copy; Allright by 01zhuanche.
+        2017 &copy; AllRight by Stony.
     </div>
     <div class="footer-tools">
 			<span class="go-top">
