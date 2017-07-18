@@ -5,7 +5,7 @@ import com.stony.sso.cache.annotation.Cachezable;
 import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.facade.entity.*;
-import com.stony.sso.facade.enums.ResourceStatus;
+import com.stony.sso.facade.enums.ResourceStatusEnum;
 import com.stony.sso.facade.keys.SecurityKeys;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.service.mapper.RoleMapper;
@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
         HashSet<String> _ids = Sets.newHashSet(ids);
         int i = 0;
         for (String roleId : _ids) {
-            if(null != updateRole(new Role(Long.valueOf(roleId), ResourceStatus.UNAVAILABLE.STATUS, DateUtils.now()))){
+            if(null != updateRole(new Role(Long.valueOf(roleId), ResourceStatusEnum.UNAVAILABLE.STATUS, DateUtils.now()))){
                 i++;
             }
         }

@@ -1,6 +1,6 @@
 package com.stony.sso.facade.entity;
 
-import com.stony.sso.facade.enums.ResourceType;
+import com.stony.sso.facade.enums.ResourceTypeEnum;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.stony.sso.commons.annotation.Optimizer;
 import com.stony.sso.commons.serializer.DateTime2StringSerializer;
@@ -400,11 +400,11 @@ public class Resource implements Serializable {
     }
 
     public boolean isButton() {
-        return ResourceType.valueOf(type) == ResourceType.BUTTON;
+        return ResourceTypeEnum.valueOf(type) == ResourceTypeEnum.BUTTON;
     }
 
     public boolean isMenu() {
-        return ResourceType.valueOf(type) == ResourceType.MENU;
+        return ResourceTypeEnum.valueOf(type) == ResourceTypeEnum.MENU;
     }
 
     public Integer getResourceType() {

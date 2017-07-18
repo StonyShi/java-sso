@@ -7,14 +7,14 @@ package com.stony.sso.facade.enums;
  * <p>Time: 10:11 </p>
  * <p>Version: 1.0 </p>
  */
-public enum ResourceStatus {
+public enum ResourceStatusEnum {
     /** 1 有效 **/
     AVAILABLE(1),
     /** 0 无效 **/
     UNAVAILABLE(0);
 
     public int STATUS;
-    ResourceStatus(int i) {
+    ResourceStatusEnum(int i) {
         this.STATUS = i;
     }
 

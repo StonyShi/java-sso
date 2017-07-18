@@ -7,12 +7,12 @@ package com.stony.sso.facade.enums;
  * <p>Time: 20:18 </p>
  * <p>Version: 1.0 </p>
  */
-public enum ResourceType {
+public enum ResourceTypeEnum {
 
     MENU("MENU"), BUTTON("BUTTON");
     public String TYPE;
 
-    ResourceType(String type) {
+    ResourceTypeEnum(String type) {
         this.TYPE = type;
     }
 }

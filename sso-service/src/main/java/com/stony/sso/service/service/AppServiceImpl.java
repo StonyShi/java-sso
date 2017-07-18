@@ -7,7 +7,7 @@ import com.stony.sso.cache.annotation.Cachezable;
 import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.facade.entity.App;
-import com.stony.sso.facade.enums.ResourceStatus;
+import com.stony.sso.facade.enums.ResourceStatusEnum;
 import com.stony.sso.facade.keys.SecurityKeys;
 import com.stony.sso.facade.service.AppService;
 import org.springframework.stereotype.Service;
@@ -69,7 +69,7 @@ public class AppServiceImpl implements AppService {
         HashSet<String> _ids = Sets.newHashSet(ids);
         int i = 0;
         for (String appId : _ids) {
-            if(null != updateApp(new App((Long.valueOf(appId)), ResourceStatus.UNAVAILABLE.STATUS, DateUtils.now()))){
+            if(null != updateApp(new App((Long.valueOf(appId)), ResourceStatusEnum.UNAVAILABLE.STATUS, DateUtils.now()))){
                 i++;
             }
         }

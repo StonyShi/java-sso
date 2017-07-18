@@ -2,7 +2,7 @@ package com.stony.sso.server.manger.controller;
 
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.facade.entity.Resource;
-import com.stony.sso.facade.enums.ResourceType;
+import com.stony.sso.facade.enums.ResourceTypeEnum;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.facade.view.MenusView;
 import org.slf4j.Logger;
@@ -33,8 +33,8 @@ public class ResourceController {
     IconService iconService;
 
     @ModelAttribute("types")
-    public ResourceType[] resourceTypes() {
-        return ResourceType.values();
+    public ResourceTypeEnum[] resourceTypes() {
+        return ResourceTypeEnum.values();
     }
 
     @RequestMapping(method = RequestMethod.GET)

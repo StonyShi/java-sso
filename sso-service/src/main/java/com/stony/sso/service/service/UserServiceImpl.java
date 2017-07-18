@@ -7,7 +7,7 @@ import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.commons.StringUtils;
 import com.stony.sso.facade.entity.*;
-import com.stony.sso.facade.enums.UserStatus;
+import com.stony.sso.facade.enums.UserStatusEnum;
 import com.stony.sso.facade.keys.SecurityKeys;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.service.mapper.UserMapper;
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     public int deleteUser(Long userId) {
         User user = new User();
         user.setId(userId);
-        user.setLocked(UserStatus.LOCKED.STATUS);
+        user.setLocked(UserStatusEnum.LOCKED.STATUS);
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         HashSet<String> _ids = Sets.newHashSet(ids);
         int i = 0;
         for (String userId : _ids) {
-            if (null != updateUser(new User(Long.valueOf(userId), UserStatus.LOCKED.STATUS, DateUtils.now()))) {
+            if (null != updateUser(new User(Long.valueOf(userId), UserStatusEnum.LOCKED.STATUS, DateUtils.now()))) {
                 i++;
             }
         }

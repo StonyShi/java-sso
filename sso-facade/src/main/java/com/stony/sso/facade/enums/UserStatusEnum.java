@@ -7,7 +7,7 @@ package com.stony.sso.facade.enums;
  * <p>Time: 18:26 </p>
  * <p>Version: 1.0 </p>
  */
-public enum UserStatus {
+public enum UserStatusEnum {
 
     /** 1 锁定 **/
     LOCKED(1),
@@ -15,7 +15,7 @@ public enum UserStatus {
     UNLOCKED(0);
 
     public int STATUS;
-    UserStatus(int i) {
+    UserStatusEnum(int i) {
         this.STATUS = i;
     }
 }

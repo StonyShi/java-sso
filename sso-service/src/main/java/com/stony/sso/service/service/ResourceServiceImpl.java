@@ -5,8 +5,8 @@ import com.stony.sso.cache.annotation.Cachezable;
 import com.stony.sso.commons.CollectionUtil;
 import com.stony.sso.commons.DateUtils;
 import com.stony.sso.facade.entity.*;
-import com.stony.sso.facade.enums.ResourceStatus;
-import com.stony.sso.facade.enums.ResourceType;
+import com.stony.sso.facade.enums.ResourceStatusEnum;
+import com.stony.sso.facade.enums.ResourceTypeEnum;
 import com.stony.sso.facade.keys.SecurityKeys;
 import com.stony.sso.facade.service.*;
 import com.stony.sso.facade.util.PermissionUtil;
@@ -75,7 +75,7 @@ public class ResourceServiceImpl implements ResourceService {
         HashSet<String> _ids = Sets.newHashSet(ids);
         int i = 0;
         for (String resourceId : _ids) {
-            if(null != updateResource(new Resource(Long.valueOf(resourceId), ResourceStatus.UNAVAILABLE.STATUS, DateUtils.now()))){
+            if(null != updateResource(new Resource(Long.valueOf(resourceId), ResourceStatusEnum.UNAVAILABLE.STATUS, DateUtils.now()))){
                 i++;
             }
         }
@@ -102,7 +102,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Cachezable(key = "Menus", prefix = SecurityKeys.KEY_FIND_RESOURCE, type = Cachezable.CachezType.SET)
     public List<Resource> findMenuAll(){
-        return resourceMapper.findTypeAll(ResourceType.MENU.TYPE);
+        return resourceMapper.findTypeAll(ResourceTypeEnum.MENU.TYPE);
     }
 
     /**
@@ -205,7 +205,7 @@ public class ResourceServiceImpl implements ResourceService {
         HashSet<String> _ids = Sets.newHashSet(ids);
         List<RoleResource> roleResources = new ArrayList<>();
         for(String resourceId : _ids){
-            RoleResource roleResource = new RoleResource(roleId, Long.valueOf(resourceId), ResourceStatus.AVAILABLE.STATUS, DateUtils.now());
+            RoleResource roleResource = new RoleResource(roleId, Long.valueOf(resourceId), ResourceStatusEnum.AVAILABLE.STATUS, DateUtils.now());
             roleResources.add(roleResource);
         }
         int x = roleResourceMapper.deleteRoleResourcesById(roleId);

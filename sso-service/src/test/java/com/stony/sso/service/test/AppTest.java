@@ -4,9 +4,8 @@ package com.stony.sso.service.test;
 import com.stony.sso.cache.redis.JedisTemplate;
 import com.stony.sso.commons.JacksonUtil;
 import com.stony.sso.facade.entity.*;
-import com.stony.sso.facade.enums.ResourceType;
+import com.stony.sso.facade.enums.ResourceTypeEnum;
 import com.stony.sso.facade.service.*;
-import com.stony.sso.service.helper.PasswordHelper;
 import com.stony.sso.service.mapper.AppMapper;
 import com.stony.sso.service.mapper.UserMapper;
 import org.junit.Test;
@@ -219,7 +218,7 @@ public class AppTest {
         resource.setParentId(11L);
         resource.setPermission("organization:*");
         resource.setUrl("");
-        resource.setType(ResourceType.BUTTON.TYPE);
+        resource.setType(ResourceTypeEnum.BUTTON.TYPE);
 
         com.stony.sso.facade.entity.Resource createResource = resourceService.createResource(resource);
         logger.info("resourceService.createResource = {}", createResource);
