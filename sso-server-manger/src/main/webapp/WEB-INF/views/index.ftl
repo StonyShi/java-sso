@@ -60,7 +60,7 @@
                     <!-- END BEGIN STYLE CUSTOMIZER -->
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
-                        Dashboard <small>statistics and more</small>
+                        Dashboard <small>-</small>
                     </h3>
                     <ul class="breadcrumb">
                         <li>
