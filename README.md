@@ -31,13 +31,13 @@
 ![角色资源](https://git.oschina.net/uploads/images/2017/0720/134333_a64fe3a2_97991.png "role-res.png")
 	* 5.7 授权管理:
 ![授权管理](https://git.oschina.net/uploads/images/2017/0720/134359_68452e0f_97991.png "auth.png")
-* 5.2 用户管理:
+    * 5.8 用户管理:
 ![用户管理](https://git.oschina.net/uploads/images/2017/0720/134043_c5f13eb3_97991.png "user.png")
 
 ## 6. 应用截图
-
+    * 6.1 应用登陆:
 ![应用登陆](https://git.oschina.net/uploads/images/2017/0720/134036_6beb5fa2_97991.png "m-login.png")
-	
+	* 6.1 应用主页:
 ![应用主页](https://git.oschina.net/uploads/images/2017/0720/134020_864ca0a0_97991.png "m-home.png")
 	
 	
