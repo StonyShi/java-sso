@@ -17,17 +17,27 @@
     * 4.3 sso-admin-monitor  8090端口
 
 ## 5. sso服务截图
+		
+	![服务登陆](https://git.oschina.net/uploads/images/2017/0720/134455_e087666f_97991.png "login.png")
+	
+	![服务主页](https://git.oschina.net/uploads/images/2017/0720/134431_480f1f89_97991.png "home.png")
+	
+	![应用管理](https://git.oschina.net/uploads/images/2017/0720/134414_c745674b_97991.png "app.png")
+	
+	![角色管理](https://git.oschina.net/uploads/images/2017/0720/134220_e4025a31_97991.png "role.png")
+	
+	![资源管理](https://git.oschina.net/uploads/images/2017/0720/134248_bbc9f4a6_97991.png "res.png")
+	
+	![角色资源](https://git.oschina.net/uploads/images/2017/0720/134333_a64fe3a2_97991.png "role-res.png")
+	
+	![授权管理](https://git.oschina.net/uploads/images/2017/0720/134359_68452e0f_97991.png "auth.png")
 
-    ![登陆](/java-sso/blob/master/dist/login.png)
-    ![主页](/java-sso/blob/master/dist/home.png)
-    ![应用管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/app.png)
-    ![资源管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/res.png)
-    ![角色管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/role.png)
-    ![角色资源](https://git.oschina.net/stoney/java-sso/blob/master/dist/role-res.png)
-    ![授权管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/auth.png)
-    ![用户管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/user.png)
+   ![用户管理](https://git.oschina.net/uploads/images/2017/0720/134043_c5f13eb3_97991.png "user.png")
 
 ## 6. 应用截图
 
-    ![应用登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-login.png)
-    ![应用首页](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-home.png)
+	![应用登陆](https://git.oschina.net/uploads/images/2017/0720/134036_6beb5fa2_97991.png "m-login.png")
+	
+    ![应用主页](https://git.oschina.net/uploads/images/2017/0720/134020_864ca0a0_97991.png "m-home.png")
+	
+	
