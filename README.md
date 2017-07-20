@@ -18,8 +18,8 @@
 
 ## 5. sso服务截图
 
-    ![登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/login.png)
-    ![主页](https://git.oschina.net/stoney/java-sso/blob/master/dist/home.png)
+    ![登陆](/java-sso/blob/master/dist/login.png)
+    ![主页](/java-sso/blob/master/dist/home.png)
     ![应用管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/app.png)
     ![资源管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/res.png)
     ![角色管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/role.png)
