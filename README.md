@@ -17,27 +17,27 @@
     * 4.3 sso-admin-monitor  8090端口
 
 ## 5. sso服务截图
-		
-	![服务登陆](https://git.oschina.net/uploads/images/2017/0720/134455_e087666f_97991.png "login.png")
-	
-	![服务主页](https://git.oschina.net/uploads/images/2017/0720/134431_480f1f89_97991.png "home.png")
-	
-	![应用管理](https://git.oschina.net/uploads/images/2017/0720/134414_c745674b_97991.png "app.png")
-	
-	![角色管理](https://git.oschina.net/uploads/images/2017/0720/134220_e4025a31_97991.png "role.png")
-	
-	![资源管理](https://git.oschina.net/uploads/images/2017/0720/134248_bbc9f4a6_97991.png "res.png")
-	
-	![角色资源](https://git.oschina.net/uploads/images/2017/0720/134333_a64fe3a2_97991.png "role-res.png")
-	
-	![授权管理](https://git.oschina.net/uploads/images/2017/0720/134359_68452e0f_97991.png "auth.png")
-
-   ![用户管理](https://git.oschina.net/uploads/images/2017/0720/134043_c5f13eb3_97991.png "user.png")
+    * 5.1 服务登陆:
+![服务登陆](https://git.oschina.net/uploads/images/2017/0720/134455_e087666f_97991.png "login.png")
+	* 5.2 服务主页:
+![服务主页](https://git.oschina.net/uploads/images/2017/0720/134431_480f1f89_97991.png "home.png")
+	* 5.3 应用管理:
+![应用管理](https://git.oschina.net/uploads/images/2017/0720/134414_c745674b_97991.png "app.png")
+	* 5.4 角色管理:
+![角色管理](https://git.oschina.net/uploads/images/2017/0720/134220_e4025a31_97991.png "role.png")
+	* 5.5 资源管理:
+![资源管理](https://git.oschina.net/uploads/images/2017/0720/134248_bbc9f4a6_97991.png "res.png")
+	* 5.6 角色资源:
+![角色资源](https://git.oschina.net/uploads/images/2017/0720/134333_a64fe3a2_97991.png "role-res.png")
+	* 5.7 授权管理:
+![授权管理](https://git.oschina.net/uploads/images/2017/0720/134359_68452e0f_97991.png "auth.png")
+* 5.2 用户管理:
+![用户管理](https://git.oschina.net/uploads/images/2017/0720/134043_c5f13eb3_97991.png "user.png")
 
 ## 6. 应用截图
 
-	![应用登陆](https://git.oschina.net/uploads/images/2017/0720/134036_6beb5fa2_97991.png "m-login.png")
+![应用登陆](https://git.oschina.net/uploads/images/2017/0720/134036_6beb5fa2_97991.png "m-login.png")
 	
-    ![应用主页](https://git.oschina.net/uploads/images/2017/0720/134020_864ca0a0_97991.png "m-home.png")
+![应用主页](https://git.oschina.net/uploads/images/2017/0720/134020_864ca0a0_97991.png "m-home.png")
 	
 	
