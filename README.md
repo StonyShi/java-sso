@@ -17,15 +17,17 @@
     * 4.3 sso-admin-monitor  8090端口
 
 ## 5. sso服务截图
-    [登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/login.png)
-    [主页](https://git.oschina.net/stoney/java-sso/blob/master/dist/home.png)
-    [应用管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/app.png)
-    [资源管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/res.png)
-    [角色管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/role.png)
-    [角色资源](https://git.oschina.net/stoney/java-sso/blob/master/dist/role-res.png)
-    [授权管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/auth.png)
-    [用户管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/user.png)
+
+    ![登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/login.png)
+    ![主页](https://git.oschina.net/stoney/java-sso/blob/master/dist/home.png)
+    ![应用管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/app.png)
+    ![资源管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/res.png)
+    ![角色管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/role.png)
+    ![角色资源](https://git.oschina.net/stoney/java-sso/blob/master/dist/role-res.png)
+    ![授权管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/auth.png)
+    ![用户管理](https://git.oschina.net/stoney/java-sso/blob/master/dist/user.png)
 
 ## 6. 应用截图
-    [应用登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-login.png)
-    [应用首页](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-home.png)
+
+    ![应用登陆](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-login.png)
+    ![应用首页](https://git.oschina.net/stoney/java-sso/blob/master/dist/m-home.png)
