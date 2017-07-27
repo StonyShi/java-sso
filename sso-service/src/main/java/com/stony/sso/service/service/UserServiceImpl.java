@@ -151,4 +151,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findUserByRole(String roleIds) {
         return userMapper.findUserByRole(roleIds);
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userMapper.getUserByEmail(email);
+    }
 }

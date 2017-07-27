@@ -59,4 +59,6 @@ public interface UserMapper {
      * @return
      */
     List<User> findUserByRole(@Param("roleIds") String roleIds);
+
+    User getUserByEmail(String email);
 }

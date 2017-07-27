@@ -78,4 +78,11 @@ public interface UserService {
      * @return
      */
     List<User> findUserByRole(String roleIds);
+
+    /**
+     * 获取用户
+     * @param email
+     * @return
+     */
+    User getUserByEmail(String email);
 }

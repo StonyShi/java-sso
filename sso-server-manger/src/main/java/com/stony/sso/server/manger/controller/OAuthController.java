@@ -40,6 +40,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>Created with IntelliJ IDEA. </p>
@@ -107,6 +109,8 @@ import java.net.URISyntaxException;
 public class OAuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(OAuthController.class);
+
+    final MediaType APPLICATION_JSON_VALUE_UTF8 = MediaType.parseMediaType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
 
     @javax.annotation.Resource
     OAuthService oAuthService;
@@ -198,7 +202,7 @@ public class OAuthController {
             }
             PermissionContext context = (PermissionContext) subject.getPrincipal();
             String username = context.getUsername(); //(String)subject.getPrincipal();
-            User user =userService.findByUsername(username);
+            User user = userService.findByUsername(username);
             operationLogService.insertOperation(new OperationLog(OperationLogKeys.LOGIN_OPERATION, user.getId()));
 
             //生成授权码
@@ -257,16 +261,17 @@ public class OAuthController {
         if(org.springframework.util.StringUtils.isEmpty(username) || org.springframework.util.StringUtils.isEmpty(password)) {
             return false;
         }
-
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-
         try {
-            subject.login(token);
-            return true;
+            login(subject, username, password);
+            return subject.isAuthenticated();
         } catch (Exception e) {
             request.setAttribute("error", "登录失败:" + e.getClass().getName());
             return false;
         }
+    }
+    private void login(Subject subject, String username, String password) throws Exception{
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        subject.login(token);
     }
 
     /**
@@ -351,7 +356,7 @@ public class OAuthController {
             if (!oAuthService.checkClientId(oauthRequest.getClientId())) {
                 OAuthResponse response =
                         OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                                .setError(OAuthError.TokenResponse.INVALID_CLIENT)
+                                .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
                                 .setErrorDescription(SecurityConstants.INVALID_CLIENT_DESCRIPTION)
                                 .buildJSONMessage();
                 return new ResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
@@ -366,27 +371,69 @@ public class OAuthController {
                                 .buildJSONMessage();
                 return new ResponseEntity(response.getBody(), HttpStatus.UNAUTHORIZED);
             }
-            // code
-            String authCode = oauthRequest.getParam(OAuth.OAUTH_CODE);
-            // 检查验证类型，此处只检查AUTHORIZATION_CODE类型，其他的还有PASSWORD或REFRESH_TOKEN
-            if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.AUTHORIZATION_CODE.toString())) {
+            User user;
+            if(GrantType.PASSWORD.toString().equals(oauthRequest.getGrantType())) {
+                Subject subject = SecurityUtils.getSubject();
+                try {
+                    login(subject, oauthRequest.getUsername(), oauthRequest.getPassword());
+                    if(subject.isAuthenticated()) {
+                        PermissionContext context = (PermissionContext) subject.getPrincipal();
+                        String username = context.getUsername();
+                        user = userService.findByUsername(username);
+                    } else {
+                        logger.warn("用户授权登陆失败[{},{}]", oauthRequest.getUsername(), oauthRequest.getPassword());
+                        OAuthResponse response = OAuthASResponse
+                                .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                                .setError(OAuthError.TokenResponse.INVALID_REQUEST)
+                                .setErrorDescription("用户名密码错误")
+                                .buildJSONMessage();
+                        return createJsonResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
+                    }
+                } catch (Exception e) {
+                    logger.warn(String.format("用户授权登陆异常[%s,%s]", oauthRequest.getUsername(), oauthRequest.getPassword()), e);
+                    OAuthResponse response = OAuthASResponse
+                            .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                            .setError(OAuthError.TokenResponse.INVALID_REQUEST)
+                            .setErrorDescription("用户名密码错误：")
+                            .buildJSONMessage();
+                    return createJsonResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
+                }
+            }
+            else if(GrantType.AUTHORIZATION_CODE.toString().equals(oauthRequest.getGrantType())) {
+                String authCode = oauthRequest.getCode();
+                // 检查验证类型，此处只检查AUTHORIZATION_CODE类型，其他的还有PASSWORD或REFRESH_TOKEN
                 if (!oAuthService.checkAuthCode(authCode)) {
                     OAuthResponse response = OAuthASResponse
                             .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                            .setError(OAuthError.TokenResponse.INVALID_GRANT)
+                            .setError(OAuthError.TokenResponse.INVALID_REQUEST)
                             .setErrorDescription("错误的授权码")
                             .buildJSONMessage();
-                    return new ResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
+                    return createJsonResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
                 }
+                user = userService.findByUsername(oAuthService.getUsernameByAuthCode(authCode));
+            } else {
+                OAuthResponse response = OAuthASResponse
+                        .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                        .setError(OAuthError.TokenResponse.INVALID_GRANT)
+                        .setErrorDescription("不支持的授权类型")
+                        .buildJSONMessage();
+                return createJsonResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
             }
-
+            if(user == null || user.getUsername() == null) {
+                OAuthResponse response = OAuthASResponse
+                        .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                        .setError(OAuthError.TokenResponse.INVALID_REQUEST)
+                        .setErrorDescription("用户不存在")
+                        .buildJSONMessage();
+                return createJsonResponseEntity(response.getBody(), HttpStatus.BAD_REQUEST);
+            }
             //生成Access Token
             OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
             final String accessToken = oauthIssuerImpl.accessToken();
             final String refreshToken = oauthIssuerImpl.refreshToken();
-            final String userName = oAuthService.getUsernameByAuthCode(authCode);
+            final String username = user.getUsername();
             TokenInfo token = new TokenInfo();
-            token.setUsername(userName);
+            token.setUsername(username);
             token.setExpireIn(oAuthService.getExpireIn());
             token.setToken(accessToken);
             token.setClientId(oauthRequest.getClientId());
@@ -529,7 +576,7 @@ public class OAuthController {
         logger.info("Enter");
         try {
             //构建OAuth资源请求
-            OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request, ParameterStyle.QUERY);
+            OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request, ParameterStyle.BODY);
             //获取 access_token
             String accessToken = oauthRequest.getAccessToken();
 
@@ -568,7 +615,6 @@ public class OAuthController {
             //获取Access Token
             String accessToken = oauthRequest.getAccessToken();
 
-
             //返回 TokenInfo
             TokenInfo token = oAuthService.getToken(accessToken);
 
@@ -594,9 +640,7 @@ public class OAuthController {
             context.setResponseTime(DateUtils.dateTimeString());
             context.setUser(user);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(OAuth.HeaderType.CONTENT_TYPE, "application/json;charset=UTF-8");
-            return new ResponseEntity(JSON.toJSON(context), headers, HttpStatus.OK);
+            return createJsonResponseEntity(JSON.toJSONString(context), HttpStatus.OK);
         } catch (OAuthProblemException e) {
             //检查是否设置了错误码
             String errorCode = e.getError();
@@ -630,5 +674,14 @@ public class OAuthController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(OAuth.HeaderType.WWW_AUTHENTICATE, oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
         return new ResponseEntity(headers, HttpStatus.BAD_REQUEST);
+    }
+    private HttpHeaders createJsonHeaders(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON_VALUE_UTF8);
+        return headers;
+    }
+
+    private ResponseEntity<String> createJsonResponseEntity(String body, HttpStatus statusCode) {
+        return new ResponseEntity<String>(body, createJsonHeaders(), statusCode);
     }
 }

@@ -29,5 +29,5 @@ public class SecurityConstants {
     public static final String RESPONSE_TYPE_VALUE = "code";
     public static final String CLIENT_ID = "client_id";
     public static String RESOURCE_SERVER_NAME = "server";
-    public static final String INVALID_CLIENT_DESCRIPTION = "客户端验证失败，如错误的client_id/client_secret。";
+    public static final String INVALID_CLIENT_DESCRIPTION = "客户端验证失败";
 }

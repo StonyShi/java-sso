@@ -112,7 +112,7 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
                 .setClientId(clientInfoHold.getAppKey())
                 .setClientSecret(clientInfoHold.getAppSecret())
                 .setAccessToken(token)
-                .buildQueryMessage();
+                .buildBodyMessage();
         //userInfoRequest.setHeader("Content-Type","application/x-www-form-urlencoded");
         userInfoRequest.setHeader(OAuth.HeaderType.CONTENT_TYPE, OAuth.ContentType.URL_ENCODED);
         OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.POST, OAuthResourceResponse.class);
@@ -132,14 +132,15 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
                     .setClientSecret(clientInfoHold.getAppSecret())
                     .setCode(code)
                     .setRedirectURI(clientInfoHold.getRedirectUrl())
-                    .buildQueryMessage();
+                    .buildBodyMessage();
             OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
             if(oAuthResponse == null || oAuthResponse.getAccessToken() == null){
+                logger.warn("授权码[{}]获取授权错误", code);
                 throw new OAuth2AuthenticationException("获取token异常");
             }
             return oAuthResponse;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(String.format("授权码[%s]获取授权错误",code) , e);
             throw new OAuth2AuthenticationException(e);
         }
     }
@@ -169,7 +170,7 @@ public class OAuth2ClientRealm extends AuthorizingRealm {
             OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
             OAuthAccessTokenResponse tokenInfo = postTokenInfo(code);
             OAuthClientRequest userInfoRequest = new OAuthBearerClientRequest(clientInfoHold.getPermissionUsernameUrl())
-                    .setAccessToken(tokenInfo.getAccessToken()).buildQueryMessage();
+                    .setAccessToken(tokenInfo.getAccessToken()).buildBodyMessage();
             OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
             return resourceResponse.getBody();
         } catch (Exception e) {

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * <p>Created with IntelliJ IDEA. </p>
  * <p>User: Stony </p>
@@ -72,5 +75,29 @@ public class UserController {
         }
         user.setUpdateDate(DateUtils.now());
         return userService.updateUser(user);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/forget", method = RequestMethod.POST)
+    public Object forget(long id, String pwd, String npwd) {
+        User user = userService.findOne(id);
+        if(pwd != null && pwd.equals(user.getSea())) {
+
+        }
+        user.setSea(npwd);
+        user.setPassword(npwd);
+        return null;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/clear", method = RequestMethod.POST)
+    public Object clear(String email) {
+        User user = userService.getUserByEmail(email);
+        Map map = new HashMap();
+        if(user == null){
+            map.put("code", "501");
+        } else {
+            map.put("code", "200");
+        }
+        return map;
     }
 }
